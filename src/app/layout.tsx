@@ -1,16 +1,11 @@
-import type { Metadata } from "next";
+"use client";
 import { Inter } from "next/font/google";
-import Header from "../../components/header/Header";
-import StoreProvider from "../app/store/StoreProvider";
+import { Provider } from "react-redux";
+import Footer from "../app/components/footer/Footer";
+import Header from "../app/components/header/Header";
 import "./globals.css";
-import Footer from "../../components/footer/Footer";
-
+import { store } from "./store/store";
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Reservations App",
-  description: "Reserve your service easily",
-};
 
 export default function RootLayout({
   children,
@@ -18,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <StoreProvider>
+    <Provider store={store}>
       <html lang="en">
         <body className={inter.className}>
           <>
@@ -28,6 +23,6 @@ export default function RootLayout({
           </>
         </body>
       </html>
-    </StoreProvider>
+    </Provider>
   );
 }

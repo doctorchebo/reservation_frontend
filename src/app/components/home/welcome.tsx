@@ -1,12 +1,11 @@
-import React from "react";
-import styles from "./welcome.module.css";
 import Categories from "../categories/categories";
+import styles from "./welcome.module.css";
 
 const Welcome = () => {
   return (
     <div className={styles.container}>
-      <p className={styles.txt}>Make a reservation</p>
-      <Categories/>
+      <p className={styles.txt}>Reserva ahora y evita esperas innecesarias</p>
+      <Categories />
     </div>
   );
 };

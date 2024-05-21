@@ -1,0 +1,25 @@
+.container {
+  margin-top: 6rem;
+  margin-right: auto;
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(25%, auto));
+}
+
+@media (max-width: 660px) {
+  .container {
+    grid-template-columns: repeat(1, minmax(100%, auto));
+  }
+}
+
+@media (min-width: 660px) and (max-width: 900px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(50%, auto));
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1100px) {
+  .container {
+    grid-template-columns: repeat(3, minmax(33.33%, auto));
+  }
+}

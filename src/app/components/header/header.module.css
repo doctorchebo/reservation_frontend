@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 5rem;
+  background-color: var(--main);
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.txt {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.visible {
+  top: 0;
+  transition: top 0.4s ease-out;
+}
+
+.hidden {
+  top: -7rem;
+  transition: top 0.4s ease-out;
+}

@@ -1,8 +1,9 @@
 .container {
-  margin-top: 3rem;
+  margin-top: 5rem;
   flex: 1;
   height: 100vh;
 }
 .txt {
   font-size: 2rem;
+  text-align: center;
 }
