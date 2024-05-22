@@ -11,7 +11,7 @@ interface CardProps {
 const Category: React.FC<CardProps> = ({ category }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push("reservation");
+    router.push("category");
   };
   return (
     <div className={styles.container} onClick={handleClick}>

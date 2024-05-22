@@ -11,8 +11,6 @@ const useScroll = () => {
   useEffect(() => {
     const handleScroll = () => {
       let currentPosition = window.scrollY;
-      console.log("lastPosition", lastPosition);
-      console.log("currentPosition", currentPosition);
       if (currentPosition > lastPosition) {
         setVisible(false);
       } else {
