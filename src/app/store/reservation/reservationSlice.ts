@@ -1,14 +1,15 @@
+import { Reservation } from "@/app/types/reservationType";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-interface Reservation {
-  id: number;
-}
-
 interface ReservationState {
   reservations: Reservation[];
+  loading: boolean;
+  error: string | undefined;
 }
 
 const initialState: ReservationState = {
   reservations: [],
+  loading: false,
+  error: undefined,
 };
 
 const reservationReducer = createSlice({
@@ -18,8 +19,15 @@ const reservationReducer = createSlice({
     setReservations: (state, action: PayloadAction<Reservation[]>) => {
       state.reservations = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
   },
 });
 
-export const { setReservations } = reservationReducer.actions;
+export const { setReservations, setLoading, setError } =
+  reservationReducer.actions;
 export default reservationReducer.reducer;

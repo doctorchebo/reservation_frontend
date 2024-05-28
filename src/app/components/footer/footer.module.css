@@ -2,4 +2,17 @@
   display: flex;
   align-self: flex-end;
   width: 100vw;
+  min-height: 3rem;
+  background-color: var(--main);
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+}
+.txtContainer {
+  padding: 1rem;
+}
+
+.txt {
+  color: white;
+  font-weight: 500;
 }

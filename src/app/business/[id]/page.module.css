@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  margin-top: 5rem;
+  height: 100vh;
+}
+
+.businessContainer {
+  display: flex;
+  width: 50%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  background-color: bisque;
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  right: 0;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+}

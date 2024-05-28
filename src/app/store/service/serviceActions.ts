@@ -2,36 +2,24 @@ import { freeApi } from "@/app/api/freeApi";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
-import { setBusinesses, setError, setLoading } from "./businessSlice";
+import { setError, setLoading, setServices } from "./serviceSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
   if (axios.isAxiosError(error)) {
     dispatch(setError(error.message));
   } else {
-    dispatch(setError("Error while doing business operation:" + error));
+    dispatch(setError("Error while doing service operation:" + error));
   }
 };
 
-export const getBusinesses = () => async (dispatch: AppDispatch) => {
-  dispatch(setLoading(true));
-  try {
-    const response = await freeApi.get("business/getAll");
-    dispatch(setBusinesses(response.data));
-  } catch (error) {
-    handleError(error, dispatch);
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
-
-export const getBusinessesByCategoryId =
+export const getServicesByCategoryId =
   (categoryId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await freeApi.get(
-        `business/getAllByCategoryId/${categoryId}`
+        `service/getAllByCategoryId/${categoryId}`
       );
-      dispatch(setBusinesses(response.data));
+      dispatch(setServices(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -39,14 +27,29 @@ export const getBusinessesByCategoryId =
     }
   };
 
-export const getAvailableBusinesses =
+export const getServicesByBusinessId =
+  (businessId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await freeApi.get(
+        `service/getAllByBusinessId/${businessId}`
+      );
+      dispatch(setServices(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const getAllByServiceIdAndStartDate =
   (serviceId: string, startDate: Dayjs) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await freeApi.get(
-        `business/getAvailableByServiceId/${serviceId}/${startDate}`
+        `service/getAvailableServices/${serviceId}/${startDate}`
       );
-      dispatch(setBusinesses(response.data));
+      dispatch(setServices(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

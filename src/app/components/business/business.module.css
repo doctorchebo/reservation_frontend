@@ -1,6 +1,6 @@
 .container {
   width: 15rem;
-  height: 15rem;
+  height: 18rem;
   border-radius: 20px;
   background-color: var(--primary-glow);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -13,6 +13,21 @@
   position: relative;
 }
 
+.container:hover {
+  cursor: pointer;
+}
+
 .img {
   border-radius: 1rem;
+}
+
+.txtContainer {
+  position: absolute;
+  bottom: 0;
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.address {
+  font-size: 0.7rem;
 }
