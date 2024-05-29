@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { setSearched } from "@/app/store/business/businessSlice";
+import { setBusinesses, setSearched } from "@/app/store/business/businessSlice";
 import { useEffect } from "react";
 import Business from "../business/Business";
 import Loader from "../loader/Loader";
@@ -17,6 +17,7 @@ const BusinessList: React.FC<BusinessListProps> = ({ categoryId }) => {
   useEffect(() => {
     return () => {
       dispatch(setSearched(false));
+      dispatch(setBusinesses([]))
     };
   }, []);
 

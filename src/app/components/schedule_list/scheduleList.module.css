@@ -1,3 +1,15 @@
-.container{
-    
+.container {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  align-content: center;
+}
+
+.title {
+  padding: 0.5rem;
+  margin: 1rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
 }

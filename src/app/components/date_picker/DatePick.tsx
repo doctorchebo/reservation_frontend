@@ -2,11 +2,14 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import { getAvailableBusinesses } from "@/app/store/business/businessActions";
 import { setSearched } from "@/app/store/business/businessSlice";
+import { setDate } from "@/app/store/reservation/reservationSlice";
 import CheckIcon from "@mui/icons-material/Check";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import {
   DatePicker,
+  DateValidationError,
   LocalizationProvider,
+  PickerChangeHandlerContext,
   TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -18,10 +21,10 @@ import styles from "./datePick.module.css";
 const DatePick = () => {
   const dispatch = useAppDispatch();
   const { serviceId } = useAppSelector((state) => state.service);
-  const [date, setDate] = useState<Dayjs | null>(
-    dayjs(new Date()).startOf("day")
+  const { date } = useAppSelector((state) => state.reservation);
+  const [time, setTime] = useState<Dayjs | null>(
+    dayjs(`${new Date().toISOString().split("T")[0]}T17:00`)
   );
-  const [time, setTime] = useState<Dayjs | null>(dayjs("2024-04-17T17:00"));
   const handleSearch = () => {
     let hoursToAdd = dayjs(time).get("hour");
     let minutesToAdd = dayjs(time).get("minute");
@@ -30,6 +33,13 @@ const DatePick = () => {
       dispatch(getAvailableBusinesses(serviceId, time));
       dispatch(setSearched(true));
     }
+  };
+
+  const handleSetDate = (
+    value: dayjs.Dayjs | null,
+    context: PickerChangeHandlerContext<DateValidationError>
+  ) => {
+    dispatch(setDate(value!));
   };
 
   return (
@@ -43,7 +53,7 @@ const DatePick = () => {
                 date == null || !date.isValid() ? EditCalendarIcon : CheckIcon,
             }}
             value={date}
-            onChange={setDate}
+            onChange={handleSetDate}
             disablePast={true}
           />
           <TimePicker

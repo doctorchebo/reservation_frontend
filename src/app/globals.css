@@ -2,7 +2,9 @@
   --max-width: 1100px;
   --main: rgb(65, 67, 97);
   --btn: rgb(96, 99, 143);
+  --background: rgb(152, 155, 192);
   --btn-hover: rgb(65, 67, 97);
+  --disabled: rgb(145, 145, 145)
 }
 
 * {

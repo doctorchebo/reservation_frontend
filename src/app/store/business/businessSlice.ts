@@ -3,16 +3,18 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface BusinessState {
   businesses: Business[];
+  currentBusiness: Business | undefined;
   loading: boolean;
   error: string | undefined;
-  searched: boolean
+  searched: boolean;
 }
 
 const initialState: BusinessState = {
   businesses: [],
+  currentBusiness: undefined,
   loading: false,
   error: undefined,
-  searched: false
+  searched: false,
 };
 const businessSlice = createSlice({
   name: "Business",
@@ -20,6 +22,9 @@ const businessSlice = createSlice({
   reducers: {
     setBusinesses: (state, action: PayloadAction<Business[]>) => {
       state.businesses = action.payload;
+    },
+    setCurrentBusiness: (state, action: PayloadAction<Business>) => {
+      state.currentBusiness = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
@@ -33,5 +38,11 @@ const businessSlice = createSlice({
   },
 });
 
-export const { setBusinesses, setLoading, setError, setSearched } = businessSlice.actions;
+export const {
+  setBusinesses,
+  setCurrentBusiness,
+  setLoading,
+  setError,
+  setSearched,
+} = businessSlice.actions;
 export default businessSlice.reducer;

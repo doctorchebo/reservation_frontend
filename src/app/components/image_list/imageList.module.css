@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.5rem;
+}
+
+.btn:hover {
+  cursor: pointer;
+}

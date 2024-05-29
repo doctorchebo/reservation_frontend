@@ -1,7 +1,7 @@
 .container {
   display: flex;
   margin-top: 5rem;
-  height: 100vh;
+  min-height: 50rem;
 }
 
 .businessContainer {
@@ -9,8 +9,7 @@
   width: 50%;
   padding: 1rem;
   justify-content: center;
-  align-items: center;
-  background-color: bisque;
+  background-color: var(--background);
 }
 
 .dateContainer {
@@ -19,6 +18,5 @@
   width: 50%;
   right: 0;
   padding: 1rem;
-  justify-content: center;
   align-items: center;
 }
