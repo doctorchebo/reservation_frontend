@@ -4,6 +4,9 @@
   height: 100vh;
 }
 .txt {
+  margin: 1rem;
+  padding: 1rem;
   font-size: 2rem;
   text-align: center;
+  font-weight: 700;
 }

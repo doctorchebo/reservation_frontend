@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authenticationReducer from "./auth/authSlice";
 import businessReducer from "./business/businessSlice";
 import categoryReducer from "./category/categorySlice";
 import durationReducer from "./duration/durationSlice";
@@ -11,6 +12,7 @@ export const store = configureStore({
     business: businessReducer,
     service: serviceReducer,
     duration: durationReducer,
+    authentication: authenticationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { constants } from "../constants/constants";
 
 export const api = axios.create({
   baseURL: "http://localhost:8080/api/",
@@ -9,9 +10,8 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const stringAuthToken = localStorage.getItem("authToken");
-  const authToken =
-    stringAuthToken != null ? JSON.parse(stringAuthToken) : undefined;
+  const tokenString = localStorage.getItem(constants.authToken);
+  const authToken = tokenString != null ? JSON.parse(tokenString) : null;
   if (authToken) {
     config.headers!.Authorization = `Bearer ${authToken}`;
   }

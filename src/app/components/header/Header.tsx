@@ -23,7 +23,7 @@ const Header = () => {
           Acerca
         </Link>
         <Link href="/login" className={styles.txt}>
-          Login
+          Iniciar Sesión
         </Link>
       </ul>
     </nav>
