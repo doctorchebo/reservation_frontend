@@ -22,7 +22,7 @@ const ImageList: React.FC<ImageListProps> = ({ images }) => {
   return (
     <div className={styles.container}>
       <div className={styles.btn} onClick={() => handleChange(false)}>
-        <GrPrevious size={30} color="rgb(96, 99, 143)" />
+        <GrPrevious size={30} color="white" />
       </div>
       <Image
         src={images[imageIndex].url}
@@ -32,7 +32,7 @@ const ImageList: React.FC<ImageListProps> = ({ images }) => {
         priority={true}
       />
       <div className={styles.btn} onClick={() => handleChange(true)}>
-        <GrNext size={30} color="rgb(96, 99, 143)" />
+        <GrNext size={30} color="white" />
       </div>
     </div>
   );

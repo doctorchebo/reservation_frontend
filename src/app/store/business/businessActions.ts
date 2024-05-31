@@ -1,4 +1,4 @@
-import { freeApi } from "@/app/api/freeApi";
+import { api } from "@/app/api/api";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
@@ -20,7 +20,7 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
 export const getBusinesses = () => async (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   try {
-    const response = await freeApi.get("business/getAll");
+    const response = await api.get("business/getAll");
     dispatch(setBusinesses(response.data));
   } catch (error) {
     handleError(error, dispatch);
@@ -33,7 +33,7 @@ export const getBusinessById =
   (businessId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(`business/getById/${businessId}`);
+      const response = await api.get(`business/getById/${businessId}`);
       dispatch(setCurrentBusiness(response.data));
     } catch (error) {
       handleError(error, dispatch);
@@ -46,7 +46,7 @@ export const getBusinessesByCategoryId =
   (categoryId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `business/getAllByCategoryId/${categoryId}`
       );
       dispatch(setBusinesses(response.data));
@@ -61,7 +61,7 @@ export const getAvailableBusinesses =
   (serviceId: string, startDate: Dayjs) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `business/getAvailableByServiceId/${serviceId}/${startDate}`
       );
       dispatch(setBusinesses(response.data));

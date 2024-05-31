@@ -20,3 +20,15 @@
   padding: 1rem;
   align-items: center;
 }
+
+@media (max-width: 660px) {
+  .container {
+    flex-direction: column;
+  }
+  .businessContainer {
+    width: 100%;
+  }
+  .dateContainer {
+    width: 100%;
+  }
+}

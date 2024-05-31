@@ -10,11 +10,19 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface LogoutRequest {
+  refreshToken: string;
+}
 export interface AuthenticationResponse {
   authenticationToken: string;
   refreshToken: string;
   username: string;
   expiresAt: number;
+}
+
+export interface RefreshTokenRequest {
+  username: string;
+  refreshToken: string;
 }
 
 export interface FieldErrors {

@@ -9,19 +9,25 @@ import {
   Link,
   OutlinedInput,
 } from "@mui/material";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import Button from "../components/button/Button";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import styles from "./login.module.css";
-import { LoginRequest } from "../types/authTypes";
+import useAuth from "../hooks/useAuth";
 import { login } from "../store/auth/authActions";
+import { LoginRequest } from "../types/authTypes";
+import styles from "./login.module.css";
 const Login = () => {
-    const dispatch = useAppDispatch();
-  const [credentials, setCredentials] = useState<LoginRequest>({ email: "", password: "" });
+  const { isAuthenticated } = useAuth();
+  const dispatch = useAppDispatch();
+  const [credentials, setCredentials] = useState<LoginRequest>({
+    email: "",
+    password: "",
+  });
   const { error } = useAppSelector((state) => state.authentication);
   const errors = error?.errors ? error.errors : null;
   const handleLogin = () => {
-    dispatch(login(credentials))
+    dispatch(login(credentials));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +47,14 @@ const Login = () => {
     event.preventDefault();
   };
 
+  if (isAuthenticated) {
+    redirect("/");
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <FormControl error={errors?.username != undefined}>
+        <FormControl error={errors?.email != undefined}>
           <InputLabel>Email</InputLabel>
           <OutlinedInput
             name="email"
@@ -52,8 +62,8 @@ const Login = () => {
             value={credentials.email}
             onChange={handleChange}
           />
-          {errors?.username &&
-            errors.username.map((message, index) => (
+          {errors?.email &&
+            errors.email.map((message, index) => (
               <FormHelperText key={index}>{message}</FormHelperText>
             ))}
         </FormControl>

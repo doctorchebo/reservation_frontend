@@ -1,9 +1,11 @@
 .container {
-  margin-top: 6rem;
   margin-right: auto;
   margin-left: auto;
   display: grid;
   grid-template-columns: repeat(4, minmax(25%, auto));
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 @media (max-width: 660px) {

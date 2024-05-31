@@ -1,4 +1,4 @@
-import { freeApi } from "@/app/api/freeApi";
+import { api } from "@/app/api/api";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
@@ -16,7 +16,7 @@ export const getServicesByCategoryId =
   (categoryId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `service/getAllByCategoryId/${categoryId}`
       );
       dispatch(setServices(response.data));
@@ -31,7 +31,7 @@ export const getServicesByBusinessId =
   (businessId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `service/getAllByBusinessId/${businessId}`
       );
       dispatch(setServices(response.data));
@@ -46,7 +46,7 @@ export const getAllByServiceIdAndStartDate =
   (serviceId: string, startDate: Dayjs) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `service/getAvailableServices/${serviceId}/${startDate}`
       );
       dispatch(setServices(response.data));

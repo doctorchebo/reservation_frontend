@@ -1,7 +1,8 @@
 .container {
   margin-top: 5rem;
   flex: 1;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
 }
 .txt {
   margin: 1rem;

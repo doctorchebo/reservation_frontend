@@ -1,4 +1,4 @@
-import { freeApi } from "@/app/api/freeApi";
+import { api } from "@/app/api/api";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
@@ -17,7 +17,7 @@ export const getReservationsByDate =
   async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await freeApi.get(
+      const response = await api.get(
         `reservation/getAllByStartDate/${serviceId}/${businessId}/${date}`
       );
       dispatch(setReservations(response.data));
