@@ -1,9 +1,10 @@
 import { Business } from "@/app/types/businessType";
+import { Member } from "@/app/types/memberType";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface BusinessState {
   businesses: Business[];
-  currentBusiness: Business | undefined;
+  business: Business | undefined;
   loading: boolean;
   error: string | undefined;
   searched: boolean;
@@ -11,7 +12,7 @@ interface BusinessState {
 
 const initialState: BusinessState = {
   businesses: [],
-  currentBusiness: undefined,
+  business: undefined,
   loading: false,
   error: undefined,
   searched: false,
@@ -23,8 +24,8 @@ const businessSlice = createSlice({
     setBusinesses: (state, action: PayloadAction<Business[]>) => {
       state.businesses = action.payload;
     },
-    setCurrentBusiness: (state, action: PayloadAction<Business>) => {
-      state.currentBusiness = action.payload;
+    business: (state, action: PayloadAction<Business>) => {
+      state.business = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
@@ -40,7 +41,7 @@ const businessSlice = createSlice({
 
 export const {
   setBusinesses,
-  setCurrentBusiness,
+  business,
   setLoading,
   setError,
   setSearched,

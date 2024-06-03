@@ -2,7 +2,7 @@ import { api } from "@/app/api/api";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
-import { setError, setLoading, setServices } from "./serviceSlice";
+import { setError, setLoading, setServices, setservice } from "./serviceSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
   if (axios.isAxiosError(error)) {
@@ -50,6 +50,21 @@ export const getAllByServiceIdAndStartDate =
         `service/getAvailableServices/${serviceId}/${startDate}`
       );
       dispatch(setServices(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  export const getServiceById =
+  (serviceId: string) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.get(
+        `service/getById/${serviceId}`
+      );
+      dispatch(setservice(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

@@ -16,7 +16,7 @@ export interface LogoutRequest {
 export interface AuthenticationResponse {
   authenticationToken: string;
   refreshToken: string;
-  username: string;
+  email: string;
   expiresAt: number;
 }
 

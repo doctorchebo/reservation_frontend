@@ -3,8 +3,10 @@ import authenticationReducer from "./auth/authSlice";
 import businessReducer from "./business/businessSlice";
 import categoryReducer from "./category/categorySlice";
 import durationReducer from "./duration/durationSlice";
+import memberReducer from "./member/memberSlice";
 import reservationReducer from "./reservation/reservationSlice";
 import serviceReducer from "./service/serviceSlice";
+import userReducer from "./user/userSlice";
 export const store = configureStore({
   reducer: {
     reservation: reservationReducer,
@@ -13,6 +15,8 @@ export const store = configureStore({
     service: serviceReducer,
     duration: durationReducer,
     authentication: authenticationReducer,
+    user: userReducer,
+    member: memberReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

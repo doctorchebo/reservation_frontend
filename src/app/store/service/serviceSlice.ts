@@ -4,6 +4,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface ServiceState {
   services: Service[];
   serviceId: string | null;
+  service: Service | null;
   loading: boolean;
   error: string | undefined;
 }
@@ -11,6 +12,7 @@ interface ServiceState {
 const initialState: ServiceState = {
   services: [],
   serviceId: "",
+  service: null,
   loading: false,
   error: undefined,
 };
@@ -25,6 +27,9 @@ const serviceSlice = createSlice({
     setserviceId: (state, action: PayloadAction<string>) => {
       state.serviceId = action.payload;
     },
+    setservice: (state, action: PayloadAction<Service>) => {
+      state.service = action.payload;
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -34,6 +39,6 @@ const serviceSlice = createSlice({
   },
 });
 
-export const { setServices, setserviceId, setLoading, setError } =
+export const { setServices, setserviceId, setservice, setLoading, setError } =
   serviceSlice.actions;
 export default serviceSlice.reducer;

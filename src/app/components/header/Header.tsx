@@ -1,6 +1,6 @@
 "use client";
 import { constants } from "@/app/constants/constants";
-import { useAppDispatch } from "@/app/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import useAuth from "@/app/hooks/useAuth";
 import useScroll from "@/app/hooks/useScroll";
 import { logout } from "@/app/store/auth/authActions";
@@ -37,8 +37,8 @@ const Header = () => {
         </Link>
         {isAuthenticated ? (
           <>
-            <Link href="/reservations" className={styles.txt}>
-              Mis reservas
+            <Link href={"/reservations"} className={styles.txt}>
+              Mis Reservas
             </Link>
             <div className={styles.txt} onClick={handleLogout}>
               Cerrar Sesión
@@ -49,7 +49,9 @@ const Header = () => {
             Iniciar Sesión
           </Link>
         )}
-        {isAuthenticated && <div className={styles.txt}>Hola {username}</div>}
+        {isAuthenticated && (
+          <div className={styles.username}>Hola {username?.toUpperCase()}</div>
+        )}
       </ul>
     </nav>
   );

@@ -10,7 +10,7 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../components/button/Button";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import useAuth from "../hooks/useAuth";
@@ -25,6 +25,7 @@ const Login = () => {
     password: "",
   });
   const { error } = useAppSelector((state) => state.authentication);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const errors = error?.errors ? error.errors : null;
   const handleLogin = () => {
     dispatch(login(credentials));
@@ -54,7 +55,7 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <FormControl error={errors?.email != undefined}>
+        <FormControl error={errors != null}>
           <InputLabel>Email</InputLabel>
           <OutlinedInput
             name="email"
@@ -62,12 +63,8 @@ const Login = () => {
             value={credentials.email}
             onChange={handleChange}
           />
-          {errors?.email &&
-            errors.email.map((message, index) => (
-              <FormHelperText key={index}>{message}</FormHelperText>
-            ))}
         </FormControl>
-        <FormControl error={errors?.password != undefined}>
+        <FormControl error={errors != null}>
           <InputLabel>Password</InputLabel>
           <OutlinedInput
             type={showPassword ? "text" : "password"}
@@ -86,18 +83,24 @@ const Login = () => {
             label="Password"
             value={credentials.password}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                buttonRef?.current?.focus();
+              }
+            }}
           />
-          {errors?.password &&
-            errors.password.map((message, index) => (
-              <FormHelperText key={index}>{message}</FormHelperText>
-            ))}
+          {errors && (
+            <FormHelperText>"Email o contraseña incorrectos"</FormHelperText>
+          )}
         </FormControl>
+
         <Button
           name="Iniciar Sesión"
           onClick={handleLogin}
           disabled={
             credentials.email.length == 0 || credentials.password.length == 0
           }
+          ref={buttonRef}
         />
         <div className={styles.txt}>
           ¿No tienes una cuenta? <Link href="/signup">Regístrate</Link>

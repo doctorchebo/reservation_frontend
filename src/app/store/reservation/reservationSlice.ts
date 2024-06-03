@@ -6,6 +6,7 @@ interface ReservationState {
   loading: boolean;
   error: string | undefined;
   date: Dayjs | undefined;
+  schedule: Date | undefined;
 }
 
 const initialState: ReservationState = {
@@ -13,6 +14,7 @@ const initialState: ReservationState = {
   loading: false,
   error: undefined,
   date: dayjs(new Date()).startOf("day"),
+  schedule: undefined,
 };
 
 const reservationReducer = createSlice({
@@ -22,8 +24,14 @@ const reservationReducer = createSlice({
     setReservations: (state, action: PayloadAction<Reservation[]>) => {
       state.reservations = action.payload;
     },
+    addReservation: (state, action: PayloadAction<Reservation>) => {
+      state.reservations = [...state.reservations, action.payload];
+    },
     setDate: (state, action: PayloadAction<Dayjs>) => {
       state.date = action.payload;
+    },
+    setSchedule: (state, action: PayloadAction<Date>) => {
+      state.schedule = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
@@ -34,6 +42,12 @@ const reservationReducer = createSlice({
   },
 });
 
-export const { setReservations, setDate, setLoading, setError } =
-  reservationReducer.actions;
+export const {
+  setReservations,
+  addReservation,
+  setDate,
+  setSchedule,
+  setLoading,
+  setError,
+} = reservationReducer.actions;
 export default reservationReducer.reducer;

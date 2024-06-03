@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { redirect } from "next/navigation";
 import { AppDispatch } from "../store";
+import { getUserData } from "../user/userActions";
 import {
   setAuthenticated,
   setError,
@@ -41,6 +42,10 @@ export const login =
         dispatch(setLogin(response.data));
         dispatch(setAuthenticated(true));
         saveAuthInfo(response.data);
+        const email = localStorage.getItem(constants.email);
+        if (email) {
+          dispatch(getUserData(email));
+        }
       }
     } catch (error) {
       handleError(error, dispatch);
@@ -52,7 +57,7 @@ export const login =
 const saveAuthInfo = (response: AuthenticationResponse) => {
   localStorage.setItem(constants.authToken, response.authenticationToken);
   localStorage.setItem(constants.refreshToken, response.refreshToken);
-  localStorage.setItem(constants.username, response.username);
+  localStorage.setItem(constants.email, response.email);
 };
 
 export const signup =

@@ -3,8 +3,8 @@ import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
 import {
+  business,
   setBusinesses,
-  setCurrentBusiness,
   setError,
   setLoading,
 } from "./businessSlice";
@@ -34,7 +34,7 @@ export const getBusinessById =
     dispatch(setLoading(true));
     try {
       const response = await api.get(`business/getById/${businessId}`);
-      dispatch(setCurrentBusiness(response.data));
+      dispatch(business(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

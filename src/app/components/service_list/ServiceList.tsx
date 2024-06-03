@@ -1,5 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getServicesByBusinessId, getServicesByCategoryId } from "@/app/store/service/serviceActions";
+import {
+  getServicesByBusinessId,
+  getServicesByCategoryId,
+} from "@/app/store/service/serviceActions";
 import { setserviceId } from "@/app/store/service/serviceSlice";
 import {
   FormControl,
@@ -8,7 +11,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./serviceList.module.css";
 
 interface ServiceListProps {
@@ -29,6 +32,14 @@ const ServiceList: React.FC<ServiceListProps> = ({
 
   const { services, serviceId } = useAppSelector((state) => state.service);
 
+  const [currentServiceId, setCurrentServiceId] = useState("");
+
+  useEffect(() => {
+    if (serviceId) {
+      setCurrentServiceId(serviceId);
+    }
+  }, [serviceId]);
+
   useEffect(() => {
     if (businessId) {
       dispatch(getServicesByBusinessId(businessId));
@@ -42,11 +53,10 @@ const ServiceList: React.FC<ServiceListProps> = ({
   return (
     <div className={styles.container}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
+        <InputLabel>Servicio</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={serviceId!}
+          defaultValue={currentServiceId}
+          value={currentServiceId!}
           label="Service"
           onChange={handleChange}
         >

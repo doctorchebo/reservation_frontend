@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface Reservation {
   id: number;
   name: string;
@@ -9,4 +11,13 @@ export interface Reservation {
   memberId: number;
   created: number;
   modified: number;
+}
+
+export interface ReservationRequest {
+  name: string;
+  startTime: Dayjs;
+  userId: number;
+  businessId: number;
+  serviceId: string;
+  memberId: string;
 }

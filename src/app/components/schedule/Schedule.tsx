@@ -5,14 +5,15 @@ import React from "react";
 import styles from "./schedule.module.css";
 interface ScheduleProps {
   schedule: ISchedule;
+  handleSelected: (schedule: Date)=> void;
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ schedule }) => {
+const Schedule: React.FC<ScheduleProps> = ({ schedule, handleSelected }) => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const handleClick = () => {
     if (isAuthenticated) {
-      alert(`reservation made for: ${schedule}`);
+      handleSelected(schedule.time);
     } else {
       router.push("/login");
     }

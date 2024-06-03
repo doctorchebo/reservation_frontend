@@ -10,7 +10,7 @@ const Reservation = () => {
         <label>Name:</label>
         <input placeholder="name" />
       </div>
-      <Button name={"Reservar"} onClick={handleClick} />
+      <Button name={"Reservar"} onClick={handleClick} disabled={false}/>
     </div>
   );
 };

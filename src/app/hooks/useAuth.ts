@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, username } = useAppSelector(
+  const { user } = useAppSelector((state) => state.user);
+  const { isAuthenticated, username, email } = useAppSelector(
     (state) => state.authentication
   );
   useEffect(() => {
@@ -17,9 +18,9 @@ const useAuth = () => {
     if (username) {
       dispatch(setUsername(username));
     }
-  }, []);
+  }, [user]);
 
-  return { isAuthenticated, username };
+  return { isAuthenticated, username, email };
 };
 
 export default useAuth;

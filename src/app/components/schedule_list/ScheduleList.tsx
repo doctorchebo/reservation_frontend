@@ -1,4 +1,3 @@
-import { useAppSelector } from "@/app/hooks/hooks";
 import { Duration } from "@/app/types/durationType";
 import { Reservation } from "@/app/types/reservationType";
 import { Schedule as ISchedule } from "@/app/types/scheduleType";
@@ -10,11 +9,13 @@ import styles from "./scheduleList.module.css";
 interface ScheduleListProps {
   duration: Duration;
   reservations: Reservation[];
+  handleSelected: (schedule: Date) => void;
 }
 
 const ScheduleList: React.FC<ScheduleListProps> = ({
   duration,
   reservations,
+  handleSelected
 }) => {
   const [schedules, setSchedules] = useState<ISchedule[]>([]);
   useEffect(() => {
@@ -53,7 +54,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
     <div className={styles.container}>
       <div className={styles.title}>Horarios Disponibles</div>
       {schedules.map((schedule) => {
-        return <Schedule key={schedule.id} schedule={schedule} />;
+        return <Schedule key={schedule.id} schedule={schedule} handleSelected={handleSelected}/>;
       })}
     </div>
   );

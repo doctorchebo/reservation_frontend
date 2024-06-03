@@ -5,6 +5,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isSignedup: boolean;
   username: string | undefined;
+  email: string | undefined;
   loading: boolean;
   error: AuthError | undefined;
 }
@@ -12,6 +13,7 @@ interface AuthState {
 const initialState: AuthState = {
   isAuthenticated: false,
   username: undefined,
+  email: undefined,
   isSignedup: false,
   loading: false,
   error: undefined,
@@ -29,7 +31,7 @@ const authSlice = createSlice({
     },
     setLogin: (state, action: PayloadAction<AuthenticationResponse>) => {
       const response = action.payload;
-      state.username = response.username;
+      state.email = response.email;
     },
     setUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload;
