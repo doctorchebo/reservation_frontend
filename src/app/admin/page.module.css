@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  display: flex;
+  margin-top: 5rem;
+  min-height: 100vh;
+}
+
+.entityContainer {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  background-color: var(--background);
+}
+
+.listViewContainer {
+  position: absolute;
+  display: flex;
+  width: 70%;
+  right: 0;
+}

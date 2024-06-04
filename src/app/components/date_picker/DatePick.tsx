@@ -17,6 +17,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import Button from "../button/Button";
 import styles from "./datePick.module.css";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat)
 
 const DatePick = () => {
   const dispatch = useAppDispatch();
@@ -47,6 +50,7 @@ const DatePick = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div className={styles.elementContainer}>
           <DatePicker
+            format="DD/MM/YYYY"
             label="Fecha"
             slots={{
               openPickerIcon:

@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import dayjs, { Dayjs } from "dayjs";
 interface ReservationState {
   reservations: Reservation[];
+  reservation: Reservation | null;
   loading: boolean;
   error: string | undefined;
   date: Dayjs | undefined;
@@ -11,6 +12,7 @@ interface ReservationState {
 
 const initialState: ReservationState = {
   reservations: [],
+  reservation: null,
   loading: false,
   error: undefined,
   date: dayjs(new Date()).startOf("day"),
@@ -23,6 +25,9 @@ const reservationReducer = createSlice({
   reducers: {
     setReservations: (state, action: PayloadAction<Reservation[]>) => {
       state.reservations = action.payload;
+    },
+    setReservation: (state, action: PayloadAction<Reservation | null>) => {
+      state.reservation = action.payload;
     },
     addReservation: (state, action: PayloadAction<Reservation>) => {
       state.reservations = [...state.reservations, action.payload];
@@ -44,6 +49,7 @@ const reservationReducer = createSlice({
 
 export const {
   setReservations,
+  setReservation,
   addReservation,
   setDate,
   setSchedule,

@@ -57,6 +57,22 @@ export const getBusinessesByCategoryId =
     }
   };
 
+  export const getBusinessesByUserId =
+  (userId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.get(
+        `business/getAllByUserId/${userId}`
+      );
+      dispatch(setBusinesses(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+
 export const getAvailableBusinesses =
   (serviceId: string, startDate: Dayjs) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));

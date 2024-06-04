@@ -57,13 +57,13 @@ const ReservationDialog: React.FC<DialogProps> = ({
               {dayjs(schedule).minute().toString().padStart(2, "0")}
             </DialogContentText>
             <DialogContentText>
+              <strong>Negocio:</strong> {currentBusiness.name}
+            </DialogContentText>
+            <DialogContentText>
               <strong>Servicio:</strong> {service.name}
             </DialogContentText>
             <DialogContentText>
               <strong>Miembro:</strong> {member.firstName} {member.lastName}
-            </DialogContentText>
-            <DialogContentText>
-              <strong>Negocio:</strong> {currentBusiness.name}
             </DialogContentText>
           </>
           

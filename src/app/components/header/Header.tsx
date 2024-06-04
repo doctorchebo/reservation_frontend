@@ -1,6 +1,6 @@
 "use client";
 import { constants } from "@/app/constants/constants";
-import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
+import { useAppDispatch } from "@/app/hooks/hooks";
 import useAuth from "@/app/hooks/useAuth";
 import useScroll from "@/app/hooks/useScroll";
 import { logout } from "@/app/store/auth/authActions";
@@ -37,6 +37,9 @@ const Header = () => {
         </Link>
         {isAuthenticated ? (
           <>
+            <Link href={"/admin"} className={styles.txt}>
+              Admin
+            </Link>
             <Link href={"/reservations"} className={styles.txt}>
               Mis Reservas
             </Link>

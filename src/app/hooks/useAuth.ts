@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { constants } from "../constants/constants";
-import { setAuthenticated, setUsername } from "../store/auth/authSlice";
+import { authenticate } from "../store/auth/authActions";
+import { setUsername } from "../store/auth/authSlice";
+import { getUserData } from "../store/user/userActions";
 import { useAppDispatch, useAppSelector } from "./hooks";
 
 const useAuth = () => {
@@ -12,13 +14,23 @@ const useAuth = () => {
   useEffect(() => {
     const isAuth = localStorage.getItem(constants.authToken);
     if (isAuth) {
-      dispatch(setAuthenticated(true));
+      dispatch(authenticate());
     }
+
     const username = localStorage.getItem(constants.username);
     if (username) {
       dispatch(setUsername(username));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const email = localStorage.getItem(constants.email);
+      if (email) {
+        dispatch(getUserData(email));
+      }
+    }
+  }, [isAuthenticated]);
 
   return { isAuthenticated, username, email };
 };

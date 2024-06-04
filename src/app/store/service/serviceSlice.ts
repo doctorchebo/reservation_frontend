@@ -24,7 +24,7 @@ const serviceSlice = createSlice({
     setServices: (state, action: PayloadAction<Service[]>) => {
       state.services = action.payload;
     },
-    setserviceId: (state, action: PayloadAction<string>) => {
+    setserviceId: (state, action: PayloadAction<string | null>) => {
       state.serviceId = action.payload;
     },
     setservice: (state, action: PayloadAction<Service>) => {

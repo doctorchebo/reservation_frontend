@@ -1,0 +1,19 @@
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  border-collapse: collapse;
+  gap: 0.5rem;
+}
+
+.headerRow {
+  font-weight: 800;
+}
+
+.row {
+  padding: 0.2rem;
+  border-bottom: solid var(--separator) 0.1rem;
+}
+
+.row td {
+  padding: 0.5rem;
+}

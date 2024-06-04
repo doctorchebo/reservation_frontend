@@ -4,13 +4,19 @@ import MemberList from "@/app/components/member_list/MemberList";
 import ReservationDialog from "@/app/components/reservation_dialog/ReservationDialog";
 import ScheduleList from "@/app/components/schedule_list/ScheduleList";
 import ServiceList from "@/app/components/service_list/ServiceList";
+import Toast from "@/app/components/toast/Toast";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
+import useToast from "@/app/hooks/useToast";
 import { getDurations } from "@/app/store/duration/durationActions";
 import {
   createReservation,
   getReservationsByDate,
 } from "@/app/store/reservation/reservationActions";
-import { setDate, setSchedule } from "@/app/store/reservation/reservationSlice";
+import {
+  setDate,
+  setReservation,
+  setSchedule,
+} from "@/app/store/reservation/reservationSlice";
 import { ReservationRequest } from "@/app/types/reservationType";
 import CheckIcon from "@mui/icons-material/Check";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
@@ -23,8 +29,13 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./page.module.css";
+
+dayjs.extend(customParseFormat);
+
 const BusinessPage = ({ params }: { params: { id: number } }) => {
   const [reservationName, setReservationName] = useState("Nueva Reserva");
   const businessId = params.id;
@@ -32,9 +43,22 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
   const { serviceId } = useAppSelector((state) => state.service);
   const { duration } = useAppSelector((state) => state.duration);
   const { memberId } = useAppSelector((state) => state.member);
-  const { date, reservations } = useAppSelector((state) => state.reservation);
+  const { date, reservations, reservation, schedule } = useAppSelector(
+    (state) => state.reservation
+  );
   const { user } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  useToast("Reserva creada!", "Éxito", 3000);
+
+  useEffect(() => {
+    if (reservation) {
+      setOpen(false);
+    }
+    return () => {
+      dispatch(setReservation(null));
+    };
+  }, [reservation]);
+
   useEffect(() => {
     if (serviceId && params.id) {
       dispatch(
@@ -59,7 +83,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
         businessId: businessId,
         memberId: memberId,
         serviceId: serviceId,
-        startTime: date,
+        startTime: dayjs(schedule).set("millisecond", 0).set("second", 0),
         userId: user.id,
       };
       dispatch(createReservation(reservation));
@@ -80,8 +104,10 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
     setReservationName(e.target.value);
   };
 
+  const showScheduleList = duration && reservations && memberId && serviceId;
   return (
     <div className={styles.container}>
+      <Toast />
       <div className={styles.businessContainer}>
         <BusinessInfo businessId={businessId} />
       </div>
@@ -102,6 +128,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
         <MemberList businessId={businessId} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            format="DD/MM/YYYY"
             label="Fecha"
             slots={{
               openPickerIcon:
@@ -112,7 +139,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
             disablePast={true}
           />
         </LocalizationProvider>
-        {duration && reservations && (
+        {showScheduleList && (
           <ScheduleList
             duration={duration}
             reservations={reservations}

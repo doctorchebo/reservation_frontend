@@ -7,6 +7,7 @@ import {
   addReservation,
   setError,
   setLoading,
+  setReservation,
   setReservations,
 } from "./reservationSlice";
 
@@ -51,10 +52,8 @@ export const createReservation =
   (reservation: ReservationRequest) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await api.post(
-        "reservation/createReservation",
-        reservation
-      );
+      const response = await api.post("reservation/create", reservation);
+      dispatch(setReservation(response.data));
       dispatch(addReservation(response.data));
     } catch (error) {
       handleError(error, dispatch);

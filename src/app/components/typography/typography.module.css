@@ -1,0 +1,22 @@
+.container {
+  text-align: center;
+  font-weight: 700;
+  padding: 0.5rem;
+  margin: 1rem;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.medium {
+  font-size: 1.2rem;
+}
+
+.large {
+  font-size: 2rem;
+}
+
+.color {
+  color: white;
+}

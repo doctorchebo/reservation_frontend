@@ -1,18 +1,12 @@
-import Button from "../button/Button";
+import { Reservation as IReservation } from "@/app/types/reservationType";
+import styles from "./reservation.module.css";
+interface ReservationProps {
+  reservation: IReservation;
+}
 
-const Reservation = () => {
-  const handleClick = () => {
-    console.log("Reserved");
-  };
-  return (
-    <div>
-      <div>
-        <label>Name:</label>
-        <input placeholder="name" />
-      </div>
-      <Button name={"Reservar"} onClick={handleClick} disabled={false}/>
-    </div>
-  );
+const Reservation: React.FC<ReservationProps> = ({ reservation }) => {
+  return <div className={styles.container}>
+  </div>;
 };
 
 export default Reservation;
