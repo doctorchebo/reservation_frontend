@@ -1,8 +1,9 @@
-import { Reservation } from "@/app/types/reservationType";
+import { Reservation, ReservationDetailed } from "@/app/types/reservationType";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import dayjs, { Dayjs } from "dayjs";
 interface ReservationState {
   reservations: Reservation[];
+  reservationsDetailed: ReservationDetailed[];
   reservation: Reservation | null;
   loading: boolean;
   error: string | undefined;
@@ -12,6 +13,7 @@ interface ReservationState {
 
 const initialState: ReservationState = {
   reservations: [],
+  reservationsDetailed: [],
   reservation: null,
   loading: false,
   error: undefined,
@@ -25,6 +27,20 @@ const reservationReducer = createSlice({
   reducers: {
     setReservations: (state, action: PayloadAction<Reservation[]>) => {
       state.reservations = action.payload;
+    },
+    setReservationsDetailed: (
+      state,
+      action: PayloadAction<ReservationDetailed[]>
+    ) => {
+      state.reservationsDetailed = action.payload;
+    },
+    removeReservationsDetailed: (
+      state,
+      action: PayloadAction<ReservationDetailed>
+    ) => {
+      state.reservationsDetailed = state.reservationsDetailed.filter(
+        (res) => res.id !== action.payload.id
+      );
     },
     setReservation: (state, action: PayloadAction<Reservation | null>) => {
       state.reservation = action.payload;
@@ -49,6 +65,8 @@ const reservationReducer = createSlice({
 
 export const {
   setReservations,
+  setReservationsDetailed,
+  removeReservationsDetailed,
   setReservation,
   addReservation,
   setDate,

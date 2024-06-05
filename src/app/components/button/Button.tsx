@@ -1,13 +1,13 @@
 import { forwardRef } from "react";
 import styles from "./button.module.css";
 interface ButtonProps {
-  name: string;
+  children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ name, onClick, disabled }, ref) => {
+  ({ children, onClick, disabled }, ref) => {
     return (
       <button
         className={styles.container}
@@ -15,7 +15,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled ? disabled : false}
         ref={ref}
       >
-        {name}
+        {children}
       </button>
     );
   }

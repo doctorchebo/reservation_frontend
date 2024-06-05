@@ -28,20 +28,21 @@ api.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       // remove data from local storage
+      console.log("got 401 error, deleting auth token from local storage");
       localStorage.removeItem(constants.authToken);
-      localStorage.removeItem(constants.username);
       const refreshToken = localStorage.getItem(constants.refreshToken);
       if (refreshToken) {
         // build refreshToken body
-        const username = localStorage.getItem(constants.username);
-        if (username) {
+        const email = localStorage.getItem(constants.email);
+        if (email) {
           const refreshTokenRequest: RefreshTokenRequest = {
             refreshToken: refreshToken,
-            username: username,
+            email: email,
           };
           // Attempt to get a new access token using the refresh token
-          const response = await axios.post(
-            `http://localhost:8080/api/auth/refresh/token`,
+          console.log("trying to refresh auth token");
+          const response = await api.post(
+            `auth/refresh/token`,
             refreshTokenRequest
           );
           const { authenticationToken } = response.data;

@@ -96,7 +96,7 @@ const Login = () => {
         </FormControl>
 
         <Button
-          name="Iniciar Sesión"
+          children="Iniciar Sesión"
           onClick={handleLogin}
           disabled={
             credentials.email.length == 0 || credentials.password.length == 0

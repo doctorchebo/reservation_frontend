@@ -66,12 +66,11 @@ const ReservationDialog: React.FC<DialogProps> = ({
               <strong>Miembro:</strong> {member.firstName} {member.lastName}
             </DialogContentText>
           </>
-          
         )}
       </DialogContent>
       <DialogActions>
-        <Button name="Reservar" onClick={handleBooking} />
-        <Button name="Cancelar" onClick={handleClose} />
+        <Button children="Reservar" onClick={handleBooking} />
+        <Button children="Cancelar" onClick={handleClose} />
       </DialogActions>
     </Dialog>
   );

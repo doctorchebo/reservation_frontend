@@ -3,6 +3,7 @@ import useAuth from "@/app/hooks/useAuth";
 import { useEffect, useState } from "react";
 import Categories from "../categories/categories";
 import Toast from "../toast/Toast";
+import Typography from "../typography/Typography";
 import styles from "./welcome.module.css";
 
 const Welcome = () => {
@@ -17,7 +18,9 @@ const Welcome = () => {
   return (
     <div className={styles.container}>
       {showToast && <Toast />}
-      <p className={styles.txt}>Reserva ahora y evita esperas innecesarias</p>
+      <Typography size="large" color="dark">
+        Reserva ahora y evita esperas innecesarias
+      </Typography>
       <Categories />
     </div>
   );

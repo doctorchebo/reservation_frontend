@@ -5,10 +5,12 @@ import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
 import {
   addReservation,
+  removeReservationsDetailed,
   setError,
   setLoading,
   setReservation,
   setReservations,
+  setReservationsDetailed,
 } from "./reservationSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
@@ -40,7 +42,7 @@ export const getAllReservationsForCurrentUser =
     dispatch(setLoading(true));
     try {
       const response = await api.get("reservation/getAllForCurrentUser");
-      dispatch(setReservations(response.data));
+      dispatch(setReservationsDetailed(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -55,6 +57,19 @@ export const createReservation =
       const response = await api.post("reservation/create", reservation);
       dispatch(setReservation(response.data));
       dispatch(addReservation(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const deleteReservation =
+  (reservationId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`reservation/delete/${reservationId}`);
+      dispatch(removeReservationsDetailed(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

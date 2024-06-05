@@ -4,6 +4,7 @@ import { getBusinessById } from "@/app/store/business/businessActions";
 import React, { useEffect } from "react";
 import ImageList from "../image_list/ImageList";
 import Location from "../location/Location";
+import Typography from "../typography/Typography";
 import styles from "./businessInfo.module.css";
 interface BusinessInfoProps {
   businessId: number;
@@ -19,7 +20,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ businessId }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{currentBusiness?.name}</div>
+      <Typography size="large">{currentBusiness?.name}</Typography>
       {currentBusiness?.images && (
         <ImageList images={currentBusiness?.images} />
       )}

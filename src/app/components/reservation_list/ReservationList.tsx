@@ -1,20 +1,37 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
+import useAuth from "@/app/hooks/useAuth";
 import { getAllReservationsForCurrentUser } from "@/app/store/reservation/reservationActions";
 import { useEffect } from "react";
+import Loader from "../loader/Loader";
 import ReservationTable from "../reservation_table/ReservationTable";
+import Typography from "../typography/Typography";
 import styles from "./reservationList.module.css";
 
 const ReservationList = () => {
+  const { isAuthenticated } = useAuth();
   const dispatch = useAppDispatch();
-  const { reservations } = useAppSelector((state) => state.reservation);
+  const { reservationsDetailed, loading } = useAppSelector(
+    (state) => state.reservation
+  );
   useEffect(() => {
     dispatch(getAllReservationsForCurrentUser());
   }, []);
 
   return (
     <div className={styles.container}>
-      {reservations && <ReservationTable reservations={reservations} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        reservationsDetailed.length == 0 && (
+          <Typography color="dark" size="small">
+            No tienes reservas
+          </Typography>
+        )
+      )}
+      {reservationsDetailed.length > 0 && isAuthenticated && (
+        <ReservationTable reservations={reservationsDetailed} />
+      )}
     </div>
   );
 };

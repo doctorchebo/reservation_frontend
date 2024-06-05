@@ -1,5 +1,4 @@
 import { Business } from "@/app/types/businessType";
-import { Member } from "@/app/types/memberType";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface BusinessState {
@@ -24,7 +23,7 @@ const businessSlice = createSlice({
     setBusinesses: (state, action: PayloadAction<Business[]>) => {
       state.businesses = action.payload;
     },
-    business: (state, action: PayloadAction<Business>) => {
+    setBusiness: (state, action: PayloadAction<Business>) => {
       state.business = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -39,11 +38,6 @@ const businessSlice = createSlice({
   },
 });
 
-export const {
-  setBusinesses,
-  business,
-  setLoading,
-  setError,
-  setSearched,
-} = businessSlice.actions;
+export const { setBusinesses, setBusiness, setLoading, setError, setSearched } =
+  businessSlice.actions;
 export default businessSlice.reducer;

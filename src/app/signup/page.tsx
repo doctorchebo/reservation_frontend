@@ -137,7 +137,7 @@ const Signup = () => {
               ))}
           </FormControl>
           <Button
-            name="Registrarse"
+            children="Registrarse"
             onClick={handleLogin}
             disabled={
               credentials.username.length == 0 ||

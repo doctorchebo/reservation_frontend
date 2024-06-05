@@ -3,6 +3,7 @@
   display: flex;
   margin-top: 5rem;
   min-height: 100vh;
+  flex: 1;
 }
 
 .entityContainer {
@@ -15,6 +16,7 @@
 .listViewContainer {
   position: absolute;
   display: flex;
+  flex-direction: column;
   width: 70%;
   right: 0;
 }

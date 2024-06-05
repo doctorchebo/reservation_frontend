@@ -1,5 +1,6 @@
 import { Address } from "@/app/types/addressType";
 import React from "react";
+import Typography from "../typography/Typography";
 import styles from "./location.module.css";
 
 interface LocationProps {
@@ -8,8 +9,10 @@ interface LocationProps {
 const Location: React.FC<LocationProps> = ({ address }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.title}>Dirección</div>
-      <p className={styles.txt}>{address.name}</p>
+      <Typography size="medium">Dirección</Typography>
+      <Typography size="small" color="dark">
+        {address.name}
+      </Typography>
       <iframe
         width="400"
         height="400"

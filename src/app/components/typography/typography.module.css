@@ -17,6 +17,10 @@
   font-size: 2rem;
 }
 
-.color {
+.colorLight {
   color: white;
+}
+
+.colorDark {
+  color: var(--main);
 }

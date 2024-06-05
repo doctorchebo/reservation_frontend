@@ -3,7 +3,7 @@ import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
 import {
-  business,
+  setBusiness,
   setBusinesses,
   setError,
   setLoading,
@@ -34,7 +34,7 @@ export const getBusinessById =
     dispatch(setLoading(true));
     try {
       const response = await api.get(`business/getById/${businessId}`);
-      dispatch(business(response.data));
+      dispatch(setBusiness(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -57,13 +57,11 @@ export const getBusinessesByCategoryId =
     }
   };
 
-  export const getBusinessesByUserId =
+export const getBusinessesByUserId =
   (userId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await api.get(
-        `business/getAllByUserId/${userId}`
-      );
+      const response = await api.get(`business/getAllByUserId/${userId}`);
       dispatch(setBusinesses(response.data));
     } catch (error) {
       handleError(error, dispatch);
@@ -71,7 +69,6 @@ export const getBusinessesByCategoryId =
       dispatch(setLoading(false));
     }
   };
-
 
 export const getAvailableBusinesses =
   (serviceId: string, startDate: Dayjs) => async (dispatch: AppDispatch) => {

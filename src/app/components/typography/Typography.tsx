@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./typography.module.css";
 interface TypographyProps {
   size?: "small" | "medium" | "large";
-  color?: string;
+  color?: "light" | "dark";
   children?: React.ReactNode;
 }
-const Typografy: React.FC<TypographyProps> = ({ size, color, children }) => {
+const Typography: React.FC<TypographyProps> = ({ size, color, children }) => {
   const textSize = size
     ? size == "small"
       ? styles.small
@@ -14,7 +14,11 @@ const Typografy: React.FC<TypographyProps> = ({ size, color, children }) => {
       : styles.large
     : styles.medium;
 
-  const textColor = color ? color : styles.color;
+  const textColor = color
+    ? color == "dark"
+      ? styles.colorDark
+      : styles.colorLight
+    : styles.colorLight;
 
   return (
     <div className={[styles.container, textSize, textColor].join(" ")}>
@@ -23,4 +27,4 @@ const Typografy: React.FC<TypographyProps> = ({ size, color, children }) => {
   );
 };
 
-export default Typografy;
+export default Typography;

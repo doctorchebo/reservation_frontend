@@ -1,4 +1,4 @@
-.container {
+.tableContainer {
   margin-right: auto;
   margin-left: auto;
   border-collapse: collapse;
@@ -16,4 +16,8 @@
 
 .row td {
   padding: 0.5rem;
+}
+
+.btnContainer:hover {
+  cursor: pointer;
 }

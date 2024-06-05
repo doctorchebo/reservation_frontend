@@ -21,7 +21,7 @@ const useAuth = () => {
     if (username) {
       dispatch(setUsername(username));
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {

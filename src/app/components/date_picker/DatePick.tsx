@@ -14,12 +14,12 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useState } from "react";
 import Button from "../button/Button";
 import styles from "./datePick.module.css";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
-dayjs.extend(customParseFormat)
+dayjs.extend(customParseFormat);
 
 const DatePick = () => {
   const dispatch = useAppDispatch();
@@ -69,7 +69,7 @@ const DatePick = () => {
         </div>
         <div>
           <Button
-            name="Buscar"
+            children="Buscar"
             onClick={handleSearch}
             disabled={!date || !time || !serviceId}
           />
