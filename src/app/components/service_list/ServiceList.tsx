@@ -28,9 +28,6 @@ const ServiceList: React.FC<ServiceListProps> = ({
     if (categoryId) {
       dispatch(getServicesByCategoryId(categoryId));
     }
-    return () => {
-      dispatch(setserviceId(null));
-    };
   }, [categoryId]);
 
   const { services, serviceId } = useAppSelector((state) => state.service);

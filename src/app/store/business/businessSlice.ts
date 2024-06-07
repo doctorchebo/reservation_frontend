@@ -7,6 +7,7 @@ interface BusinessState {
   loading: boolean;
   error: string | undefined;
   searched: boolean;
+  success: boolean;
 }
 
 const initialState: BusinessState = {
@@ -15,6 +16,7 @@ const initialState: BusinessState = {
   loading: false,
   error: undefined,
   searched: false,
+  success: false,
 };
 const businessSlice = createSlice({
   name: "Business",
@@ -22,6 +24,15 @@ const businessSlice = createSlice({
   reducers: {
     setBusinesses: (state, action: PayloadAction<Business[]>) => {
       state.businesses = action.payload;
+    },
+    addBusiness: (state, action: PayloadAction<Business>) => {
+      state.businesses = state.businesses.map((business) => {
+        if (business.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return business;
+        }
+      });
     },
     setBusiness: (state, action: PayloadAction<Business>) => {
       state.business = action.payload;
@@ -35,9 +46,19 @@ const businessSlice = createSlice({
     setSearched: (state, action: PayloadAction<boolean>) => {
       state.searched = action.payload;
     },
+    setSuccess: (state, action: PayloadAction<boolean>) => {
+      state.success = action.payload;
+    },
   },
 });
 
-export const { setBusinesses, setBusiness, setLoading, setError, setSearched } =
-  businessSlice.actions;
+export const {
+  setBusinesses,
+  addBusiness,
+  setBusiness,
+  setLoading,
+  setError,
+  setSearched,
+  setSuccess
+} = businessSlice.actions;
 export default businessSlice.reducer;

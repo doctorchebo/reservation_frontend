@@ -31,7 +31,9 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
     setOpen(true);
   };
 
-  const handleDeleteReservation = (reservationId: number | undefined) => {
+  const handleDeleteReservation = (
+    reservationId: number | null | undefined
+  ) => {
     if (reservationId) {
       dispatch(deleteReservation(reservationId));
       setOpen(false);

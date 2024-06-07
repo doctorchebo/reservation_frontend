@@ -1,12 +1,19 @@
 import { api } from "@/app/api/api";
+import {
+  BusinessPatchCategoriesRequest,
+  BusinessPatchMembersRequest,
+  BusinessPatchNameRequest,
+} from "@/app/types/businessType";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
 import {
+  addBusiness,
   setBusiness,
   setBusinesses,
   setError,
   setLoading,
+  setSuccess,
 } from "./businessSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
@@ -78,6 +85,49 @@ export const getAvailableBusinesses =
         `business/getAvailableByServiceId/${serviceId}/${startDate}`
       );
       dispatch(setBusinesses(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchBusinessName =
+  (request: BusinessPatchNameRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("business/patchName", request);
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchBusinessCategories =
+  (request: BusinessPatchCategoriesRequest) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("business/patchCategories", request);
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchBusinessActiveMembers =
+  (request: BusinessPatchMembersRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("business/patchActiveMembers", request);
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

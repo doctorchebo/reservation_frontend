@@ -6,6 +6,7 @@ export interface Member {
   lastName: string;
   title?: string;
   phoneNumber: number;
+  isActive: boolean;
   created: number;
   modified: number;
 }

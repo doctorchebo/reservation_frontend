@@ -4,8 +4,14 @@ interface TypographyProps {
   size?: "small" | "medium" | "large";
   color?: "light" | "dark";
   children?: React.ReactNode;
+  align?: "left" | "center" | "right";
 }
-const Typography: React.FC<TypographyProps> = ({ size, color, children }) => {
+const Typography: React.FC<TypographyProps> = ({
+  size,
+  color,
+  align,
+  children,
+}) => {
   const textSize = size
     ? size == "small"
       ? styles.small
@@ -20,8 +26,18 @@ const Typography: React.FC<TypographyProps> = ({ size, color, children }) => {
       : styles.colorLight
     : styles.colorLight;
 
+  const textAlign = align
+    ? align == "right"
+      ? styles.textRight
+      : align == "left"
+      ? styles.textLeft
+      : styles.textCenter
+    : styles.textCenter;
+
   return (
-    <div className={[styles.container, textSize, textColor].join(" ")}>
+    <div
+      className={[styles.container, textSize, textAlign, textColor].join(" ")}
+    >
       {children}
     </div>
   );

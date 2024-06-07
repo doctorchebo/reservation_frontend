@@ -1,11 +1,6 @@
-.table {
+.tableContainer {
   border-collapse: collapse;
   gap: 0.5rem;
-}
-
-.inputContainer {
-  display: flex;
-  align-items: center;
 }
 
 .editContainer {

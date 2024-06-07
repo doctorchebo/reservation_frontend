@@ -31,7 +31,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import styles from "./page.module.css";
 
 dayjs.extend(customParseFormat);
@@ -104,7 +103,6 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
     setReservationName(e.target.value);
   };
 
-  const showScheduleList = duration && reservations && memberId && serviceId;
   return (
     <div className={styles.container}>
       <Toast />
@@ -139,7 +137,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
             disablePast={true}
           />
         </LocalizationProvider>
-        {showScheduleList && (
+        {duration && reservations && memberId && serviceId && (
           <ScheduleList
             duration={duration}
             reservations={reservations}
