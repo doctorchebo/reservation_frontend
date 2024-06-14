@@ -5,19 +5,21 @@ import Typography from "../typography/Typography";
 import styles from "./rowInput.module.css";
 
 interface RowInputProps {
-  initialValue: string;
+  id?: number;
+  initialValue: string | number;
   title?: string;
-  onSuccess: (value: string) => void;
+  onSuccess: (value: string | number, id: number | undefined) => void;
 }
 const RowInput: React.FC<RowInputProps> = ({
   title,
   initialValue,
   onSuccess,
+  id,
 }) => {
-  const [value, setValue] = useState<string>(initialValue);
+  const [value, setValue] = useState<string | number>(initialValue);
   const [editMode, setEditMode] = useState(false);
   const handleSuccess = () => {
-    onSuccess(value);
+    onSuccess(value, id);
     setEditMode(false);
   };
   const handleCancel = () => {
@@ -33,7 +35,11 @@ const RowInput: React.FC<RowInputProps> = ({
       </td>
       <td>
         {editMode ? (
-          <Input value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            fullWidth
+          />
         ) : (
           <Typography size="small" color="dark" align="left">
             {value}

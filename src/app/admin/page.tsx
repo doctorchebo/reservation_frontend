@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import AddressAdminList from "../components/address_admin_list/AddressAdminList";
 import BusinessAdminDetails from "../components/business_admin_details/BusinessAdminDetails";
 import Button from "../components/button/Button";
 import DurationAdminList from "../components/duration_admin_list/DurationAdminList";
@@ -64,6 +65,7 @@ const AdminPage = () => {
           <>
             {" "}
             <BusinessAdminDetails />
+            <AddressAdminList />
             <MemberAdminList />
             <ServiceAdminList />
             <DurationAdminList />

@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import addressReducer from "./address/addressSlice";
 import authenticationReducer from "./auth/authSlice";
 import businessReducer from "./business/businessSlice";
 import categoryReducer from "./category/categorySlice";
@@ -17,6 +18,7 @@ export const store = configureStore({
     authentication: authenticationReducer,
     user: userReducer,
     member: memberReducer,
+    address: addressReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
