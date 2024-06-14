@@ -1,0 +1,15 @@
+.editContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  align-items: center;
+}
+
+.editContainer:hover {
+  cursor: pointer;
+}
+
+.editBtnContainer {
+  display: flex;
+  gap: 0.5rem;
+}

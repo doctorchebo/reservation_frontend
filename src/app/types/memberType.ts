@@ -10,3 +10,12 @@ export interface Member {
   created: number;
   modified: number;
 }
+
+export interface PatchMemberFirstNameRequest {
+  memberId: number;
+  firstName: string;
+}
+export interface PatchMemberLastNameRequest {
+  memberId: number;
+  lastName: string;
+}

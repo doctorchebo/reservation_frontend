@@ -1,4 +1,8 @@
 import { api } from "@/app/api/api";
+import {
+  PatchMemberFirstNameRequest,
+  PatchMemberLastNameRequest,
+} from "@/app/types/memberType";
 import axios from "axios";
 import { AppDispatch } from "../store";
 import { setError, setLoading, setMember, setMembers } from "./memberSlice";
@@ -29,6 +33,45 @@ export const getMemberById =
     dispatch(setLoading(true));
     try {
       const response = await api.get(`member/getById/${memberId}`);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const getMemberByUserId =
+  (userId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.get(`member/getByUserId/${userId}`);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchMemberFirstName =
+  (request: PatchMemberFirstNameRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchFirstName", request);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchMemberLastName =
+  (request: PatchMemberLastNameRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchLastName", request);
       dispatch(setMember(response.data));
     } catch (error) {
       handleError(error, dispatch);
