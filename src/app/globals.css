@@ -8,6 +8,7 @@
   --separator: rgb(169, 171, 194);
   --success: rgb(62, 128, 70);
   --cancel: rgb(207, 62, 51);
+  --badge: rgb(230, 230, 230);
 }
 
 * {

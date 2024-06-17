@@ -1,7 +1,7 @@
 export interface Duration {
   id: number;
   duration: string;
-  serviceId: number;
+  serviceIds: string[];
   businessId: number;
   created: number;
   modified: number;

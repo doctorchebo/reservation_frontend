@@ -1,8 +1,9 @@
 import { api } from "@/app/api/api";
 import {
-    AddressPatchLatitudeRequest,
+  AddressPatchLatitudeRequest,
   AddressPatchLongitudeRequest,
   AddressPatchNameRequest,
+  AddressPatchRequest,
 } from "@/app/types/addressType";
 import axios from "axios";
 import { AppDispatch } from "../store";
@@ -62,6 +63,19 @@ export const patchAddressLongitude =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("address/patchLongitude", request);
+      dispatch(addAddress(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchAddressIsMainAddress =
+  (request: AddressPatchRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("address/patchIsMainAddress", request);
       dispatch(addAddress(response.data));
     } catch (error) {
       handleError(error, dispatch);

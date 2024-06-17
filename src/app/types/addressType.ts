@@ -11,7 +11,7 @@ export interface Address extends IOption {
   modified: number;
 }
 
-interface AddressPatchRequest {
+export interface AddressPatchRequest {
   addressId: number;
 }
 export interface AddressPatchNameRequest extends AddressPatchRequest {
@@ -22,4 +22,7 @@ export interface AddressPatchLatitudeRequest extends AddressPatchRequest {
 }
 export interface AddressPatchLongitudeRequest extends AddressPatchRequest {
   longitude: number;
+}
+export interface AddressPatchIsMainAddressRequest extends AddressPatchRequest {
+  businessId: number;
 }

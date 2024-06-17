@@ -1,0 +1,13 @@
+.container {
+  justify-content: "center";
+  align-content: "center";
+  border-radius: 0.8rem;
+}
+
+.bgLight {
+  background-color: var(--badge);
+}
+
+.bgDark {
+  background-color: var(--main);
+}

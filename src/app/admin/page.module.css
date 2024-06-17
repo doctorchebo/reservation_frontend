@@ -1,9 +1,9 @@
 .container {
+  display: flex;
   position: relative;
   display: flex;
   margin-top: 5rem;
-  min-height: 100vh;
-  flex: 1;
+  min-height: 300vh;
 }
 
 .entityContainer {

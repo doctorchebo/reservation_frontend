@@ -1,8 +1,14 @@
 export interface Service {
   id: number;
   name: string;
-  durationId: number;
-  businessId: number;
+  categoryIds: number[];
+  durationIds: number[];
+  businessIds: number[];
   created: number;
   modified: number;
+}
+
+export interface ServicePatchDurationsRequest {
+  serviceId: string;
+  durationIds: number[];
 }

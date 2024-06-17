@@ -27,7 +27,7 @@ const serviceSlice = createSlice({
     setserviceId: (state, action: PayloadAction<string | null>) => {
       state.serviceId = action.payload;
     },
-    setservice: (state, action: PayloadAction<Service>) => {
+    setService: (state, action: PayloadAction<Service>) => {
       state.service = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -39,6 +39,11 @@ const serviceSlice = createSlice({
   },
 });
 
-export const { setServices, setserviceId, setservice, setLoading, setError } =
-  serviceSlice.actions;
+export const {
+  setServices,
+  setserviceId,
+  setService,
+  setLoading,
+  setError,
+} = serviceSlice.actions;
 export default serviceSlice.reducer;

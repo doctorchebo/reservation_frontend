@@ -2,16 +2,19 @@ import { IOption } from "@/app/types/option";
 import { Autocomplete, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { MdCancel, MdCheck, MdModeEdit } from "react-icons/md";
+import Badge from "../badge/Badge";
 import Typography from "../typography/Typography";
 import styles from "./rowMultiselect.module.css";
 interface RowMultiselectProps {
+  id?: number | string;
   title?: string;
   options: IOption[];
   initialOptions: IOption[];
-  onSuccess: (options: IOption[]) => void;
+  onSuccess: (options: IOption[], id?: number | string) => void;
 }
 
 const RowMultiselect: React.FC<RowMultiselectProps> = ({
+  id,
   title,
   options,
   initialOptions,
@@ -21,7 +24,7 @@ const RowMultiselect: React.FC<RowMultiselectProps> = ({
   const [selectedOptions, setSelectedOptions] = useState(initialOptions);
 
   const handleSuccess = () => {
-    onSuccess(selectedOptions);
+    onSuccess(selectedOptions, id);
     setEditMode(false);
   };
   return (
@@ -47,18 +50,22 @@ const RowMultiselect: React.FC<RowMultiselectProps> = ({
             )}
           />
         ) : (
-          selectedOptions.map((option) => {
-            return (
-              <Typography
-                key={option.id}
-                size="small"
-                color="dark"
-                align="left"
-              >
-                {option.name}
-              </Typography>
-            );
-          })
+          <div className={styles.optionsContainer}>
+            {selectedOptions.map((option) => {
+              return (
+                <Badge>
+                  <Typography
+                    key={option.id}
+                    size="small"
+                    color="dark"
+                    align="left"
+                  >
+                    {option.name}
+                  </Typography>
+                </Badge>
+              );
+            })}
+          </div>
         )}
       </td>
       <td>

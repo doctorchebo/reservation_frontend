@@ -1,23 +1,27 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import {
   getAllAddressesByBusinessId,
+  patchAddressIsMainAddress,
   patchAddressLatitude,
   patchAddressLongitude,
   patchAddressName,
 } from "@/app/store/address/addressActions";
 import {
+  AddressPatchIsMainAddressRequest,
   AddressPatchLatitudeRequest,
   AddressPatchLongitudeRequest,
   AddressPatchNameRequest,
 } from "@/app/types/addressType";
-import { useEffect } from "react";
+import { IOption } from "@/app/types/option";
+import React, { useEffect } from "react";
+import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
 import Typography from "../typography/Typography";
-import styles from "./addressAdminList.module.css";
 const AddressAdminList = () => {
   const dispatch = useAppDispatch();
   const { business } = useAppSelector((state) => state.business);
   const { addresses } = useAppSelector((state) => state.address);
+  console.log(JSON.stringify("addresses: " + addresses, null, 2));
   useEffect(() => {
     if (business) {
       dispatch(getAllAddressesByBusinessId(business.id));
@@ -52,42 +56,69 @@ const AddressAdminList = () => {
       } as AddressPatchLongitudeRequest)
     );
   };
-  const handlePatchIsMainAddress = () => {};
+  const handlePatchIsMainAddress = (addressId: number) => {
+    if (business) {
+      dispatch(
+        patchAddressIsMainAddress({
+          addressId: addressId,
+          businessId: business.id,
+        } as AddressPatchIsMainAddressRequest)
+      );
+    }
+  };
+
   return (
-    addresses && (
+    addresses &&
+    business && (
       <>
         <Typography size="large" color="dark">
           Direcciones
         </Typography>
         <table>
           <tbody>
-            {addresses.map((address) => {
+            <RowDropdown
+              key="main-address"
+              title="Dirección principal:"
+              initialSelected={
+                addresses.find((address) => address.isMainAddress)?.id!
+              }
+              onSuccess={handlePatchIsMainAddress}
+              options={addresses.map((address) => {
+                return { id: address.id, name: address.name } as IOption;
+              })}
+            />
+            {addresses.map((address, index) => {
               return (
-                <>
+                <React.Fragment key={address.id}>
+                  <tr>
+                    <td>
+                      <Typography align="left" color="dark" size="medium">
+                        Dirección {index + 1}:
+                      </Typography>
+                    </td>
+                  </tr>
                   <RowInput
+                    key={`${address.id}-name`}
                     id={address.id}
                     initialValue={address.name}
                     title="Dirección:"
                     onSuccess={handlePatchAddressName}
                   />
                   <RowInput
+                    key={`${address.id}-latitude`}
                     id={address.id}
                     initialValue={address.geolocation.latitude}
                     title="Latitud:"
                     onSuccess={handlePatchLatitude}
                   />
                   <RowInput
+                    key={`${address.id}-longitude`}
                     id={address.id}
                     initialValue={address.geolocation.longitude}
                     title="Longitud:"
                     onSuccess={handlePatchLongitude}
                   />
-                  {/* <RowInput
-                    initialValue={address.isMainAddress}
-                    title="Dirección principal:"
-                    onSuccess={handlePatchIsMainAddress}
-                  /> */}
-                </>
+                </React.Fragment>
               );
             })}
           </tbody>

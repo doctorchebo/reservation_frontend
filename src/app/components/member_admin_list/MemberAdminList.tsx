@@ -36,7 +36,7 @@ const MemberAdminList = () => {
         <table>
           <tbody>
             <RowMultiselect
-              title="Miembros activos"
+              title="Miembros activos:"
               initialOptions={business.members
                 .filter((member) => member.isActive)
                 .map((member) => {

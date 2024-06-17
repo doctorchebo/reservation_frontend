@@ -3,6 +3,7 @@ import {
   BusinessPatchCategoriesRequest,
   BusinessPatchMembersRequest,
   BusinessPatchNameRequest,
+  BusinessPatchServicesRequest,
 } from "@/app/types/businessType";
 import axios from "axios";
 import { Dayjs } from "dayjs";
@@ -126,6 +127,20 @@ export const patchBusinessActiveMembers =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchActiveMembers", request);
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchBusinessServices =
+  (request: BusinessPatchServicesRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("business/patchServices", request);
       dispatch(addBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
