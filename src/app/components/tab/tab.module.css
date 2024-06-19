@@ -1,0 +1,10 @@
+.container {
+}
+
+.container:hover {
+  cursor: pointer;
+}
+
+.selected {
+  border-bottom: solid 1px var(--btn);
+}

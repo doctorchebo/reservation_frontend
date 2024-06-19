@@ -12,10 +12,10 @@ import {
 import { IOption } from "@/app/types/option";
 import { createToast } from "@/app/utils/createToast";
 import { useEffect } from "react";
+import RowImageList from "../row_image_list/RowImageList";
 import RowInput from "../row_input/RowInput";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
 import Typography from "../typography/Typography";
-import styles from "./businessAdminDetails.module.css";
 const BusinessAdminDetails = () => {
   const dispatch = useAppDispatch();
   const { business, success } = useAppSelector((state) => state.business);
@@ -50,7 +50,7 @@ const BusinessAdminDetails = () => {
       );
     }
   };
-
+  const handlePatchBusinessImages = () => {};
   return (
     business && (
       <>
@@ -70,27 +70,14 @@ const BusinessAdminDetails = () => {
               onSuccess={handlePatchCategories}
               options={categories}
             />
-            <tr>
-              <td>
-                <Typography size="medium" color="dark" align="left">
-                  Imágenes:
-                </Typography>
-              </td>
-              <td>
-                {business.images.map((image) => {
-                  return (
-                    <Typography
-                      key={image.id}
-                      size="small"
-                      color="dark"
-                      align="left"
-                    >
-                      {image.url}
-                    </Typography>
-                  );
-                })}
-              </td>
-            </tr>
+            <RowImageList
+              id={business.id}
+              onSuccess={handlePatchBusinessImages}
+              options={business.images.map((image) => {
+                return { id: image.id, name: image.url };
+              })}
+              title="Imágenes"
+            />
           </tbody>
         </table>
       </>

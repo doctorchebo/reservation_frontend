@@ -5,13 +5,15 @@ import { MdCancel, MdCheck, MdModeEdit } from "react-icons/md";
 import Typography from "../typography/Typography";
 import styles from "./rowDropdown.module.css";
 interface RowDropdownProps {
+  id?: number | string;
   title?: string;
   initialSelected: number;
   options: IOption[];
-  onSuccess: (selected: number) => void;
+  onSuccess: (selected: number, id?: number | string) => void;
 }
 
 const RowDropdown: React.FC<RowDropdownProps> = ({
+  id,
   title,
   options,
   initialSelected,
@@ -20,7 +22,7 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
   const [editMode, setEditMode] = useState(false);
   const [selected, setSelected] = useState(initialSelected);
   const handleSuccess = () => {
-    onSuccess(selected);
+    onSuccess(selected, id);
     setEditMode(false);
   };
 

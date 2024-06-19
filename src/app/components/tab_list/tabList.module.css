@@ -1,0 +1,11 @@
+.container {
+}
+
+.tabContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background-color: var(--separator);
+  justify-content: space-around;
+  align-content: center;
+}

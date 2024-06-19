@@ -1,7 +1,10 @@
 import { api } from "@/app/api/api";
 import {
-  PatchMemberFirstNameRequest,
-  PatchMemberLastNameRequest,
+  MemberPatchAddressRequest,
+  MemberPatchFirstNameRequest,
+  MemberPatchLastNameRequest,
+  MemberPatchPhoneNumberRequest,
+  MemberPatchTitleRequest,
 } from "@/app/types/memberType";
 import axios from "axios";
 import { AppDispatch } from "../store";
@@ -55,7 +58,7 @@ export const getMemberByUserId =
   };
 
 export const patchMemberFirstName =
-  (request: PatchMemberFirstNameRequest) => async (dispatch: AppDispatch) => {
+  (request: MemberPatchFirstNameRequest) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await api.patch("member/patchFirstName", request);
@@ -68,10 +71,48 @@ export const patchMemberFirstName =
   };
 
 export const patchMemberLastName =
-  (request: PatchMemberLastNameRequest) => async (dispatch: AppDispatch) => {
+  (request: MemberPatchLastNameRequest) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await api.patch("member/patchLastName", request);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchMemberPhoneNumber =
+  (request: MemberPatchPhoneNumberRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchPhoneNumber", request);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+export const patchMemberTitle =
+  (request: MemberPatchTitleRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchTitle", request);
+      dispatch(setMember(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchMemberAddress =
+  (request: MemberPatchAddressRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchAddress", request);
       dispatch(setMember(response.data));
     } catch (error) {
       handleError(error, dispatch);

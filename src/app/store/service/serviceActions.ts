@@ -1,5 +1,10 @@
 import { api } from "@/app/api/api";
-import { ServicePatchDurationsRequest } from "@/app/types/serviceType";
+import {
+  ServicePatchAddressesRequest,
+  ServicePatchDurationsRequest,
+  ServicePatchNameRequest,
+  ServicePatchPriceRequest,
+} from "@/app/types/serviceType";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
@@ -86,11 +91,50 @@ export const getServiceById =
     }
   };
 
+export const patchServiceName =
+  (request: ServicePatchNameRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("service/patchName", request);
+      dispatch(setService(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
 export const patchServiceDurations =
   (request: ServicePatchDurationsRequest) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await api.patch("service/patchDurations", request);
+      dispatch(setService(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchServiceAddresses =
+  (request: ServicePatchAddressesRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("service/patchAddresses", request);
+      dispatch(setService(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchServicePrice =
+  (request: ServicePatchPriceRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("service/patchPrice", request);
       dispatch(setService(response.data));
     } catch (error) {
       handleError(error, dispatch);

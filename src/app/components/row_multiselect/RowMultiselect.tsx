@@ -53,13 +53,8 @@ const RowMultiselect: React.FC<RowMultiselectProps> = ({
           <div className={styles.optionsContainer}>
             {selectedOptions.map((option) => {
               return (
-                <Badge>
-                  <Typography
-                    key={option.id}
-                    size="small"
-                    color="dark"
-                    align="left"
-                  >
+                <Badge key={option.id}>
+                  <Typography size="small" color="dark" align="left">
                     {option.name}
                   </Typography>
                 </Badge>

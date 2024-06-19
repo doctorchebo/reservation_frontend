@@ -1,0 +1,29 @@
+.editContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  align-items: center;
+}
+
+.editContainer:hover {
+  cursor: pointer;
+}
+
+.editBtnContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.optionsContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.optionContainer {
+  display: flex;
+  align-items: center;
+}
+
+.uploadBtn:hover {
+  cursor: pointer;
+}

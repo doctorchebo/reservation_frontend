@@ -8,6 +8,7 @@ import Loader from "../components/loader/Loader";
 import MemberAdmin from "../components/member_admin/MemberAdmin";
 import MemberAdminList from "../components/member_admin_list/MemberAdminList";
 import ServiceAdminList from "../components/service_admin_list/ServiceAdminList";
+import TabList from "../components/tab_list/TabList";
 import Typography from "../components/typography/Typography";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import useAuth from "../hooks/useAuth";
@@ -28,6 +29,13 @@ const AdminPage = () => {
       dispatch(getMemberByUserId(user.id));
     }
   }, [user]);
+
+  // select the first business to show it's information
+  useEffect(() => {
+    if (businesses.length > 0) {
+      dispatch(setBusiness(businesses[0]));
+    }
+  }, [businesses]);
 
   return (
     <div className={styles.container}>
@@ -64,11 +72,19 @@ const AdminPage = () => {
         ) : (
           <>
             {" "}
-            <BusinessAdminDetails />
-            <AddressAdminList />
-            <MemberAdminList />
-            <ServiceAdminList />
-            <DurationAdminList />
+            <TabList
+              pages={[
+                { name: "Datos básicos", component: <BusinessAdminDetails /> },
+                { name: "Direcciones", component: <AddressAdminList /> },
+                { name: "Miembros", component: <MemberAdminList /> },
+                { name: "Servicios", component: <ServiceAdminList /> },
+                { name: "Duraciones", component: <DurationAdminList /> },
+              ]}
+              initialPage={{
+                name: "Datos básicos",
+                component: <BusinessAdminDetails />,
+              }}
+            />
           </>
         )}
       </div>

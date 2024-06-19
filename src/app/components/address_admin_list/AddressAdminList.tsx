@@ -16,12 +16,12 @@ import { IOption } from "@/app/types/option";
 import React, { useEffect } from "react";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
+import RowTitle from "../row_title/RowTitle";
 import Typography from "../typography/Typography";
 const AddressAdminList = () => {
   const dispatch = useAppDispatch();
   const { business } = useAppSelector((state) => state.business);
   const { addresses } = useAppSelector((state) => state.address);
-  console.log(JSON.stringify("addresses: " + addresses, null, 2));
   useEffect(() => {
     if (business) {
       dispatch(getAllAddressesByBusinessId(business.id));
@@ -90,13 +90,13 @@ const AddressAdminList = () => {
             {addresses.map((address, index) => {
               return (
                 <React.Fragment key={address.id}>
-                  <tr>
-                    <td>
-                      <Typography align="left" color="dark" size="medium">
-                        Dirección {index + 1}:
-                      </Typography>
-                    </td>
-                  </tr>
+                  <RowTitle
+                    colspan={3}
+                    title={`Dirección ${index + 1}`}
+                    color="dark"
+                    key={`${address.id}-title`}
+                    size="medium"
+                  />
                   <RowInput
                     key={`${address.id}-name`}
                     id={address.id}

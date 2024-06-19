@@ -54,22 +54,24 @@ const DurationAdminList = () => {
           Duraciones por servicio
         </Typography>
         <table>
-          {services.map((service) => {
-            return (
-              <RowMultiselect
-                key={service.id}
-                id={service.id}
-                title={service.name}
-                initialOptions={getDurations(
-                  durations.filter((duration) =>
-                    duration.serviceIds.includes(service.id.toString())
-                  )
-                )}
-                onSuccess={handlePatchDurations}
-                options={getDurations(durations)}
-              />
-            );
-          })}
+          <tbody>
+            {services.map((service) => {
+              return (
+                <RowMultiselect
+                  key={service.id}
+                  id={service.id}
+                  title={service.name}
+                  initialOptions={getDurations(
+                    durations.filter((duration) =>
+                      duration.serviceIds.includes(service.id.toString())
+                    )
+                  )}
+                  onSuccess={handlePatchDurations}
+                  options={getDurations(durations)}
+                />
+              );
+            })}
+          </tbody>
         </table>
       </>
     )

@@ -8,6 +8,7 @@ import memberReducer from "./member/memberSlice";
 import reservationReducer from "./reservation/reservationSlice";
 import serviceReducer from "./service/serviceSlice";
 import userReducer from "./user/userSlice";
+import priceReducer from "./price/priceSlice"
 export const store = configureStore({
   reducer: {
     reservation: reservationReducer,
@@ -19,6 +20,7 @@ export const store = configureStore({
     user: userReducer,
     member: memberReducer,
     address: addressReducer,
+    price: priceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
