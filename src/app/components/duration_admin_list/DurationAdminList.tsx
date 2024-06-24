@@ -1,13 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getDurationsByBusinessId } from "@/app/store/duration/durationActions";
+import { getAllDurationsByBusinessId } from "@/app/store/duration/durationActions";
 import {
   getServicesByBusinessId,
   patchServiceDurations,
 } from "@/app/store/service/serviceActions";
-import { Duration } from "@/app/types/durationType";
 import { IOption } from "@/app/types/option";
 import { ServicePatchDurationsRequest } from "@/app/types/serviceType";
-import moment from "moment";
+import { getDurations } from "@/app/utils/getDurations";
 import { useEffect } from "react";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
 import Typography from "../typography/Typography";
@@ -19,20 +18,10 @@ const DurationAdminList = () => {
   const { business } = useAppSelector((state) => state.business);
   useEffect(() => {
     if (business) {
-      dispatch(getDurationsByBusinessId(business.id));
+      dispatch(getAllDurationsByBusinessId(business.id));
       dispatch(getServicesByBusinessId(business.id));
     }
   }, [business]);
-
-  const getDurations = (durations: Duration[]) => {
-    return durations.map((duration) => {
-      let name = `${moment.duration(duration.duration).asMinutes()} minutos`;
-      return {
-        id: duration.id,
-        name: name,
-      } as IOption;
-    });
-  };
 
   const handlePatchDurations = (options: IOption[], id?: number | string) => {
     if (business && id) {
@@ -64,10 +53,11 @@ const DurationAdminList = () => {
                   initialOptions={getDurations(
                     durations.filter((duration) =>
                       duration.serviceIds.includes(service.id.toString())
-                    )
+                    ),
+                    { type: "minutes" }
                   )}
                   onSuccess={handlePatchDurations}
-                  options={getDurations(durations)}
+                  options={getDurations(durations, { type: "minutes" })}
                 />
               );
             })}

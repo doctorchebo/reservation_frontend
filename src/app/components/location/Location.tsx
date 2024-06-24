@@ -9,10 +9,7 @@ interface LocationProps {
 const Location: React.FC<LocationProps> = ({ address }) => {
   return (
     <div className={styles.container}>
-      <Typography size="medium">Dirección</Typography>
-      <Typography size="small" color="dark">
-        {address.name}
-      </Typography>
+      <Typography size="small">{address.name}</Typography>
       <iframe
         width="400"
         height="400"

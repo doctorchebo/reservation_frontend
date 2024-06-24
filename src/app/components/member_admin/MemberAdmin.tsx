@@ -72,7 +72,7 @@ const MemberAdmin = () => {
           <table className={styles.table}>
             <tbody>
               <RowInput
-                title="Nombre:"
+                title="Nombre"
                 initialValue={member.firstName}
                 onSuccess={handlePatchFirstName}
               />

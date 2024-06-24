@@ -1,6 +1,10 @@
 import { api } from "@/app/api/api";
+import { apiMultipart } from "@/app/api/apiMultipart";
 import {
+  Business,
+  BusinessCreateRequest,
   BusinessPatchCategoriesRequest,
+  BusinessPatchImagesRequest,
   BusinessPatchMembersRequest,
   BusinessPatchNameRequest,
   BusinessPatchServicesRequest,
@@ -50,7 +54,7 @@ export const getBusinessById =
     }
   };
 
-export const getBusinessesByCategoryId =
+export const getAllBusinessesByCategoryId =
   (categoryId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
@@ -89,7 +93,7 @@ export const getAvailableBusinesses =
     } catch (error) {
       handleError(error, dispatch);
     } finally {
-      dispatch(setLoading(false));
+    dispatch(setLoading(false));
     }
   };
 
@@ -141,6 +145,46 @@ export const patchBusinessServices =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchServices", request);
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchBusinessImages =
+  (request: BusinessPatchImagesRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const formData = new FormData();
+      formData.append("businessId", String(request.businessId));
+
+      request.files.forEach((fileObj, index) => {
+        formData.append(`files[${index}].file`, fileObj.file);
+        formData.append(`files[${index}].id`, String(fileObj.id));
+        formData.append(`files[${index}].url`, fileObj.url);
+      });
+
+      const response = await apiMultipart.patch(
+        "/business/patchImages",
+        formData
+      );
+      dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const createBusiness =
+  (request: BusinessCreateRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.post("business/create", request);
       dispatch(addBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {

@@ -9,4 +9,16 @@
 
 .btn:hover {
   cursor: pointer;
+  animation-name: btn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes btn {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.3);
+  }
 }

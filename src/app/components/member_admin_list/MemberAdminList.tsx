@@ -128,7 +128,7 @@ const MemberAdminList = () => {
         <table>
           <tbody>
             <RowMultiselect
-              title="Miembros activos:"
+              title="Miembros activos"
               initialOptions={business.members
                 .filter((member) => member.isActive)
                 .map((member) => {
@@ -160,28 +160,28 @@ const MemberAdminList = () => {
                     initialValue={member.firstName}
                     onSuccess={handlePatchMemberFirstName}
                     id={member.id}
-                    title="Nombres:"
+                    title="Nombres"
                   />
                   <RowInput
                     key={`${member.id}-lastName`}
                     initialValue={member.lastName}
                     onSuccess={handlePatchMemberLastName}
                     id={member.id}
-                    title="Apellidos:"
+                    title="Apellidos"
                   />
                   <RowInput
                     key={`${member.id}-phoneNumber`}
                     initialValue={member.phoneNumber}
                     onSuccess={handlePatchMemberPhoneNumber}
                     id={member.id}
-                    title="Teléfono:"
+                    title="Teléfono"
                   />
                   <RowInput
                     key={`${member.id}-title`}
                     initialValue={member.title}
                     onSuccess={handlePatchMemberTitle}
                     id={member.id}
-                    title="Título:"
+                    title="Título"
                   />
                   <RowDropdown
                     id={member.id}

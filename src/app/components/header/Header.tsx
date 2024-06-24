@@ -7,6 +7,7 @@ import { logout } from "@/app/store/auth/authActions";
 import { LogoutRequest } from "@/app/types/authTypes";
 import Image from "next/image";
 import Link from "next/link";
+import Typography from "../typography/Typography";
 import styles from "./header.module.css";
 
 const Header = () => {
@@ -31,6 +32,11 @@ const Header = () => {
           priority={true}
         />
       </Link>
+      <div className={styles.titleContainer}>
+        <Typography size="large" align="left">
+          Reservas Online
+        </Typography>
+      </div>
       <ul className={styles.header}>
         <Link href="/about" className={styles.txt}>
           Acerca

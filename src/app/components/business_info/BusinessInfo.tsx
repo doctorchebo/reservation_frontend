@@ -10,24 +10,24 @@ interface BusinessInfoProps {
   businessId: number;
 }
 const BusinessInfo: React.FC<BusinessInfoProps> = ({ businessId }) => {
-  const { business: currentBusiness } = useAppSelector(
-    (state) => state.business
-  );
+  const { business } = useAppSelector((state) => state.business);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getBusinessById(businessId));
   }, [businessId]);
 
   return (
-    <div className={styles.container}>
-      <Typography size="large">{currentBusiness?.name}</Typography>
-      {currentBusiness?.images && (
-        <ImageList images={currentBusiness?.images} />
-      )}
-      {currentBusiness?.addresses && (
-        <Location address={currentBusiness.addresses[0]} />
-      )}
-    </div>
+    business && (
+      <div className={styles.container}>
+        <Typography size="large">{business.name}</Typography>
+        {business.images && <ImageList images={business.images} />}
+        <Typography size="large">Direcciones</Typography>
+        {business.addresses &&
+          business.addresses.map((address) => {
+            return <Location key={address.id} address={address} />;
+          })}
+      </div>
+    )
   );
 };
 

@@ -1,32 +1,39 @@
+import { IFile } from "@/app/types/imageType";
 import { IOption } from "@/app/types/option";
 import React, { useState } from "react";
 import { MdCancel, MdCheck, MdModeEdit } from "react-icons/md";
 import Typography from "../typography/Typography";
 import styles from "./rowImageList.module.css";
-interface RowImageListProps {
+
+interface RowFileListProps {
   options: IOption[];
   id?: number | string;
   title: string;
-  onSuccess: (options: IOption[], id?: number | string) => void;
+  onSuccess: (files: IFile[], id?: number | string) => void;
 }
-const RowImageList: React.FC<RowImageListProps> = ({
+const RowFileList: React.FC<RowFileListProps> = ({
   id,
   options,
   title,
   onSuccess,
 }) => {
   const [editMode, setEditMode] = useState(false);
-  const [images, setImages] = useState<File[]>([]);
-  console.log("images: ", images);
+  const [images, setImages] = useState<IFile[]>([]);
   const handleSuccess = () => {
     setEditMode(false);
-    onSuccess(options, id);
+    onSuccess(images, id);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    option: IOption
+  ) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length > 0) {
-      setImages((prev) => [...prev, e.target.files![0]]);
+      setImages((prev) => [
+        ...prev,
+        { file: e.target.files![0], id: option.id, url: option.name } as IFile,
+      ]);
     }
   };
   return (
@@ -44,7 +51,11 @@ const RowImageList: React.FC<RowImageListProps> = ({
                 {option.name}
               </Typography>
               {editMode && (
-                <input type="file" name="change" onChange={handleFileChange} />
+                <input
+                  type="file"
+                  name="change"
+                  onChange={(e) => handleFileChange(e, option)}
+                />
               )}
             </div>
           );
@@ -74,4 +85,4 @@ const RowImageList: React.FC<RowImageListProps> = ({
   );
 };
 
-export default RowImageList;
+export default RowFileList;

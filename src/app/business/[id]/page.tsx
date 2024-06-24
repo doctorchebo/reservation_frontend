@@ -88,9 +88,6 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
       dispatch(createReservation(reservation));
     }
   };
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
 
   const handleSelected = (schedule: Date) => {
     dispatch(setSchedule(schedule));
@@ -113,7 +110,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
         <ReservationDialog
           open={open}
           handleBooking={handleBooking}
-          handleClose={handleCloseDialog}
+          handleClose={() => setOpen(false)}
         />
         <FormControl>
           <InputLabel>Nombre:</InputLabel>

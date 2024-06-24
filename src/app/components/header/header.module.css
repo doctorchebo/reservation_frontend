@@ -39,7 +39,6 @@
 .logo {
   display: flex;
   justify-content: left;
-  width: 100%;
 }
 
 .visible {
@@ -50,4 +49,9 @@
 .hidden {
   top: -7rem;
   transition: top 0.4s ease-out;
+}
+
+.titleContainer {
+  justify-content: flex-start;
+  width: 100%;
 }

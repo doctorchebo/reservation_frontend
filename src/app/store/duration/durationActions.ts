@@ -31,7 +31,7 @@ export const getDurations =
     }
   };
 
-export const getDurationsByBusinessId =
+export const getAllDurationsByBusinessId =
   (businessId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {

@@ -78,7 +78,7 @@ const AddressAdminList = () => {
           <tbody>
             <RowDropdown
               key="main-address"
-              title="Dirección principal:"
+              title="Dirección principal"
               initialSelected={
                 addresses.find((address) => address.isMainAddress)?.id!
               }
@@ -101,21 +101,21 @@ const AddressAdminList = () => {
                     key={`${address.id}-name`}
                     id={address.id}
                     initialValue={address.name}
-                    title="Dirección:"
+                    title="Dirección"
                     onSuccess={handlePatchAddressName}
                   />
                   <RowInput
                     key={`${address.id}-latitude`}
                     id={address.id}
                     initialValue={address.geolocation.latitude}
-                    title="Latitud:"
+                    title="Latitud"
                     onSuccess={handlePatchLatitude}
                   />
                   <RowInput
                     key={`${address.id}-longitude`}
                     id={address.id}
                     initialValue={address.geolocation.longitude}
-                    title="Longitud:"
+                    title="Longitud"
                     onSuccess={handlePatchLongitude}
                   />
                 </React.Fragment>

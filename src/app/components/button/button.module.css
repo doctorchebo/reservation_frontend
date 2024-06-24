@@ -22,3 +22,11 @@
   color: white;
   cursor: default;
 }
+
+.success {
+  background-color: var(--success);
+}
+
+.cancel {
+  background-color: var(--cancel);
+}

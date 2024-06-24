@@ -1,6 +1,6 @@
 import { Address } from "./addressType";
 import { Category } from "./categoryType";
-import { Image } from "./imageType";
+import { IFile, Image } from "./imageType";
 import { Member } from "./memberType";
 import { Service } from "./serviceType";
 
@@ -31,4 +31,13 @@ export interface BusinessPatchMembersRequest {
 export interface BusinessPatchServicesRequest {
   businessId: number;
   serviceIds: number[];
+}
+export interface BusinessPatchImagesRequest {
+  businessId: number;
+  files : IFile[],
+}
+
+export interface BusinessCreateRequest {
+  name: string;
+  categoryIds: number[];
 }

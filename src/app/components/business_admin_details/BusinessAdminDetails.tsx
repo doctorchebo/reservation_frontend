@@ -1,24 +1,33 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import {
+  createBusiness,
   patchBusinessCategories,
+  patchBusinessImages,
   patchBusinessName,
 } from "@/app/store/business/businessActions";
 import { setSuccess } from "@/app/store/business/businessSlice";
 import { getCategories } from "@/app/store/category/categoryActions";
 import {
+  BusinessCreateRequest,
   BusinessPatchCategoriesRequest,
+  BusinessPatchImagesRequest,
   BusinessPatchNameRequest,
 } from "@/app/types/businessType";
+import { IFile } from "@/app/types/imageType";
 import { IOption } from "@/app/types/option";
 import { createToast } from "@/app/utils/createToast";
 import { useEffect } from "react";
-import RowImageList from "../row_image_list/RowImageList";
+import CreateBusinessForm from "../create_business_form/CreateBusinessForm";
+import Loader from "../loader/Loader";
+import RowFileList from "../row_image_list/RowImageList";
 import RowInput from "../row_input/RowInput";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
 import Typography from "../typography/Typography";
 const BusinessAdminDetails = () => {
   const dispatch = useAppDispatch();
-  const { business, success } = useAppSelector((state) => state.business);
+  const { business, success, loading } = useAppSelector(
+    (state) => state.business
+  );
   const { categories } = useAppSelector((state) => state.category);
 
   useEffect(() => {
@@ -50,17 +59,37 @@ const BusinessAdminDetails = () => {
       );
     }
   };
-  const handlePatchBusinessImages = () => {};
+  const handlePatchBusinessImages = (
+    files: IFile[],
+    id?: string | number | undefined
+  ) => {
+    if (business) {
+      dispatch(
+        patchBusinessImages({
+          businessId: business.id,
+          files: files,
+        } as BusinessPatchImagesRequest)
+      );
+    }
+  };
+
+  const handleCreateBusiness = (request: BusinessCreateRequest) => {
+    dispatch(createBusiness(request));
+  };
+  if (loading) {
+    return <Loader />;
+  }
   return (
     business && (
       <>
         <Typography size="large" color="dark">
           Datos básicos
         </Typography>
+        <CreateBusinessForm onSuccess={handleCreateBusiness} />
         <table>
           <tbody>
             <RowInput
-              title="Nombre:"
+              title="Nombre"
               initialValue={business.name}
               onSuccess={handlePatchBusinessName}
             />
@@ -70,8 +99,7 @@ const BusinessAdminDetails = () => {
               onSuccess={handlePatchCategories}
               options={categories}
             />
-            <RowImageList
-              id={business.id}
+            <RowFileList
               onSuccess={handlePatchBusinessImages}
               options={business.images.map((image) => {
                 return { id: image.id, name: image.url };

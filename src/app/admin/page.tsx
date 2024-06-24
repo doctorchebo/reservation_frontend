@@ -15,6 +15,7 @@ import useAuth from "../hooks/useAuth";
 import { getBusinessesByUserId } from "../store/business/businessActions";
 import { setBusiness } from "../store/business/businessSlice";
 import { getMemberByUserId } from "../store/member/memberActions";
+import { Business } from "../types/businessType";
 import styles from "./page.module.css";
 const AdminPage = () => {
   const [showMember, setShowMember] = useState(false);
@@ -32,10 +33,15 @@ const AdminPage = () => {
 
   // select the first business to show it's information
   useEffect(() => {
-    if (businesses.length > 0) {
+    if (businesses) {
       dispatch(setBusiness(businesses[0]));
     }
   }, [businesses]);
+
+  const handleSelectBusiness = (business: Business) => {
+    dispatch(setBusiness(business));
+    setShowMember(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -49,10 +55,7 @@ const AdminPage = () => {
               <Button
                 key={business.id}
                 children={business.name}
-                onClick={() => {
-                  dispatch(setBusiness(business));
-                  setShowMember(false);
-                }}
+                onClick={() => handleSelectBusiness(business)}
               />
             );
           })

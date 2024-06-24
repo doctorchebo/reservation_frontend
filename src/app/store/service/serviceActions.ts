@@ -1,5 +1,6 @@
 import { api } from "@/app/api/api";
 import {
+  ServiceCreateRequest,
   ServicePatchAddressesRequest,
   ServicePatchDurationsRequest,
   ServicePatchNameRequest,
@@ -8,7 +9,15 @@ import {
 import axios from "axios";
 import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
-import { setError, setLoading, setService, setServices } from "./serviceSlice";
+import {
+  addService,
+  removeService,
+  setError,
+  setLoading,
+  setService,
+  setServices,
+  setSuccess,
+} from "./serviceSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
   if (axios.isAxiosError(error)) {
@@ -97,6 +106,7 @@ export const patchServiceName =
     try {
       const response = await api.patch("service/patchName", request);
       dispatch(setService(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -110,6 +120,7 @@ export const patchServiceDurations =
     try {
       const response = await api.patch("service/patchDurations", request);
       dispatch(setService(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -123,6 +134,7 @@ export const patchServiceAddresses =
     try {
       const response = await api.patch("service/patchAddresses", request);
       dispatch(setService(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -136,6 +148,33 @@ export const patchServicePrice =
     try {
       const response = await api.patch("service/patchPrice", request);
       dispatch(setService(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+export const createService =
+  (request: ServiceCreateRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.post("service/create", request);
+      dispatch(addService(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+export const deleteService =
+  (serviceId: number | string) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`service/deleteById/${serviceId}`);
+      dispatch(removeService(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

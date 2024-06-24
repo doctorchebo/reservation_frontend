@@ -34,7 +34,7 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
     <tr>
       <td>
         <Typography size="medium" color="dark" align="left">
-          {title}
+          {title}:
         </Typography>
       </td>
       <td>

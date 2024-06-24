@@ -8,14 +8,19 @@ interface ImageListProps {
 }
 const ImageList: React.FC<ImageListProps> = ({ images }) => {
   const [imageIndex, setImageindex] = useState(0);
+
   const handleChange = (isNext: boolean) => {
     if (isNext) {
       if (imageIndex < images.length - 1) {
         setImageindex((prev) => prev + 1);
+      } else if (imageIndex === images.length - 1) {
+        setImageindex(0);
       }
     } else {
       if (imageIndex > 0) {
         setImageindex((prev) => prev - 1);
+      } else if (imageIndex === 0) {
+        setImageindex(images.length - 1);
       }
     }
   };
