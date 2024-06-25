@@ -29,13 +29,13 @@ const AddressAdminList = () => {
   }, [business]);
 
   const handlePatchAddressName = (
-    name: string | number,
+    name: string | number | undefined,
     addressId: number | undefined
   ) => {
     dispatch(patchAddressName({ addressId, name } as AddressPatchNameRequest));
   };
   const handlePatchLatitude = (
-    value: string | number,
+    value: string | number | undefined,
     id: number | undefined
   ) => {
     dispatch(
@@ -46,7 +46,7 @@ const AddressAdminList = () => {
     );
   };
   const handlePatchLongitude = (
-    value: string | number,
+    value: string | number | undefined,
     id: number | undefined
   ) => {
     dispatch(

@@ -22,6 +22,7 @@
 .optionContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .uploadBtn:hover {

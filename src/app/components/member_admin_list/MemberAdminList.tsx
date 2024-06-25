@@ -1,8 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions";
 import { patchBusinessActiveMembers } from "@/app/store/business/businessActions";
+import { setSuccess } from "@/app/store/business/businessSlice";
 import {
-  getMembers,
   patchMemberAddress,
   patchMemberFirstName,
   patchMemberLastName,
@@ -12,6 +11,7 @@ import {
 import { Address } from "@/app/types/addressType";
 import { BusinessPatchMembersRequest } from "@/app/types/businessType";
 import {
+  Member,
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
   MemberPatchLastNameRequest,
@@ -19,6 +19,7 @@ import {
   MemberPatchTitleRequest,
 } from "@/app/types/memberType";
 import { IOption } from "@/app/types/option";
+import { createToast } from "@/app/utils/createToast";
 import React, { useEffect } from "react";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
@@ -27,16 +28,16 @@ import RowTitle from "../row_title/RowTitle";
 import Typography from "../typography/Typography";
 const MemberAdminList = () => {
   const dispatch = useAppDispatch();
-  const { members } = useAppSelector((state) => state.member);
+  const { members, success } = useAppSelector((state) => state.member);
   const { business } = useAppSelector((state) => state.business);
   const { addresses } = useAppSelector((state) => state.address);
-  useEffect(() => {
-    if (business) {
-      dispatch(getMembers(business.id));
-      dispatch(getAllAddressesByBusinessId(business.id));
-    }
-  }, [business]);
 
+  useEffect(() => {
+    if (success) {
+      createToast("Éxito!", "success", 3000);
+      dispatch(setSuccess(false));
+    }
+  }, [success]);
   const getOptions = (addresses: Address[]) => {
     return addresses.map((address) => {
       return { id: address.id, name: address.name } as IOption;
@@ -55,7 +56,7 @@ const MemberAdminList = () => {
   };
 
   const handlePatchMemberFirstName = (
-    firstName: string | number,
+    firstName: string | number | undefined,
     id: number | undefined
   ) => {
     id &&
@@ -68,7 +69,7 @@ const MemberAdminList = () => {
   };
 
   const handlePatchMemberLastName = (
-    lastName: string | number,
+    lastName: string | number | undefined,
     id: number | undefined
   ) => {
     id &&
@@ -81,7 +82,7 @@ const MemberAdminList = () => {
   };
 
   const handlePatchMemberPhoneNumber = (
-    phoneNumber: string | number,
+    phoneNumber: string | number | undefined,
     id: number | undefined
   ) => {
     id &&
@@ -94,7 +95,7 @@ const MemberAdminList = () => {
   };
 
   const handlePatchMemberTitle = (
-    title: string | number,
+    title: string | number | undefined,
     id: number | undefined
   ) => {
     id &&
@@ -119,8 +120,19 @@ const MemberAdminList = () => {
       );
   };
 
+  const getMembersFullName = (members: Member[]) => {
+    return members.map((member) => {
+      return {
+        id: member.id,
+        name: `${member.firstName} ${member.lastName}`,
+      } as IOption;
+    });
+  };
+
   return (
-    business && (
+    business &&
+    members &&
+    addresses && (
       <>
         <Typography size="large" color="dark">
           Miembros
@@ -129,27 +141,17 @@ const MemberAdminList = () => {
           <tbody>
             <RowMultiselect
               title="Miembros activos"
-              initialOptions={business.members
-                .filter((member) => member.isActive)
-                .map((member) => {
-                  return {
-                    id: member.id,
-                    name: `${member.firstName} ${member.lastName}`,
-                  } as IOption;
-                })}
-              options={members.map((member) => {
-                return {
-                  id: member.id,
-                  name: `${member.firstName} ${member.lastName}`,
-                } as IOption;
-              })}
+              initialOptions={getMembersFullName(
+                business.members.filter((member) => member.isActive)
+              )}
+              options={getMembersFullName(members)}
               onSuccess={handlePatchActiveMembers}
             />
-            {members.map((member, index) => {
+            {business.members.map((member, index) => {
               return (
                 <React.Fragment key={index}>
                   <RowTitle
-                    key={`${member.id}-objectTitle`}
+                    key={`${member.id}-memberTitle`}
                     colspan={3}
                     title={`${member.firstName} ${member.lastName}`}
                     color="dark"
@@ -187,7 +189,7 @@ const MemberAdminList = () => {
                     id={member.id}
                     initialSelected={member.addressId}
                     onSuccess={handlePatchMemberAddress}
-                    options={getOptions(addresses)}
+                    options={getOptions(business.addresses)}
                     key={`${member.id}-address`}
                     title="Dirección"
                   />

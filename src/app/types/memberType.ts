@@ -1,6 +1,4 @@
-import { IOption } from "./option";
-
-export interface Member extends IOption {
+export interface Member {
   id: number;
   businessId: number;
   userId: number;

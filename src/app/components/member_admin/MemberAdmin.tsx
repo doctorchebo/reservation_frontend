@@ -27,7 +27,7 @@ const MemberAdmin = () => {
   }, [member]);
 
   const handlePatchFirstName = (
-    firstName: string | number,
+    firstName: string | number | undefined,
     id: number | undefined
   ) => {
     if (member) {
@@ -40,7 +40,7 @@ const MemberAdmin = () => {
     }
   };
   const handlePatchLastName = (
-    lastName: string | number,
+    lastName: string | number | undefined,
     id: number | undefined
   ) => {
     if (member) {
@@ -77,12 +77,12 @@ const MemberAdmin = () => {
                 onSuccess={handlePatchFirstName}
               />
               <RowInput
-                title="Apellido:"
+                title="Apellido"
                 initialValue={member.lastName}
                 onSuccess={handlePatchLastName}
               />
               <RowDropdown
-                title="Sucursal actual:"
+                title="Sucursal actual"
                 initialSelected={member.addressId}
                 onSuccess={handlePatchMemberAddress}
                 options={addresses.map((address) => {

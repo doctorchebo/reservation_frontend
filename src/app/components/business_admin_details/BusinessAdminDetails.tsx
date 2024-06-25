@@ -1,12 +1,15 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
+import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions";
 import {
   createBusiness,
+  deleteBusiness,
   patchBusinessCategories,
   patchBusinessImages,
   patchBusinessName,
 } from "@/app/store/business/businessActions";
 import { setSuccess } from "@/app/store/business/businessSlice";
-import { getCategories } from "@/app/store/category/categoryActions";
+import { getAllCategories } from "@/app/store/category/categoryActions";
+import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import {
   BusinessCreateRequest,
   BusinessPatchCategoriesRequest,
@@ -16,9 +19,11 @@ import {
 import { IFile } from "@/app/types/imageType";
 import { IOption } from "@/app/types/option";
 import { createToast } from "@/app/utils/createToast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ConfirmationDialog from "../confirmation_dialog/ConfirmationDialog";
 import CreateBusinessForm from "../create_business_form/CreateBusinessForm";
 import Loader from "../loader/Loader";
+import RowButton from "../row_button/RowButton";
 import RowFileList from "../row_image_list/RowImageList";
 import RowInput from "../row_input/RowInput";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
@@ -30,18 +35,26 @@ const BusinessAdminDetails = () => {
   );
   const { categories } = useAppSelector((state) => state.category);
 
+  const [selectedBusinessId, setSelectedBusinessId] = useState<number | null>(
+    null
+  );
+  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getAllCategories());
   }, []);
 
   useEffect(() => {
     if (success) {
-      createToast("Dato editado!", "success", 3000);
+      createToast("¡Éxito!", "success", 3000);
       dispatch(setSuccess(false));
     }
   }, [success]);
 
-  const handlePatchBusinessName = (name: string | number) => {
+  const handlePatchBusinessName = (
+    name: string | number | undefined,
+    id: number | undefined
+  ) => {
     dispatch(
       patchBusinessName({
         businessId: business?.id,
@@ -76,12 +89,34 @@ const BusinessAdminDetails = () => {
   const handleCreateBusiness = (request: BusinessCreateRequest) => {
     dispatch(createBusiness(request));
   };
+
+  const handleShowModal = (businessId: number) => {
+    setSelectedBusinessId(businessId);
+    setOpenModal(true);
+  };
+
+  const handleDeleteBusiness = () => {
+    if (selectedBusinessId) {
+      dispatch(deleteBusiness(selectedBusinessId));
+      setOpenModal(false);
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
   return (
     business && (
       <>
+        <ConfirmationDialog
+          cancelText="Cancelar"
+          onCancel={() => setOpenModal(false)}
+          onSuccess={handleDeleteBusiness}
+          open={openModal}
+          successText="Eliminar"
+          title="Eliminar Negocio"
+          content="¿Estás seguro de eliminar el negocio? Todas las reservas asociadas serán eliminadas."
+        />
         <Typography size="large" color="dark">
           Datos básicos
         </Typography>
@@ -105,6 +140,11 @@ const BusinessAdminDetails = () => {
                 return { id: image.id, name: image.url };
               })}
               title="Imágenes"
+            />
+            <RowButton
+              onClick={() => handleShowModal(business.id)}
+              title="Eliminar negocio"
+              type="cancel"
             />
           </tbody>
         </table>

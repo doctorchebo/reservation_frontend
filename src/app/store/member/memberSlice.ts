@@ -7,6 +7,7 @@ interface MemberState {
   memberId: string | null;
   loading: boolean;
   error: string | undefined;
+  success: boolean;
 }
 
 const initialState: MemberState = {
@@ -15,6 +16,7 @@ const initialState: MemberState = {
   member: undefined,
   loading: false,
   error: undefined,
+  success: false,
 };
 const memberSlice = createSlice({
   name: "Business",
@@ -35,9 +37,12 @@ const memberSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setSuccess: (state, action: PayloadAction<boolean>) => {
+      state.success = action.payload;
+    },
   },
 });
 
-export const { setMembers, setMemberId, setMember, setLoading, setError } =
+export const { setMembers, setMemberId, setMember, setLoading, setError, setSuccess } =
   memberSlice.actions;
 export default memberSlice.reducer;

@@ -3,5 +3,6 @@ export interface User {
   username: string;
   email: string;
   isEnabled: boolean;
+  isSuperUser: boolean;
   created: number;
 }

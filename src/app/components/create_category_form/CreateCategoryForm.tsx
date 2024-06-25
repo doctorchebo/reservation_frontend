@@ -1,36 +1,32 @@
 import { ChangeEvent, useState } from "react";
 
-import { useAppSelector } from "@/app/hooks/hooks";
-import { BusinessCreateRequest } from "@/app/types/businessType";
+import { CategoryCreateRequest } from "@/app/types/categoryType";
 import { IOption } from "@/app/types/option";
 import Button from "../button/Button";
+import RowFileList from "../row_image_list/RowImageList";
 import RowInput from "../row_input/RowInput";
-import RowMultiselect from "../row_multiselect/RowMultiselect";
-import styles from "./createBusinessForm.module.css";
+import styles from "./createCategoryForm.module.css";
 
-interface CreateBusinessFormProps {
-  onSuccess: (value: BusinessCreateRequest) => void;
+interface CreateCategoryFormProps {
+  onSuccess: (request: CategoryCreateRequest) => void;
 }
-const CreateBusinessForm: React.FC<CreateBusinessFormProps> = ({
+const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
   onSuccess,
 }) => {
   const [visible, setVisible] = useState(false);
   const handleCancel = () => {
     setVisible(false);
   };
-  const { categories } = useAppSelector((state) => state.category);
-  const { user } = useAppSelector((state) => state.user);
-  const [business, setBusiness] = useState({
+  const [newCategory, setNewCategory] = useState<CategoryCreateRequest>({
     name: "",
-    categories: [] as IOption[],
+    image: undefined,
   });
+  console.log(newCategory);
   const handleSuccess = () => {
     onSuccess({
-      name: business.name,
-      categoryIds: categories.map((c) => {
-        return c.id;
-      }),
-    } as BusinessCreateRequest);
+      name: newCategory.name,
+      image: newCategory.image,
+    } as CategoryCreateRequest);
   };
 
   const handleOnChange = (
@@ -38,17 +34,25 @@ const CreateBusinessForm: React.FC<CreateBusinessFormProps> = ({
     optionName?: string | undefined
   ) => {
     if (optionName) {
+      console.log(e);
       if (Array.isArray(e)) {
-        setBusiness((prev) => ({
+        setNewCategory((prev) => ({
           ...prev,
           [optionName]: e,
         }));
       } else {
-        const { value } = e.target;
-        setBusiness((prev) => ({
-          ...prev,
-          [optionName]: value,
-        }));
+        const target = e.target as HTMLInputElement;
+        if (target.files && target.files.length > 0) {
+          setNewCategory((prev) => ({
+            ...prev,
+            [optionName]: target.files![0],
+          }));
+        } else {
+          setNewCategory((prev) => ({
+            ...prev,
+            [optionName]: target.value,
+          }));
+        }
       }
     }
   };
@@ -62,19 +66,15 @@ const CreateBusinessForm: React.FC<CreateBusinessFormProps> = ({
                 <RowInput
                   name="name"
                   title="Nombre"
-                  value={business.name}
+                  value={newCategory.name}
                   createMode={true}
                   onChange={handleOnChange}
                 />
-                <RowMultiselect
-                  name="categories"
-                  title="Categorías"
-                  value={business.categories}
-                  options={categories.map((category) => {
-                    return { id: category.id, name: category.name } as IOption;
-                  })}
-                  createMode={true}
+                <RowFileList
+                  name="image"
                   onChange={handleOnChange}
+                  title="Imagen"
+                  createMode={true}
                 />
               </tbody>
             </table>
@@ -89,7 +89,7 @@ const CreateBusinessForm: React.FC<CreateBusinessFormProps> = ({
       ) : (
         <div className={styles.btn}>
           <Button onClick={() => setVisible(true)} type="success">
-            Crear Negocio
+            Crear Categoría
           </Button>
         </div>
       )}
@@ -97,4 +97,4 @@ const CreateBusinessForm: React.FC<CreateBusinessFormProps> = ({
   );
 };
 
-export default CreateBusinessForm;
+export default CreateCategoryForm;

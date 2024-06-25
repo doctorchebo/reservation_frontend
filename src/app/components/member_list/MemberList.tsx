@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getMembers } from "@/app/store/member/memberActions";
+import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import { setMemberId } from "@/app/store/member/memberSlice";
 import {
   FormControl,
@@ -20,7 +20,7 @@ const MemberList: React.FC<MemberListProps> = ({ businessId }) => {
 
   const { members, memberId } = useAppSelector((state) => state.member);
   useEffect(() => {
-    dispatch(getMembers(businessId));
+    dispatch(getAllMembersByBusinessId(businessId));
   }, []);
 
   useEffect(() => {

@@ -58,19 +58,19 @@ const CreateServiceForm: React.FC<CreateServiceFormProps> = ({ onSuccess }) => {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | IOption[],
     optionName?: string | undefined
   ) => {
-    if (Array.isArray(e)) {
-      let name = optionName!;
-      setNewService((prev) => ({
-        ...prev,
-        [name]: e,
-      }));
-    } else {
-      console.log(e, optionName);
-      const { value } = e.target;
-      setNewService((prev) => ({
-        ...prev,
-        [optionName!]: value,
-      }));
+    if (optionName) {
+      if (Array.isArray(e)) {
+        setNewService((prev) => ({
+          ...prev,
+          [optionName]: e,
+        }));
+      } else {
+        const { value } = e.target;
+        setNewService((prev) => ({
+          ...prev,
+          [optionName]: value,
+        }));
+      }
     }
   };
   return (

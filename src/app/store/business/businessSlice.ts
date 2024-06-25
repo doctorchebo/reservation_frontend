@@ -34,6 +34,11 @@ const businessSlice = createSlice({
         }
       });
     },
+    removeBusiness: (state, action: PayloadAction<Business>) => {
+      state.businesses = state.businesses.filter(
+        (business) => business.id !== action.payload.id
+      );
+    },
     setBusiness: (state, action: PayloadAction<Business>) => {
       state.business = action.payload;
     },
@@ -55,10 +60,11 @@ const businessSlice = createSlice({
 export const {
   setBusinesses,
   addBusiness,
+  removeBusiness,
   setBusiness,
   setLoading,
   setError,
   setSearched,
-  setSuccess
+  setSuccess,
 } = businessSlice.actions;
 export default businessSlice.reducer;

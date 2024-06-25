@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getCategories } from "@/app/store/category/categoryActions";
+import { getAllCategories } from "@/app/store/category/categoryActions";
 import { useEffect } from "react";
 import CategoryCard from "../category/category";
 import Loader from "../loader/Loader";
@@ -12,7 +12,7 @@ const Categories = () => {
     (state) => state.category
   );
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getAllCategories());
   }, []);
 
   if (error) {

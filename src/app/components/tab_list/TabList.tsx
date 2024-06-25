@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab from "../tab/Tab";
 import styles from "./tabList.module.css";
 interface Page {
@@ -8,10 +8,16 @@ interface Page {
 
 interface TabListProps {
   pages: Page[];
-  initialPage: Page;
+  initialPage: string;
 }
 const TabList: React.FC<TabListProps> = ({ initialPage, pages }) => {
-  const [selected, setSelected] = useState(initialPage.name);
+  const [selected, setSelected] = useState(initialPage);
+  useEffect(() => {
+    if (initialPage) {
+      setSelected(initialPage);
+    }
+  }, [initialPage]);
+
   return (
     <div className={styles.container}>
       <div className={styles.tabContainer}>

@@ -8,7 +8,13 @@ import {
 } from "@/app/types/memberType";
 import axios from "axios";
 import { AppDispatch } from "../store";
-import { setError, setLoading, setMember, setMembers } from "./memberSlice";
+import {
+  setError,
+  setLoading,
+  setMember,
+  setMembers,
+  setSuccess,
+} from "./memberSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
   if (axios.isAxiosError(error)) {
@@ -18,7 +24,7 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
   }
 };
 
-export const getMembers =
+export const getAllMembersByBusinessId =
   (businessId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
@@ -63,6 +69,7 @@ export const patchMemberFirstName =
     try {
       const response = await api.patch("member/patchFirstName", request);
       dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -76,6 +83,7 @@ export const patchMemberLastName =
     try {
       const response = await api.patch("member/patchLastName", request);
       dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -89,6 +97,7 @@ export const patchMemberPhoneNumber =
     try {
       const response = await api.patch("member/patchPhoneNumber", request);
       dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -101,6 +110,7 @@ export const patchMemberTitle =
     try {
       const response = await api.patch("member/patchTitle", request);
       dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -114,6 +124,7 @@ export const patchMemberAddress =
     try {
       const response = await api.patch("member/patchAddress", request);
       dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

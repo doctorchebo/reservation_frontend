@@ -1,7 +1,6 @@
 import { api } from "@/app/api/api";
 import { apiMultipart } from "@/app/api/apiMultipart";
 import {
-  Business,
   BusinessCreateRequest,
   BusinessPatchCategoriesRequest,
   BusinessPatchImagesRequest,
@@ -14,6 +13,7 @@ import { Dayjs } from "dayjs";
 import { AppDispatch } from "../store";
 import {
   addBusiness,
+  removeBusiness,
   setBusiness,
   setBusinesses,
   setError,
@@ -69,7 +69,7 @@ export const getAllBusinessesByCategoryId =
     }
   };
 
-export const getBusinessesByUserId =
+export const getAllBusinessesByUserId =
   (userId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
@@ -93,7 +93,7 @@ export const getAvailableBusinesses =
     } catch (error) {
       handleError(error, dispatch);
     } finally {
-    dispatch(setLoading(false));
+      dispatch(setLoading(false));
     }
   };
 
@@ -186,6 +186,21 @@ export const createBusiness =
     try {
       const response = await api.post("business/create", request);
       dispatch(addBusiness(response.data));
+      dispatch(setSuccess(true));
+      dispatch(setBusiness(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const deleteBusiness =
+  (businessId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`business/delete/${businessId}`);
+      dispatch(removeBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);

@@ -7,7 +7,9 @@
   --disabled: rgb(145, 145, 145);
   --separator: rgb(169, 171, 194);
   --success: rgb(62, 128, 70);
+  --success-hover: rgb(45, 105, 52);
   --cancel: rgb(207, 62, 51);
+  --cancel-hover: rgb(172, 44, 35);
   --badge: rgb(230, 230, 230);
 }
 
@@ -34,4 +36,5 @@ ul {
 
 table {
   border-collapse: collapse;
+  max-width: 20rem;
 }

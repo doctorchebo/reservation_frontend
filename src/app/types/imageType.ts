@@ -7,7 +7,7 @@ export interface Image {
 }
 
 export interface IFile {
-  file: File;
   id: number;
   url: string;
+  file: File;
 }
