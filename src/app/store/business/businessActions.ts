@@ -163,8 +163,9 @@ export const patchBusinessImages =
 
       request.files.forEach((fileObj, index) => {
         formData.append(`files[${index}].file`, fileObj.file);
-        formData.append(`files[${index}].id`, String(fileObj.id));
-        formData.append(`files[${index}].url`, fileObj.url);
+        fileObj.id && formData.append(`files[${index}].id`, String(fileObj.id));
+        fileObj.url &&
+          formData.append(`files[${index}].url`, String(fileObj.url));
       });
 
       const response = await apiMultipart.patch(

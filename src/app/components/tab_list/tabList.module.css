@@ -4,8 +4,9 @@
 .tabContainer {
   display: flex;
   flex-wrap: wrap;
+  gap: 1rem;
   padding: 1rem;
   background-color: var(--separator);
-  justify-content: space-around;
+  justify-content: flex-start;
   align-content: center;
 }

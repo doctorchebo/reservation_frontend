@@ -5,12 +5,14 @@ import {
   patchMemberFirstName,
   patchMemberLastName,
 } from "@/app/store/member/memberActions";
+import { setSuccess } from "@/app/store/member/memberSlice";
 import {
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
   MemberPatchLastNameRequest,
 } from "@/app/types/memberType";
 import { IOption } from "@/app/types/option";
+import { createToast } from "@/app/utils/createToast";
 import { useEffect } from "react";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
@@ -18,13 +20,20 @@ import Typography from "../typography/Typography";
 import styles from "./memberAdmin.module.css";
 const MemberAdmin = () => {
   const dispatch = useAppDispatch();
-  const { member } = useAppSelector((state) => state.member);
+  const { member, success } = useAppSelector((state) => state.member);
   const { addresses } = useAppSelector((state) => state.address);
   useEffect(() => {
     if (member) {
       dispatch(getAllAddressesByBusinessId(member.businessId));
     }
   }, [member]);
+
+  useEffect(() => {
+    if (success) {
+      createToast("Éxito!", "success", 3000);
+      dispatch(setSuccess(false));
+    }
+  }, [success]);
 
   const handlePatchFirstName = (
     firstName: string | number | undefined,

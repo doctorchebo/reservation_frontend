@@ -52,7 +52,11 @@ const RowFileList: React.FC<RowFileListProps> = ({
             } as IFile,
           ]);
         } else {
-          setImages([{ file: e.target.files![0] } as IFile]);
+          setImages([
+            {
+              file: e.target.files![0],
+            } as IFile,
+          ]);
         }
       }
     }
@@ -71,8 +75,7 @@ const RowFileList: React.FC<RowFileListProps> = ({
             name={name}
             onChange={(e) => handleFileChange(e)}
           />
-        ) : (
-          options &&
+        ) : options && options.length > 0 ? (
           options.map((option) => {
             return (
               <div key={option.id} className={styles.optionContainer}>
@@ -93,6 +96,14 @@ const RowFileList: React.FC<RowFileListProps> = ({
               </div>
             );
           })
+        ) : (
+          editMode && (
+            <input
+              type="file"
+              name={name}
+              onChange={(e) => handleFileChange(e)}
+            />
+          )
         )}
       </td>
       {!createMode && (
