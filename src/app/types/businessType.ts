@@ -1,3 +1,4 @@
+import { User } from "./UserType";
 import { Address } from "./addressType";
 import { Category } from "./categoryType";
 import { IFile, Image } from "./imageType";
@@ -7,12 +8,13 @@ import { Service } from "./serviceType";
 export interface Business {
   id: number;
   name: string;
-  ownerId: number;
+  owner: User;
   categories: Category[];
   addresses: Address[];
   images: Image[];
   members: Member[];
   services: Service[];
+  reservationCount: number;
   created: number;
 }
 

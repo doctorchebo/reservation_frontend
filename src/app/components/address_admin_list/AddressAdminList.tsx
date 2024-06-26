@@ -6,6 +6,7 @@ import {
   patchAddressLongitude,
   patchAddressName,
 } from "@/app/store/address/addressActions";
+import { setSuccess } from "@/app/store/address/addressSlice";
 import {
   AddressPatchIsMainAddressRequest,
   AddressPatchLatitudeRequest,
@@ -13,6 +14,7 @@ import {
   AddressPatchNameRequest,
 } from "@/app/types/addressType";
 import { IOption } from "@/app/types/option";
+import { createToast } from "@/app/utils/createToast";
 import React, { useEffect } from "react";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
@@ -21,7 +23,15 @@ import Typography from "../typography/Typography";
 const AddressAdminList = () => {
   const dispatch = useAppDispatch();
   const { business } = useAppSelector((state) => state.business);
-  const { addresses } = useAppSelector((state) => state.address);
+  const { addresses, success } = useAppSelector((state) => state.address);
+
+  useEffect(() => {
+    if (success) {
+      createToast("Éxito!", "success", 3000);
+      dispatch(setSuccess(false));
+    }
+  }, [success]);
+
   useEffect(() => {
     if (business) {
       dispatch(getAllAddressesByBusinessId(business.id));
@@ -72,13 +82,13 @@ const AddressAdminList = () => {
     business && (
       <>
         <Typography size="large" color="dark">
-          Direcciones
+          Sucursales
         </Typography>
         <table>
           <tbody>
             <RowDropdown
               key="main-address"
-              title="Dirección principal"
+              title="Sucursal principal"
               initialSelected={
                 addresses.find((address) => address.isMainAddress)?.id!
               }
@@ -92,7 +102,7 @@ const AddressAdminList = () => {
                 <React.Fragment key={address.id}>
                   <RowTitle
                     colspan={3}
-                    title={`Dirección ${index + 1}`}
+                    title={`Sucursal ${index + 1}`}
                     color="dark"
                     key={`${address.id}-title`}
                     size="medium"

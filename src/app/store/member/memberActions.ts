@@ -1,5 +1,6 @@
 import { api } from "@/app/api/api";
 import {
+  MemberCreateRequest,
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
   MemberPatchLastNameRequest,
@@ -9,6 +10,8 @@ import {
 import axios from "axios";
 import { AppDispatch } from "../store";
 import {
+  addMember,
+  removeMember,
   setError,
   setLoading,
   setMember,
@@ -63,6 +66,33 @@ export const getMemberByUserId =
     }
   };
 
+export const createMember =
+  (request: MemberCreateRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.post("member/create", request);
+      dispatch(addMember(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const deleteMember =
+  (memberId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`member/delete/${memberId}`);
+      dispatch(removeMember(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 export const patchMemberFirstName =
   (request: MemberPatchFirstNameRequest) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));

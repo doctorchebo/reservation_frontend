@@ -6,62 +6,85 @@ import styles from "./rowCheckbox.module.css";
 
 interface RowCheckboxProps {
   id?: number;
+  name?: string;
   title?: string;
-  enabled: boolean;
-  onSuccess: (checked: boolean, id?: number) => void;
+  initialValue: boolean;
+  onSuccess?: (checked: boolean, id?: number) => void;
+  createMode?: boolean;
+  onChange?: (checked: boolean, name?: string) => void;
+  value?: boolean;
 }
 
 const RowCheckbox: React.FC<RowCheckboxProps> = ({
+  name,
   title,
-  enabled,
+  initialValue,
   onSuccess,
+  onChange,
+  value,
+  createMode,
 }) => {
-  const [editMode, setEditMode] = useState(false);
-  const [checked, setChecked] = useState(enabled);
+  const [editMode, setEditMode] = useState(createMode);
+  const [checked, setChecked] = useState(initialValue || false);
   const handleSuccess = () => {
-    onSuccess(checked);
+    if (onSuccess) {
+      onSuccess(checked);
+    }
     setEditMode(false);
+  };
+
+  const handleOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    if (onChange) {
+      onChange(checked, name);
+    } else {
+      setChecked((prev) => !prev);
+    }
   };
   return (
     <tr>
       <td>
         <Typography size="medium" color="dark" align="left">
-          {title}
+          {title}:
         </Typography>
       </td>
       <td>
         <Checkbox
           disabled={!editMode}
-          checked={checked}
-          onChange={() => setChecked((prev) => !prev)}
+          checked={createMode ? value : checked}
+          onChange={handleOnChange}
           sx={{
             color: "rgb(65, 67, 97)",
           }}
         />
       </td>
-      <td>
-        <div className={styles.editContainer}>
-          {editMode ? (
-            <div className={styles.editBtnContainer}>
-              <MdCheck color="rgb(62, 128, 70)" onClick={handleSuccess} />
-              <MdCancel
-                color="rgb(207, 62, 51)"
-                onClick={() => {
-                  setChecked(enabled);
-                  setEditMode(false);
-                }}
-              />
-            </div>
-          ) : (
-            <div className={styles.editBtnContainer}>
-              <MdModeEdit
-                color="rgb(96, 99, 143)"
-                onClick={() => setEditMode(true)}
-              />
-            </div>
-          )}
-        </div>
-      </td>
+      {!createMode && (
+        <td>
+          <div className={styles.editContainer}>
+            {editMode ? (
+              <div className={styles.editBtnContainer}>
+                <MdCheck color="rgb(62, 128, 70)" onClick={handleSuccess} />
+                <MdCancel
+                  color="rgb(207, 62, 51)"
+                  onClick={() => {
+                    setChecked(initialValue);
+                    setEditMode(false);
+                  }}
+                />
+              </div>
+            ) : (
+              <div className={styles.editBtnContainer}>
+                <MdModeEdit
+                  color="rgb(96, 99, 143)"
+                  onClick={() => setEditMode(true)}
+                />
+              </div>
+            )}
+          </div>
+        </td>
+      )}
     </tr>
   );
 };

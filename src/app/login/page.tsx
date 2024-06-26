@@ -85,7 +85,6 @@ const Login = () => {
             onChange={handleChange}
             onKeyDown={(e) => {
               if (e.code === "Enter") {
-                console.log("Enter down! -----------");
                 buttonRef?.current?.focus();
               }
             }}

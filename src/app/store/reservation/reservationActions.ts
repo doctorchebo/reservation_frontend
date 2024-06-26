@@ -21,13 +21,29 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
   }
 };
 
-export const getReservationsByDate =
+export const getAllReservationsByStartDate =
   (serviceId: string, businessId: number, date: Dayjs) =>
   async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await api.get(
         `reservation/getAllByStartDate/${serviceId}/${businessId}/${date}`
+      );
+      dispatch(setReservations(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const getAllReservationsByMemberAndStartDate =
+  (memberId: string, serviceId: string, businessId: number, date: Dayjs) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.get(
+        `reservation/getAllByMemberAndStartDate/${memberId}/${serviceId}/${businessId}/${date}`
       );
       dispatch(setReservations(response.data));
     } catch (error) {

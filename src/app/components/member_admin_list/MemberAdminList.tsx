@@ -2,6 +2,9 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import { patchBusinessActiveMembers } from "@/app/store/business/businessActions";
 import { setSuccess } from "@/app/store/business/businessSlice";
 import {
+  createMember,
+  deleteMember,
+  getAllMembersByBusinessId,
   patchMemberAddress,
   patchMemberFirstName,
   patchMemberLastName,
@@ -12,6 +15,7 @@ import { Address } from "@/app/types/addressType";
 import { BusinessPatchMembersRequest } from "@/app/types/businessType";
 import {
   Member,
+  MemberCreateRequest,
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
   MemberPatchLastNameRequest,
@@ -20,7 +24,10 @@ import {
 } from "@/app/types/memberType";
 import { IOption } from "@/app/types/option";
 import { createToast } from "@/app/utils/createToast";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ConfirmationDialog from "../confirmation_dialog/ConfirmationDialog";
+import CreateMemberForm from "../create_member_form/CreateMemberForm";
+import RowButton from "../row_button/RowButton";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
@@ -31,6 +38,14 @@ const MemberAdminList = () => {
   const { members, success } = useAppSelector((state) => state.member);
   const { business } = useAppSelector((state) => state.business);
   const { addresses } = useAppSelector((state) => state.address);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (business) {
+      dispatch(getAllMembersByBusinessId(business.id));
+    }
+  }, [business]);
 
   useEffect(() => {
     if (success) {
@@ -38,6 +53,7 @@ const MemberAdminList = () => {
       dispatch(setSuccess(false));
     }
   }, [success]);
+
   const getOptions = (addresses: Address[]) => {
     return addresses.map((address) => {
       return { id: address.id, name: address.name } as IOption;
@@ -129,14 +145,38 @@ const MemberAdminList = () => {
     });
   };
 
+  const handleCreateMember = (request: MemberCreateRequest) => {
+    dispatch(createMember(request));
+  };
+
+  const handleOpenModal = (serviceId: string | number | undefined) => {
+    setSelectedId(serviceId as number);
+    setOpenModal(true);
+  };
+
+  const handleDeleteMember = () => {
+    selectedId && dispatch(deleteMember(selectedId));
+    setOpenModal(false);
+  };
+
   return (
     business &&
     members &&
     addresses && (
       <>
+        <ConfirmationDialog
+          cancelText="Cancelar"
+          onCancel={() => setOpenModal(false)}
+          onSuccess={handleDeleteMember}
+          open={openModal}
+          successText="Eliminar"
+          title="Eliminar Miembro"
+          content="¿Estás seguro de eliminar al miembro? Las reservas asociadas no tendrán a ningún miembro asociado"
+        />
         <Typography size="large" color="dark">
           Miembros
         </Typography>
+        <CreateMemberForm onSuccess={handleCreateMember} />
         <table>
           <tbody>
             <RowMultiselect
@@ -147,7 +187,7 @@ const MemberAdminList = () => {
               options={getMembersFullName(members)}
               onSuccess={handlePatchActiveMembers}
             />
-            {business.members.map((member, index) => {
+            {members.map((member, index) => {
               return (
                 <React.Fragment key={index}>
                   <RowTitle
@@ -191,8 +231,26 @@ const MemberAdminList = () => {
                     onSuccess={handlePatchMemberAddress}
                     options={getOptions(business.addresses)}
                     key={`${member.id}-address`}
-                    title="Dirección"
+                    title="Sucursal"
                   />
+                  <RowButton
+                    onClick={handleOpenModal}
+                    title="Eliminar"
+                    id={member.id}
+                    type="cancel"
+                  />
+                  {/* <RowMultiselect
+                    key={`${member.calendar.id}-schedules`}
+                    id={member.calendar.id}
+                    initialOptions={getOptions(
+                      addresses.filter((address) =>
+                        service.addressIds.includes(address.id)
+                      )
+                    )}
+                    onSuccess={handlePatchMemberSchedules}
+                    options={getOptions(addresses)}
+                    title="Horarios"
+                  /> */}
                 </React.Fragment>
               );
             })}

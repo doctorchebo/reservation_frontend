@@ -1,3 +1,5 @@
+import { Calendar } from "./calendarType";
+
 export interface Member {
   id: number;
   businessId: number;
@@ -8,12 +10,24 @@ export interface Member {
   phoneNumber: number;
   isActive: boolean;
   addressId: number;
+  calendar: Calendar;
   created: number;
   modified: number;
 }
 
 interface MemberPatchRequest {
   memberId: number;
+}
+
+export interface MemberCreateRequest {
+  businessId: number;
+  userId: number | undefined;
+  firstName: string;
+  lastName: string;
+  addressId: number;
+  phoneNumber: string;
+  title: string;
+  isEnabled: boolean;
 }
 export interface MemberPatchFirstNameRequest extends MemberPatchRequest {
   firstName: string;
@@ -29,7 +43,4 @@ export interface MemberPatchPhoneNumberRequest extends MemberPatchRequest {
 }
 export interface MemberPatchTitleRequest extends MemberPatchRequest {
   title: string;
-}
-export interface MemberPatchAddressRequest extends MemberPatchRequest {
-  addressId: number;
 }

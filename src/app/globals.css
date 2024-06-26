@@ -36,5 +36,10 @@ ul {
 
 table {
   border-collapse: collapse;
-  max-width: 20rem;
+  max-width: 70rem;
+}
+
+td,
+th {
+  padding: 0.5rem;
 }

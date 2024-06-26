@@ -10,7 +10,7 @@ import useToast from "@/app/hooks/useToast";
 import { getDurations } from "@/app/store/duration/durationActions";
 import {
   createReservation,
-  getReservationsByDate,
+  getAllReservationsByMemberAndStartDate,
 } from "@/app/store/reservation/reservationActions";
 import {
   setDate,
@@ -59,14 +59,19 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
   }, [reservation]);
 
   useEffect(() => {
-    if (serviceId && params.id) {
+    if (memberId && serviceId && params.id) {
       dispatch(
-        getReservationsByDate(serviceId, businessId, dayjs(date).startOf("day"))
+        getAllReservationsByMemberAndStartDate(
+          memberId,
+          serviceId,
+          businessId,
+          dayjs(date).startOf("day")
+        )
       );
 
       dispatch(getDurations(serviceId, params.id));
     }
-  }, [date, serviceId]);
+  }, [date, serviceId, memberId]);
 
   const handleSetDate = (
     value: dayjs.Dayjs | null,

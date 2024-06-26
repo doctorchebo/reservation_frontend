@@ -1,34 +1,57 @@
 import { IOption } from "@/app/types/option";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { MdCancel, MdCheck, MdModeEdit } from "react-icons/md";
 import Typography from "../typography/Typography";
 import styles from "./rowDropdown.module.css";
 interface RowDropdownProps {
   id?: number | string;
+  name?: string;
   title?: string;
-  initialSelected: number;
+  initialSelected?: number;
+  value?: number;
   options: IOption[];
-  onSuccess: (selected: number, id?: number | string) => void;
+  onSuccess?: (selected: number, id?: number | string) => void;
+  onChange?: (value: number, name?: string) => void;
+  createMode?: boolean;
 }
 
 const RowDropdown: React.FC<RowDropdownProps> = ({
   id,
+  name,
   title,
   options,
   initialSelected,
+  value,
   onSuccess,
+  onChange,
+  createMode,
 }) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(createMode);
   const [selected, setSelected] = useState(initialSelected);
   const handleSuccess = () => {
-    onSuccess(selected, id);
+    if (onSuccess) {
+      onSuccess(selected as number, id);
+    }
     setEditMode(false);
   };
 
   useEffect(() => {
     setSelected(initialSelected);
   }, [initialSelected]);
+
+  const handleOnChange = (e: SelectChangeEvent<number>) => {
+    if (onChange) {
+      onChange(e.target.value as number, name);
+    } else {
+      setSelected(e.target.value as number);
+    }
+  };
 
   return (
     <tr>
@@ -41,9 +64,8 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
         {editMode ? (
           <FormControl fullWidth>
             <Select
-              defaultValue={initialSelected}
-              value={selected}
-              onChange={(e) => setSelected(e.target.value as number)}
+              value={createMode ? value : selected || ""}
+              onChange={handleOnChange}
             >
               {options.map((option) => {
                 return (
@@ -60,29 +82,31 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
           </Typography>
         )}
       </td>
-      <td>
-        <div className={styles.editContainer}>
-          {editMode ? (
-            <div className={styles.editBtnContainer}>
-              <MdCheck color="rgb(62, 128, 70)" onClick={handleSuccess} />
-              <MdCancel
-                color="rgb(207, 62, 51)"
-                onClick={() => {
-                  setSelected(initialSelected);
-                  setEditMode(false);
-                }}
-              />
-            </div>
-          ) : (
-            <div className={styles.editBtnContainer}>
-              <MdModeEdit
-                color="rgb(96, 99, 143)"
-                onClick={() => setEditMode(true)}
-              />
-            </div>
-          )}
-        </div>
-      </td>
+      {!createMode && (
+        <td>
+          <div className={styles.editContainer}>
+            {editMode ? (
+              <div className={styles.editBtnContainer}>
+                <MdCheck color="rgb(62, 128, 70)" onClick={handleSuccess} />
+                <MdCancel
+                  color="rgb(207, 62, 51)"
+                  onClick={() => {
+                    setSelected(initialSelected);
+                    setEditMode(false);
+                  }}
+                />
+              </div>
+            ) : (
+              <div className={styles.editBtnContainer}>
+                <MdModeEdit
+                  color="rgb(96, 99, 143)"
+                  onClick={() => setEditMode(true)}
+                />
+              </div>
+            )}
+          </div>
+        </td>
+      )}
     </tr>
   );
 };

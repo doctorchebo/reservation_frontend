@@ -7,7 +7,13 @@ import {
 } from "@/app/types/addressType";
 import axios from "axios";
 import { AppDispatch } from "../store";
-import { addAddress, setAddresses, setError, setLoading } from "./addressSlice";
+import {
+  addAddress,
+  setAddresses,
+  setError,
+  setLoading,
+  setSuccess,
+} from "./addressSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
   if (axios.isAxiosError(error)) {
@@ -38,6 +44,7 @@ export const patchAddressName =
     try {
       const response = await api.patch("address/patchName", request);
       dispatch(addAddress(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -51,6 +58,7 @@ export const patchAddressLatitude =
     try {
       const response = await api.patch("address/patchLatitude", request);
       dispatch(addAddress(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -64,6 +72,7 @@ export const patchAddressLongitude =
     try {
       const response = await api.patch("address/patchLongitude", request);
       dispatch(addAddress(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -77,6 +86,7 @@ export const patchAddressIsMainAddress =
     try {
       const response = await api.patch("address/patchIsMainAddress", request);
       dispatch(addAddress(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

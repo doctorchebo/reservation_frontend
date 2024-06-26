@@ -21,7 +21,6 @@ const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
     name: "",
     image: undefined,
   });
-  console.log(newCategory);
   const handleSuccess = () => {
     onSuccess({
       name: newCategory.name,
@@ -34,7 +33,6 @@ const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
     optionName?: string | undefined
   ) => {
     if (optionName) {
-      console.log(e);
       if (Array.isArray(e)) {
         setNewCategory((prev) => ({
           ...prev,

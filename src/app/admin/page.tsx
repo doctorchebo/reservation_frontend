@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import AddressAdminList from "../components/address_admin_list/AddressAdminList";
 import BusinessAdminDetails from "../components/business_admin_details/BusinessAdminDetails";
+import BusinessAdminList from "../components/business_admin_list/BusinessAdminList";
 import Button from "../components/button/Button";
 import CategoryAdminList from "../components/category_admin_list/CategoryAdminList";
 import DurationAdminList from "../components/duration_admin_list/DurationAdminList";
@@ -55,9 +56,10 @@ const AdminPage = () => {
         return (
           <TabList
             pages={[
-              { name: "Administración", component: <CategoryAdminList /> },
+              { name: "Categorías", component: <CategoryAdminList /> },
+              { name: "Negocios", component: <BusinessAdminList /> },
             ]}
-            initialPage={"Administración"}
+            initialPage={"Categorías"}
           />
         );
       case "business":
@@ -65,7 +67,7 @@ const AdminPage = () => {
           <TabList
             pages={[
               { name: "Datos básicos", component: <BusinessAdminDetails /> },
-              { name: "Direcciones", component: <AddressAdminList /> },
+              { name: "Sucursales", component: <AddressAdminList /> },
               { name: "Miembros", component: <MemberAdminList /> },
               { name: "Servicios", component: <ServiceAdminList /> },
               { name: "Duraciones", component: <DurationAdminList /> },

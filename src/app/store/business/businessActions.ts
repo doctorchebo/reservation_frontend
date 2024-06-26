@@ -29,7 +29,7 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
   }
 };
 
-export const getBusinesses = () => async (dispatch: AppDispatch) => {
+export const getAllBusinesses = () => async (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   try {
     const response = await api.get("business/getAll");
@@ -102,7 +102,7 @@ export const patchBusinessName =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchName", request);
-      dispatch(addBusiness(response.data));
+      dispatch(setBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
@@ -117,7 +117,7 @@ export const patchBusinessCategories =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchCategories", request);
-      dispatch(addBusiness(response.data));
+      dispatch(setBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
@@ -131,7 +131,7 @@ export const patchBusinessActiveMembers =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchActiveMembers", request);
-      dispatch(addBusiness(response.data));
+      dispatch(setBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
@@ -145,7 +145,7 @@ export const patchBusinessServices =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("business/patchServices", request);
-      dispatch(addBusiness(response.data));
+      dispatch(setBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
@@ -171,7 +171,7 @@ export const patchBusinessImages =
         "/business/patchImages",
         formData
       );
-      dispatch(addBusiness(response.data));
+      dispatch(setBusiness(response.data));
       dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);

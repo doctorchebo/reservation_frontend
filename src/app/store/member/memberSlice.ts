@@ -31,6 +31,14 @@ const memberSlice = createSlice({
     setMember: (state, action: PayloadAction<Member>) => {
       state.member = action.payload;
     },
+    addMember: (state, action: PayloadAction<Member>) => {
+      state.members = [...state.members, action.payload];
+    },
+    removeMember: (state, action: PayloadAction<Member>) => {
+      state.members = state.members.filter(
+        (member) => member.id !== action.payload.id
+      );
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -43,6 +51,14 @@ const memberSlice = createSlice({
   },
 });
 
-export const { setMembers, setMemberId, setMember, setLoading, setError, setSuccess } =
-  memberSlice.actions;
+export const {
+  setMembers,
+  addMember,
+  removeMember,
+  setMemberId,
+  setMember,
+  setLoading,
+  setError,
+  setSuccess,
+} = memberSlice.actions;
 export default memberSlice.reducer;
