@@ -8,7 +8,7 @@ interface RowCheckboxProps {
   id?: number;
   name?: string;
   title?: string;
-  initialValue: boolean;
+  initialValue?: boolean;
   onSuccess?: (checked: boolean, id?: number | undefined) => void;
   createMode?: boolean;
   onChange?: (checked: boolean, name?: string) => void;
@@ -29,7 +29,7 @@ const RowCheckbox: React.FC<RowCheckboxProps> = ({
   const [checked, setChecked] = useState(initialValue);
   const handleSuccess = () => {
     if (onSuccess) {
-      onSuccess(checked, id);
+      onSuccess(checked || false, id);
     }
     setEditMode(false);
   };

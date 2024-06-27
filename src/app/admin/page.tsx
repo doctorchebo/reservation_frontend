@@ -4,6 +4,7 @@ import AddressAdminList from "../components/address_admin_list/AddressAdminList"
 import BusinessAdminDetails from "../components/business_admin_details/BusinessAdminDetails";
 import BusinessAdminList from "../components/business_admin_list/BusinessAdminList";
 import Button from "../components/button/Button";
+import ScheduleAdminList from "../components/schedule_admin_list/ScheduleAdminList";
 import CategoryAdminList from "../components/category_admin_list/CategoryAdminList";
 import DurationAdminList from "../components/duration_admin_list/DurationAdminList";
 import Loader from "../components/loader/Loader";
@@ -69,6 +70,7 @@ const AdminPage = () => {
               { name: "Datos básicos", component: <BusinessAdminDetails /> },
               { name: "Sucursales", component: <AddressAdminList /> },
               { name: "Miembros", component: <MemberAdminList /> },
+              { name: "Horarios", component: <ScheduleAdminList /> },
               { name: "Servicios", component: <ServiceAdminList /> },
               { name: "Duraciones", component: <DurationAdminList /> },
             ]}

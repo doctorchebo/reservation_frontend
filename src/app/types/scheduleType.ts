@@ -14,3 +14,11 @@ export interface ISchedule {
   created: number;
   modified: number;
 }
+
+export interface IScheduleCreateRequest {
+  calendarId: number;
+  dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  isWholeDay: boolean;
+  startTime?: number;
+  endTime?: number;
+}

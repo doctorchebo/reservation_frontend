@@ -5,10 +5,11 @@ import businessReducer from "./business/businessSlice";
 import categoryReducer from "./category/categorySlice";
 import durationReducer from "./duration/durationSlice";
 import memberReducer from "./member/memberSlice";
+import priceReducer from "./price/priceSlice";
 import reservationReducer from "./reservation/reservationSlice";
+import scheduleReducer from "./schedule/scheduleSlice";
 import serviceReducer from "./service/serviceSlice";
 import userReducer from "./user/userSlice";
-import priceReducer from "./price/priceSlice"
 export const store = configureStore({
   reducer: {
     reservation: reservationReducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     member: memberReducer,
     address: addressReducer,
     price: priceReducer,
+    schedule: scheduleReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

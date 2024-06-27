@@ -1,9 +1,7 @@
-import { ISchedule } from "./scheduleType";
-
 export interface Calendar {
   id: number;
-  schedules: ISchedule[];
-  unavailableDates: ISchedule[];
+  scheduleIds: number[];
+  unavailableScheduleIds: number[];
   memberId: number;
   created: number;
   modified: number;
