@@ -18,7 +18,7 @@ export default function RootLayout({
     <Provider store={store}>
       <html lang="en">
         <body className={inter.className}>
-          <div>
+          <div style={{ position: "relative" }}>
             <Header />
             <Toast />
             {children}

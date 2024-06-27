@@ -1,22 +1,19 @@
 .container {
   display: flex;
   position: relative;
-  display: flex;
   margin-top: 5rem;
-  min-height: 300vh;
 }
 
 .entityContainer {
   display: flex;
   flex-direction: column;
   width: 30%;
+  height: 100vh;
   background-color: var(--background);
 }
 
 .listViewContainer {
-  position: absolute;
+  width: 70%;
   display: flex;
   flex-direction: column;
-  width: 70%;
-  right: 0;
 }

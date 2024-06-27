@@ -9,13 +9,14 @@ interface RowCheckboxProps {
   name?: string;
   title?: string;
   initialValue: boolean;
-  onSuccess?: (checked: boolean, id?: number) => void;
+  onSuccess?: (checked: boolean, id?: number | undefined) => void;
   createMode?: boolean;
   onChange?: (checked: boolean, name?: string) => void;
   value?: boolean;
 }
 
 const RowCheckbox: React.FC<RowCheckboxProps> = ({
+  id,
   name,
   title,
   initialValue,
@@ -25,10 +26,10 @@ const RowCheckbox: React.FC<RowCheckboxProps> = ({
   createMode,
 }) => {
   const [editMode, setEditMode] = useState(createMode);
-  const [checked, setChecked] = useState(initialValue || false);
+  const [checked, setChecked] = useState(initialValue);
   const handleSuccess = () => {
     if (onSuccess) {
-      onSuccess(checked);
+      onSuccess(checked, id);
     }
     setEditMode(false);
   };

@@ -3,6 +3,7 @@ import {
   MemberCreateRequest,
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
+  MemberPatchIsActiveRequest,
   MemberPatchLastNameRequest,
   MemberPatchPhoneNumberRequest,
   MemberPatchTitleRequest,
@@ -153,6 +154,20 @@ export const patchMemberAddress =
     dispatch(setLoading(true));
     try {
       const response = await api.patch("member/patchAddress", request);
+      dispatch(setMember(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const patchMemberIsActive =
+  (request: MemberPatchIsActiveRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.patch("member/patchIsActive", request);
       dispatch(setMember(response.data));
       dispatch(setSuccess(true));
     } catch (error) {

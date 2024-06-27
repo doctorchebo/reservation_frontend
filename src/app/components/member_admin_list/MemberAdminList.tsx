@@ -7,6 +7,7 @@ import {
   getAllMembersByBusinessId,
   patchMemberAddress,
   patchMemberFirstName,
+  patchMemberIsActive,
   patchMemberLastName,
   patchMemberPhoneNumber,
   patchMemberTitle,
@@ -18,6 +19,7 @@ import {
   MemberCreateRequest,
   MemberPatchAddressRequest,
   MemberPatchFirstNameRequest,
+  MemberPatchIsActiveRequest,
   MemberPatchLastNameRequest,
   MemberPatchPhoneNumberRequest,
   MemberPatchTitleRequest,
@@ -28,6 +30,7 @@ import React, { useEffect, useState } from "react";
 import ConfirmationDialog from "../confirmation_dialog/ConfirmationDialog";
 import CreateMemberForm from "../create_member_form/CreateMemberForm";
 import RowButton from "../row_button/RowButton";
+import RowCheckbox from "../row_checkbox/RowCheckbox";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
@@ -136,6 +139,19 @@ const MemberAdminList = () => {
       );
   };
 
+  const handlePatchMemberIsActive = (
+    isActive: boolean,
+    memberId?: number | undefined
+  ) => {
+    memberId &&
+      dispatch(
+        patchMemberIsActive({
+          memberId: memberId,
+          isActive: isActive,
+        } as MemberPatchIsActiveRequest)
+      );
+  };
+
   const getMembersFullName = (members: Member[]) => {
     return members.map((member) => {
       return {
@@ -232,6 +248,13 @@ const MemberAdminList = () => {
                     options={getOptions(business.addresses)}
                     key={`${member.id}-address`}
                     title="Sucursal"
+                  />
+                  <RowCheckbox
+                    initialValue={member.isActive}
+                    id={member.id}
+                    key={`${member.id}-isActive`}
+                    onSuccess={handlePatchMemberIsActive}
+                    title="Activo"
                   />
                   <RowButton
                     onClick={handleOpenModal}

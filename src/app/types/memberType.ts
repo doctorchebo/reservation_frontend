@@ -44,3 +44,7 @@ export interface MemberPatchPhoneNumberRequest extends MemberPatchRequest {
 export interface MemberPatchTitleRequest extends MemberPatchRequest {
   title: string;
 }
+
+export interface MemberPatchIsActiveRequest extends MemberPatchRequest {
+  isActive: boolean;
+}

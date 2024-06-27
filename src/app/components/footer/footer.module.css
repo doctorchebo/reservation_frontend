@@ -1,4 +1,6 @@
 .container {
+  position: absolute;
+  bottom: 0;
   display: flex;
   align-self: flex-end;
   width: 100vw;
@@ -6,7 +8,7 @@
   background-color: var(--main);
   align-items: center;
   justify-content: center;
-  bottom: 0;
+  transform: translateY(100%);
 }
 .txtContainer {
   padding: 1rem;
