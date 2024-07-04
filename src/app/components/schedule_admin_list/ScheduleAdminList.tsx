@@ -67,8 +67,9 @@ const ScheduleAdminList = () => {
     if (success) {
       createToast("¡Éxito!", "success", 3000);
       dispatch(setSuccess(false));
+      business && dispatch(getAllSchedulesByBusinessId(business.id));
     }
-  }, [success]);
+  }, [success, business]);
 
   useEffect(() => {
     if (error) {
