@@ -1,9 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import { getAllDurationsByBusinessId } from "@/app/store/duration/durationActions";
-import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import { getAllSchedulesByCalendarId } from "@/app/store/schedule/scheduleActions";
 import { IOption } from "@/app/types/option";
-import { IScheduleCreateRequest } from "@/app/types/scheduleType";
+import { ScheduleCreateRequest } from "@/app/types/scheduleType";
 import { getDaysOfWeek } from "@/app/utils/getDaysOfWeek";
 import dayjs, { Dayjs } from "dayjs";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -14,7 +13,7 @@ import RowTimePicker from "../row_time_picker/RowTimePicker";
 import styles from "./createScheduleForm.module.css";
 interface CreateScheduleFormProps {
   calendarId: number;
-  onSuccess: (value: IScheduleCreateRequest) => void;
+  onSuccess: (value: ScheduleCreateRequest) => void;
 }
 
 const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
@@ -30,19 +29,28 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
     setVisible(false);
   };
   useEffect(() => {
-    if (business && calendarId) {
-      dispatch(getAllMembersByBusinessId(business.id));
+    if (business && calendarId && visible) {
       dispatch(getAllDurationsByBusinessId(business.id));
       dispatch(getAllSchedulesByCalendarId(calendarId));
     }
-  }, [business, calendarId]);
+  }, [business, calendarId, visible]);
 
-  const [newSchedule, setNewSchedule] = useState({
+  const [newSchedule, setNewSchedule] = useState<{
+    calendarId: number;
+    dayOfWeek: undefined | number;
+    isWholeDay: boolean;
+    startTime: Dayjs | undefined;
+    endTime: Dayjs | undefined;
+  }>({
     calendarId: calendarId,
-    dayOfWeek: 1,
+    dayOfWeek: undefined,
     isWholeDay: false,
-    startTime: 0,
-    endTime: 0,
+    startTime: dayjs(
+      `${new Date("2024-01-01T09:00:00").toISOString().split("T")[0]}T09:00`
+    ),
+    endTime: dayjs(
+      `${new Date("2024-01-01T17:00:00").toISOString().split("T")[0]}T17:00`
+    ),
   });
 
   useEffect(() => {
@@ -51,7 +59,7 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
         return {
           ...prev,
           dayOfWeek: days.filter(
-            (day) => !schedules.map((s) => s.dayOfWeek).includes(day)
+            (day) => !schedules.map((s) => s.dayOfWeek - 1).includes(day)
           )[0],
         };
       });
@@ -62,11 +70,15 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
     if (business) {
       onSuccess({
         calendarId: calendarId,
-        dayOfWeek: newSchedule.dayOfWeek,
-        startTime: newSchedule.isWholeDay ? null : newSchedule.startTime,
-        endTime: newSchedule.isWholeDay ? null : newSchedule.endTime,
+        dayOfWeek: newSchedule.dayOfWeek!,
+        startTime: newSchedule.isWholeDay
+          ? undefined
+          : newSchedule.startTime!.valueOf() / 1000,
+        endTime: newSchedule.isWholeDay
+          ? undefined
+          : newSchedule.endTime!.valueOf() / 1000,
         isWholeDay: newSchedule.isWholeDay,
-      } as IScheduleCreateRequest);
+      } as ScheduleCreateRequest);
       setVisible(false);
     }
   };
@@ -76,12 +88,11 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
       | ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       | IOption[]
       | boolean
-      | number
-      | Dayjs,
+      | number,
     optionName?: string | undefined
   ) => {
     if (optionName) {
-      if (typeof e == "boolean" || typeof e == "number" || e instanceof Dayjs) {
+      if (typeof e == "boolean" || typeof e == "number") {
         setNewSchedule((prev) => ({
           ...prev,
           [optionName]: e,
@@ -109,18 +120,20 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
           <div className={styles.createForm}>
             <table>
               <tbody>
-                <RowDropdown
-                  options={getDaysOfWeek(
-                    schedules.map((schedule) => {
-                      return schedule.dayOfWeek;
-                    })
-                  )}
-                  createMode={true}
-                  name="dayOfWeek"
-                  onChange={handleOnChange}
-                  title="Día de la semana"
-                  value={newSchedule.dayOfWeek}
-                />
+                {newSchedule.dayOfWeek && (
+                  <RowDropdown
+                    options={getDaysOfWeek(
+                      schedules.map((schedule) => {
+                        return schedule.dayOfWeek;
+                      })
+                    , true)}
+                    createMode={true}
+                    name="dayOfWeek"
+                    onChange={handleOnChange}
+                    title="Día de la semana"
+                    value={newSchedule.dayOfWeek}
+                  />
+                )}
                 <RowCheckbox
                   createMode={true}
                   name="isWholeDay"
@@ -134,19 +147,15 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
                       onChange={handleOnChange}
                       title="Hora de inicio"
                       createMode={true}
-                      name="startDate"
-                      value={dayjs(
-                        `${new Date().toISOString().split("T")[0]}T09:00`
-                      )}
+                      name="startTime"
+                      value={newSchedule.startTime}
                     />
                     <RowTimePicker
                       onChange={handleOnChange}
                       title="Hora de fin"
                       createMode={true}
-                      name="endDate"
-                      value={dayjs(
-                        `${new Date().toISOString().split("T")[0]}T17:00`
-                      )}
+                      name="endTime"
+                      value={newSchedule.endTime}
                     />
                   </>
                 )}

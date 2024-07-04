@@ -6,18 +6,19 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdCancel, MdCheck, MdModeEdit } from "react-icons/md";
 import Typography from "../typography/Typography";
 import styles from "./rowTimePicker.module.css";
 
 interface RowTimePickerProps {
   createMode?: boolean;
-  initialValue?: number;
+  initialValue?: Dayjs;
   id?: number | string;
+  error?: boolean;
   name?: string;
-  onChange?: (value: dayjs.Dayjs, name?: string) => void;
-  onSuccess?: (value: Dayjs) => void;
+  onChange?: (value: number, name?: string) => void;
+  onSuccess?: (value: number, id?: number | string) => void;
   title: string;
   value?: Dayjs;
 }
@@ -25,30 +26,37 @@ const RowTimePicker: React.FC<RowTimePickerProps> = ({
   createMode,
   initialValue,
   id,
+  error,
   name,
   onChange,
   onSuccess,
   title,
   value,
 }) => {
-  const [time, setTime] = useState<Dayjs | null>(dayjs(initialValue));
+  const [time, setTime] = useState<Dayjs | null>(initialValue || null);
   const [editMode, setEditMode] = useState(createMode);
   const handleOnChange = (
     value: dayjs.Dayjs | null,
     context: PickerChangeHandlerContext<TimeValidationError>
   ) => {
     if (onChange) {
-      onChange(value!, name);
+      onChange(dayjs(value!).valueOf(), name);
     } else {
       setTime(value);
     }
   };
   const handleSuccess = () => {
     if (onSuccess) {
-      onSuccess(time!);
+      onSuccess(dayjs(time!).valueOf(), id);
     }
     setEditMode(false);
   };
+  useEffect(() => {
+    // reset value to initial value if there's an error
+    if (error) {
+      setTime(initialValue || null);
+    }
+  }, [error]);
   return (
     <tr>
       <td>
@@ -66,7 +74,7 @@ const RowTimePicker: React.FC<RowTimePickerProps> = ({
             />
           </LocalizationProvider>
         ) : (
-          <Typography color="dark" size="small">
+          <Typography color="dark" size="small" align="left">
             {value ? value.format("HH:mm") : time!.format("HH:mm")}
           </Typography>
         )}

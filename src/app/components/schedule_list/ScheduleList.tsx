@@ -1,6 +1,6 @@
 import { Duration } from "@/app/types/durationType";
 import { Reservation } from "@/app/types/reservationType";
-import { Schedule as ISchedule } from "@/app/types/scheduleType";
+import { AvailableSchedule as ISchedule } from "@/app/types/scheduleType";
 import dayjs from "dayjs";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ interface ScheduleListProps {
 const ScheduleList: React.FC<ScheduleListProps> = ({
   duration,
   reservations,
-  handleSelected
+  handleSelected,
 }) => {
   const [schedules, setSchedules] = useState<ISchedule[]>([]);
   useEffect(() => {
@@ -54,7 +54,13 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
     <div className={styles.container}>
       <div className={styles.title}>Horarios Disponibles</div>
       {schedules.map((schedule) => {
-        return <Schedule key={schedule.id} schedule={schedule} handleSelected={handleSelected}/>;
+        return (
+          <Schedule
+            key={schedule.id}
+            schedule={schedule}
+            handleSelected={handleSelected}
+          />
+        );
       })}
     </div>
   );

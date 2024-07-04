@@ -35,3 +35,9 @@ export interface AuthError {
   errors: FieldErrors;
   path: "";
 }
+export interface AuthErrorSimple {
+  timestamp: number;
+  status: number;
+  error: string;
+  path: "";
+}

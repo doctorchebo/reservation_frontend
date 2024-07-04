@@ -1,29 +1,30 @@
-import { ISchedule } from "@/app/types/scheduleType";
+import { AuthErrorSimple } from "@/app/types/authTypes";
+import { Schedule } from "@/app/types/scheduleType";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface Schedule {
-  schedules: ISchedule[];
-  schedule: ISchedule | undefined;
+interface ScheduleState {
+  schedules: Schedule[];
+  schedule: Schedule | undefined;
   loading: boolean;
-  error: string | undefined;
+  error: AuthErrorSimple | undefined;
   success: boolean;
 }
 
-const initialState: Schedule = {
+const initialState: ScheduleState = {
   schedules: [],
   schedule: undefined,
   loading: false,
   error: undefined,
   success: false,
 };
-const businessSlice = createSlice({
-  name: "Business",
+const scheduleSlice = createSlice({
+  name: "schedule",
   initialState,
   reducers: {
-    setSchedules: (state, action: PayloadAction<ISchedule[]>) => {
+    setSchedules: (state, action: PayloadAction<Schedule[]>) => {
       state.schedules = action.payload;
     },
-    addSchedule: (state, action: PayloadAction<ISchedule>) => {
+    addSchedule: (state, action: PayloadAction<Schedule>) => {
       state.schedules = state.schedules.map((schedule) => {
         if (schedule.id === action.payload.id) {
           return action.payload;
@@ -32,18 +33,18 @@ const businessSlice = createSlice({
         }
       });
     },
-    removeSchedule: (state, action: PayloadAction<ISchedule>) => {
+    removeSchedule: (state, action: PayloadAction<Schedule>) => {
       state.schedules = state.schedules.filter(
-        (business) => business.id !== action.payload.id
+        (schedule) => schedule.id !== action.payload.id
       );
     },
-    setSchedule: (state, action: PayloadAction<ISchedule>) => {
+    setSchedule: (state, action: PayloadAction<Schedule>) => {
       state.schedule = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setError: (state, action: PayloadAction<string>) => {
+    setError: (state, action: PayloadAction<AuthErrorSimple | undefined>) => {
       state.error = action.payload;
     },
     setSuccess: (state, action: PayloadAction<boolean>) => {
@@ -60,5 +61,5 @@ export const {
   setLoading,
   setError,
   setSuccess,
-} = businessSlice.actions;
-export default businessSlice.reducer;
+} = scheduleSlice.actions;
+export default scheduleSlice.reducer;

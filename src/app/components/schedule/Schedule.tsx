@@ -1,11 +1,11 @@
 import useAuth from "@/app/hooks/useAuth";
-import { Schedule as ISchedule } from "@/app/types/scheduleType";
+import { AvailableSchedule as ISchedule } from "@/app/types/scheduleType";
 import { useRouter } from "next/navigation";
 import React from "react";
 import styles from "./schedule.module.css";
 interface ScheduleProps {
   schedule: ISchedule;
-  handleSelected: (schedule: Date)=> void;
+  handleSelected: (schedule: Date) => void;
 }
 
 const Schedule: React.FC<ScheduleProps> = ({ schedule, handleSelected }) => {

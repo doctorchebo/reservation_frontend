@@ -4,12 +4,12 @@ import AddressAdminList from "../components/address_admin_list/AddressAdminList"
 import BusinessAdminDetails from "../components/business_admin_details/BusinessAdminDetails";
 import BusinessAdminList from "../components/business_admin_list/BusinessAdminList";
 import Button from "../components/button/Button";
-import ScheduleAdminList from "../components/schedule_admin_list/ScheduleAdminList";
 import CategoryAdminList from "../components/category_admin_list/CategoryAdminList";
 import DurationAdminList from "../components/duration_admin_list/DurationAdminList";
 import Loader from "../components/loader/Loader";
 import MemberAdmin from "../components/member_admin/MemberAdmin";
 import MemberAdminList from "../components/member_admin_list/MemberAdminList";
+import ScheduleAdminList from "../components/schedule_admin_list/ScheduleAdminList";
 import ServiceAdminList from "../components/service_admin_list/ServiceAdminList";
 import TabList from "../components/tab_list/TabList";
 import Typography from "../components/typography/Typography";
@@ -46,7 +46,7 @@ const AdminPage = () => {
     }
   }, [business]); */
 
-  const handleSelectBusiness = (business: Business) => {
+  const handleSelectBusiness = async (business: Business) => {
     dispatch(setBusiness(business));
     setShownPage("business");
   };
