@@ -1,5 +1,6 @@
 "use client";
 import BusinessInfo from "@/app/components/business_info/BusinessInfo";
+import Loader from "@/app/components/loader/Loader";
 import MemberList from "@/app/components/member_list/MemberList";
 import ReservationDialog from "@/app/components/reservation_dialog/ReservationDialog";
 import ScheduleList from "@/app/components/schedule_list/ScheduleList";
@@ -7,7 +8,9 @@ import ServiceList from "@/app/components/service_list/ServiceList";
 import Toast from "@/app/components/toast/Toast";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import useToast from "@/app/hooks/useToast";
-import { getDurations } from "@/app/store/duration/durationActions";
+import { getBusinessById } from "@/app/store/business/businessActions";
+import { getAllDurationsByServiceIdAndBusinessId } from "@/app/store/duration/durationActions";
+import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import {
   createReservation,
   getAllReservationsByMemberAndStartDate,
@@ -17,6 +20,8 @@ import {
   setReservation,
   setSchedule,
 } from "@/app/store/reservation/reservationSlice";
+import { getAllSchedulesByMemberId } from "@/app/store/schedule/scheduleActions";
+import { getServicesByBusinessId } from "@/app/store/service/serviceActions";
 import { ReservationRequest } from "@/app/types/reservationType";
 import CheckIcon from "@mui/icons-material/Check";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
@@ -39,15 +44,29 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
   const [reservationName, setReservationName] = useState("Nueva Reserva");
   const businessId = params.id;
   const dispatch = useAppDispatch();
-  const { serviceId } = useAppSelector((state) => state.service);
+  const { business } = useAppSelector((state) => state.business);
+  const { serviceId, services } = useAppSelector((state) => state.service);
   const { duration } = useAppSelector((state) => state.duration);
-  const { memberId } = useAppSelector((state) => state.member);
+  const { memberId, members } = useAppSelector((state) => state.member);
   const { date, reservations, reservation, schedule } = useAppSelector(
     (state) => state.reservation
   );
   const { user } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   useToast("Reserva creada!", "Éxito", 3000);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (businessId) {
+        await dispatch(getAllMembersByBusinessId(businessId));
+        await dispatch(getBusinessById(businessId));
+        await dispatch(getServicesByBusinessId(businessId));
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (reservation) {
@@ -59,7 +78,7 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
   }, [reservation]);
 
   useEffect(() => {
-    if (memberId && serviceId && params.id) {
+    if (memberId && serviceId && businessId) {
       dispatch(
         getAllReservationsByMemberAndStartDate(
           memberId,
@@ -69,33 +88,39 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
         )
       );
 
-      dispatch(getDurations(serviceId, params.id));
+      dispatch(getAllDurationsByServiceIdAndBusinessId(serviceId, businessId));
+      dispatch(getAllSchedulesByMemberId(Number(memberId)));
     }
-  }, [date, serviceId, memberId]);
+  }, [date, serviceId, memberId, businessId]);
 
-  const handleSetDate = (
-    value: dayjs.Dayjs | null,
+  const handleChangeDate = (
+    date: dayjs.Dayjs | null,
     context: PickerChangeHandlerContext<DateValidationError>
   ) => {
-    dispatch(setDate(value!));
+    date && dispatch(setDate(date));
   };
 
   const handleBooking = () => {
-    if (serviceId && memberId && date && user) {
+    if (serviceId && memberId && date && user && schedule) {
       const reservation: ReservationRequest = {
         name: reservationName,
         businessId: businessId,
         memberId: memberId,
         serviceId: serviceId,
-        startTime: dayjs(schedule).set("millisecond", 0).set("second", 0),
+        startTime: schedule,
         userId: user.id,
       };
       dispatch(createReservation(reservation));
     }
   };
 
-  const handleSelected = (schedule: Date) => {
-    dispatch(setSchedule(schedule));
+  const handleSelectSchedule = (schedule: Date) => {
+    const formattedDateTime = dayjs(date)
+      .set("hour", dayjs(schedule).hour())
+      .set("minute", dayjs(schedule).minute())
+      .set("millisecond", 0)
+      .set("second", 0);
+    dispatch(setSchedule(formattedDateTime));
     setOpen(true);
   };
 
@@ -105,49 +130,66 @@ const BusinessPage = ({ params }: { params: { id: number } }) => {
     setReservationName(e.target.value);
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className={styles.container}>
-      <Toast />
-      <div className={styles.businessContainer}>
-        <BusinessInfo businessId={businessId} />
+    business && (
+      <div className={styles.container}>
+        <Toast />
+        <div className={styles.businessContainer}>
+          <BusinessInfo business={business} />
+        </div>
+        <div className={styles.dateContainer}>
+          {date && (
+            <ReservationDialog
+              open={open}
+              handleBooking={handleBooking}
+              handleClose={() => setOpen(false)}
+              member={
+                members.filter((member) => member.id === Number(memberId))[0]
+              }
+              service={
+                services.filter((service) => service.id === serviceId)[0]
+              }
+            />
+          )}
+          <FormControl>
+            <InputLabel>Nombre:</InputLabel>
+            <OutlinedInput
+              value={reservationName}
+              onChange={handleReservationNameChange}
+            />
+          </FormControl>
+          <ServiceList services={services} />
+          <MemberList members={members} />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              format="DD/MM/YYYY"
+              label="Fecha"
+              slots={{
+                openPickerIcon:
+                  date == null || !date.isValid()
+                    ? EditCalendarIcon
+                    : CheckIcon,
+              }}
+              value={date}
+              onChange={handleChangeDate}
+              disablePast={true}
+            />
+          </LocalizationProvider>
+          {duration && reservations && memberId && serviceId && date && (
+            <ScheduleList
+              date={date}
+              duration={duration}
+              reservations={reservations}
+              handleSelect={handleSelectSchedule}
+            />
+          )}
+        </div>
       </div>
-      <div className={styles.dateContainer}>
-        <ReservationDialog
-          open={open}
-          handleBooking={handleBooking}
-          handleClose={() => setOpen(false)}
-        />
-        <FormControl>
-          <InputLabel>Nombre:</InputLabel>
-          <OutlinedInput
-            value={reservationName}
-            onChange={handleReservationNameChange}
-          />
-        </FormControl>
-        <ServiceList businessId={businessId} />
-        <MemberList businessId={businessId} />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            format="DD/MM/YYYY"
-            label="Fecha"
-            slots={{
-              openPickerIcon:
-                date == null || !date.isValid() ? EditCalendarIcon : CheckIcon,
-            }}
-            value={date}
-            onChange={handleSetDate}
-            disablePast={true}
-          />
-        </LocalizationProvider>
-        {duration && reservations && memberId && serviceId && (
-          <ScheduleList
-            duration={duration}
-            reservations={reservations}
-            handleSelected={handleSelected}
-          />
-        )}
-      </div>
-    </div>
+    )
   );
 };
 

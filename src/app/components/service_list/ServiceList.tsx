@@ -1,9 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import {
-  getServicesByBusinessId,
-  getServicesByCategoryId,
-} from "@/app/store/service/serviceActions";
-import { setserviceId } from "@/app/store/service/serviceSlice";
+import { setServiceId } from "@/app/store/service/serviceSlice";
+import { Service } from "@/app/types/serviceType";
 import {
   FormControl,
   InputLabel,
@@ -11,65 +8,41 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import styles from "./serviceList.module.css";
 
 interface ServiceListProps {
-  categoryId?: number;
-  businessId?: number;
+  services?: Service[];
 }
 
-const ServiceList: React.FC<ServiceListProps> = ({
-  categoryId,
-  businessId,
-}) => {
+const ServiceList: React.FC<ServiceListProps> = ({ services }) => {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (categoryId) {
-      dispatch(getServicesByCategoryId(categoryId));
-    }
-  }, [categoryId]);
-
-  const { services, serviceId } = useAppSelector((state) => state.service);
-
-  const [currentServiceId, setCurrentServiceId] = useState("");
-
-  useEffect(() => {
-    if (serviceId) {
-      setCurrentServiceId(serviceId);
-    }
-  }, [serviceId]);
-
-  useEffect(() => {
-    if (businessId) {
-      dispatch(getServicesByBusinessId(businessId));
-    }
-  }, [businessId]);
-
+  const { serviceId } = useAppSelector((state) => state.service);
   const handleChange = (event: SelectChangeEvent) => {
-    dispatch(setserviceId(event.target.value as string));
+    dispatch(setServiceId(event.target.value as string));
   };
 
   return (
-    <div className={styles.container}>
-      <FormControl fullWidth>
-        <InputLabel>Servicio</InputLabel>
-        <Select
-          defaultValue={currentServiceId}
-          value={currentServiceId!}
-          label="Service"
-          onChange={handleChange}
-        >
-          {services.map((service) => {
-            return (
-              <MenuItem key={service.id} value={service.id}>
-                {service.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    </div>
+    services && (
+      <div className={styles.container}>
+        <FormControl fullWidth>
+          <InputLabel>Servicio</InputLabel>
+          <Select
+            defaultValue={serviceId || ""}
+            value={serviceId || ""}
+            label="Service"
+            onChange={handleChange}
+          >
+            {services.map((service) => {
+              return (
+                <MenuItem key={service.id} value={service.id}>
+                  {service.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </div>
+    )
   );
 };
 

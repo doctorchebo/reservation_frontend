@@ -1,22 +1,19 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllBusinessesByCategoryId } from "@/app/store/business/businessActions";
 import { setBusinesses, setSearched } from "@/app/store/business/businessSlice";
+import { Business as IBusiness } from "@/app/types/businessType";
 import { useEffect } from "react";
 import Business from "../business/Business";
 import Loader from "../loader/Loader";
 import styles from "./businessList.module.css";
 
 interface BusinessListProps {
-  categoryId: number;
+  businesses: IBusiness[];
 }
-const BusinessList: React.FC<BusinessListProps> = ({ categoryId }) => {
-  const { businesses, loading, searched } = useAppSelector(
-    (state) => state.business
-  );
+const BusinessList: React.FC<BusinessListProps> = ({ businesses }) => {
+  const { loading, searched } = useAppSelector((state) => state.business);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllBusinessesByCategoryId(categoryId));
     return () => {
       dispatch(setSearched(false));
       dispatch(setBusinesses([]));

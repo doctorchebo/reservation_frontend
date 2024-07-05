@@ -16,7 +16,7 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
   }
 };
 
-export const getDurations =
+export const getAllDurationsByServiceIdAndBusinessId =
   (serviceId: string, businessId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {

@@ -1,19 +1,20 @@
 import useAuth from "@/app/hooks/useAuth";
 import { AvailableSchedule as ISchedule } from "@/app/types/scheduleType";
+import { getHoursAndMinutes } from "@/app/utils/getHoursAndMinutes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import styles from "./schedule.module.css";
 interface ScheduleProps {
   schedule: ISchedule;
-  handleSelected: (schedule: Date) => void;
+  handleSelect: (schedule: Date) => void;
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ schedule, handleSelected }) => {
+const Schedule: React.FC<ScheduleProps> = ({ schedule, handleSelect }) => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const handleClick = () => {
     if (isAuthenticated) {
-      handleSelected(schedule.time);
+      handleSelect(schedule.time);
     } else {
       router.push("/login");
     }
@@ -24,8 +25,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, handleSelected }) => {
       disabled={!schedule.isAvailable}
       onClick={handleClick}
     >
-      {schedule.time.getHours().toString().padStart(2, "0")}:
-      {schedule.time.getMinutes().toString().padStart(2, "0")}
+      {getHoursAndMinutes(schedule.time)}
     </button>
   );
 };

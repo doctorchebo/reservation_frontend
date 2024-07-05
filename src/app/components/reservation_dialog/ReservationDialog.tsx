@@ -1,6 +1,7 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getMemberById } from "@/app/store/member/memberActions";
-import { getServiceById } from "@/app/store/service/serviceActions";
+import { useAppSelector } from "@/app/hooks/hooks";
+import { Member } from "@/app/types/memberType";
+import { Service } from "@/app/types/serviceType";
+import { getHoursAndMinutes } from "@/app/utils/getHoursAndMinutes";
 import {
   Dialog,
   DialogActions,
@@ -8,37 +9,27 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "../button/Button";
 interface DialogProps {
   open: boolean;
   handleBooking: () => void;
   handleClose: () => void;
+  member: Member;
+  service: Service;
 }
 
 const ReservationDialog: React.FC<DialogProps> = ({
   open,
   handleBooking,
   handleClose,
+  service,
+  member,
 }) => {
-  const dispatch = useAppDispatch();
-  const { serviceId, service } = useAppSelector((state) => state.service);
-  const { memberId, member } = useAppSelector((state) => state.member);
   const { business: currentBusiness } = useAppSelector(
     (state) => state.business
   );
   const { schedule } = useAppSelector((state) => state.reservation);
-
-  useEffect(() => {
-    if (serviceId) {
-      dispatch(getServiceById(serviceId));
-    }
-    if (memberId) {
-      dispatch(getMemberById(memberId));
-    }
-  }, [serviceId, memberId]);
-
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Confirmar reserva</DialogTitle>
@@ -49,12 +40,11 @@ const ReservationDialog: React.FC<DialogProps> = ({
               Se creará una reserva con los siguientes datos:
             </DialogContentText>
             <DialogContentText>
-              <strong>Fecha:</strong> {dayjs(schedule).format("DD/MM/YYYY")}
+              <strong>Fecha:</strong> {schedule.format("DD/MM/YYYY")}
             </DialogContentText>
             <DialogContentText>
-              <strong>Hora:</strong>{" "}
-              {dayjs(schedule).hour().toString().padStart(2, "0")}:
-              {dayjs(schedule).minute().toString().padStart(2, "0")}
+              <strong>Hora: </strong>
+              {getHoursAndMinutes(schedule.valueOf())}
             </DialogContentText>
             <DialogContentText>
               <strong>Negocio:</strong> {currentBusiness.name}

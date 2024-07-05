@@ -8,7 +8,7 @@ interface ReservationState {
   loading: boolean;
   error: string | undefined;
   date: Dayjs | undefined;
-  schedule: Date | undefined;
+  schedule: Dayjs | undefined;
 }
 
 const initialState: ReservationState = {
@@ -51,7 +51,7 @@ const reservationReducer = createSlice({
     setDate: (state, action: PayloadAction<Dayjs>) => {
       state.date = action.payload;
     },
-    setSchedule: (state, action: PayloadAction<Date>) => {
+    setSchedule: (state, action: PayloadAction<Dayjs>) => {
       state.schedule = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {

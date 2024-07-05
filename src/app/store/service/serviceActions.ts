@@ -27,7 +27,7 @@ const handleError = (error: unknown, dispatch: AppDispatch) => {
   }
 };
 
-export const getServicesByCategoryId =
+export const getAllServicesByCategoryId =
   (categoryId: number) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {

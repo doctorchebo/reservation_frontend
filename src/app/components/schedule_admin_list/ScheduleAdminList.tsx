@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions";
 import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import {
   createSchedule,
@@ -142,7 +141,6 @@ const ScheduleAdminList = () => {
   };
   const handleCreateSchedule = (request: ScheduleCreateRequest) => {
     dispatch(createSchedule(request));
-    dispatch(getAllAddressesByBusinessId(business!.id));
   };
 
   const handleChangeMember = (

@@ -1,21 +1,14 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getBusinessById } from "@/app/store/business/businessActions";
-import React, { useEffect } from "react";
+import { Business } from "@/app/types/businessType";
+import React from "react";
 import ImageList from "../image_list/ImageList";
 import Location from "../location/Location";
 import Typography from "../typography/Typography";
 import styles from "./businessInfo.module.css";
 interface BusinessInfoProps {
-  businessId: number;
+  business: Business;
 }
-const BusinessInfo: React.FC<BusinessInfoProps> = ({ businessId }) => {
-  const { business } = useAppSelector((state) => state.business);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getBusinessById(businessId));
-  }, [businessId]);
-
+const BusinessInfo: React.FC<BusinessInfoProps> = ({ business }) => {
   return (
     business && (
       <div className={styles.container}>

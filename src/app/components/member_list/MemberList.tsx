@@ -1,7 +1,7 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllMembersByBusinessId } from "@/app/store/member/memberActions";
 import { setMemberId } from "@/app/store/member/memberSlice";
+import { Member } from "@/app/types/memberType";
 import {
   FormControl,
   InputLabel,
@@ -9,50 +9,39 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import styles from "./memberList.module.css";
 interface MemberListProps {
-  businessId: number;
+  members: Member[];
 }
-const MemberList: React.FC<MemberListProps> = ({ businessId }) => {
+const MemberList: React.FC<MemberListProps> = ({ members }) => {
   const dispatch = useAppDispatch();
-  const [currentMemberId, setCurrentMemberId] = useState("");
-
-  const { members, memberId } = useAppSelector((state) => state.member);
-  useEffect(() => {
-    dispatch(getAllMembersByBusinessId(businessId));
-  }, []);
-
-  useEffect(() => {
-    if (memberId) {
-      setCurrentMemberId(memberId);
-    }
-  }, [memberId]);
-
+  const { memberId } = useAppSelector((state) => state.member);
   const handleChange = (e: SelectChangeEvent) => {
     dispatch(setMemberId(e.target.value as string));
   };
 
   return (
-    <div className={styles.container}>
-      <FormControl fullWidth>
-        <InputLabel>Miembro</InputLabel>
-        <Select
-          defaultValue={currentMemberId}
-          value={currentMemberId}
-          label="Member"
-          onChange={handleChange}
-        >
-          {members.map((member) => {
-            return (
-              <MenuItem key={member.id} value={member.id}>
-                {member.firstName} {member.lastName}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    </div>
+    members && (
+      <div className={styles.container}>
+        <FormControl fullWidth>
+          <InputLabel>Miembro</InputLabel>
+          <Select
+            defaultValue={memberId || ""}
+            value={memberId || ""}
+            label="Member"
+            onChange={handleChange}
+          >
+            {members.map((member) => {
+              return (
+                <MenuItem key={member.id} value={member.id}>
+                  {member.firstName} {member.lastName}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </div>
+    )
   );
 };
 

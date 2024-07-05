@@ -26,7 +26,7 @@ const serviceSlice = createSlice({
     setServices: (state, action: PayloadAction<Service[]>) => {
       state.services = action.payload;
     },
-    setserviceId: (state, action: PayloadAction<string | null>) => {
+    setServiceId: (state, action: PayloadAction<string | null>) => {
       state.serviceId = action.payload;
     },
     setService: (state, action: PayloadAction<Service>) => {
@@ -56,7 +56,7 @@ const serviceSlice = createSlice({
 
 export const {
   setServices,
-  setserviceId,
+  setServiceId,
   setService,
   addService,
   removeService,
