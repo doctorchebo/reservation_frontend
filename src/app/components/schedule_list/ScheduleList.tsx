@@ -22,6 +22,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   handleSelect,
 }) => {
   const [schedules, setSchedules] = useState<ISchedule[]>([]);
+  const { memberId } = useAppSelector((state) => state.member);
   const { schedules: memberSchedules, loading } = useAppSelector(
     (state) => state.schedule
   );
@@ -145,7 +146,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
     };
 
     setSchedules(createSchedules());
-  }, [reservations, duration]);
+  }, [reservations, duration, memberId]);
 
   return (
     <div className={styles.container}>
