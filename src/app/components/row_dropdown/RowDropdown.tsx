@@ -13,11 +13,11 @@ interface RowDropdownProps {
   id?: number | string;
   name?: string;
   title?: string;
-  initialSelected?: number;
-  value?: number;
+  initialSelected?: number | string;
+  value?: number | string;
   options: IOption[];
-  onSuccess?: (selected: number, id?: number | string) => void;
-  onChange?: (value: number, name?: string) => void;
+  onSuccess?: (selected: number | string, id?: number | string) => void;
+  onChange?: (e: SelectChangeEvent<number | string>, name?: string) => void;
   createMode?: boolean;
 }
 
@@ -35,21 +35,23 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
   const [editMode, setEditMode] = useState(createMode);
   const [selected, setSelected] = useState(initialSelected);
   const handleSuccess = () => {
-    if (onSuccess) {
-      onSuccess(selected as number, id);
+    if (onSuccess && selected) {
+      onSuccess(selected, id);
     }
     setEditMode(false);
   };
 
   useEffect(() => {
-    setSelected(initialSelected);
+    if (initialSelected) {
+      setSelected(initialSelected);
+    }
   }, [initialSelected]);
 
-  const handleOnChange = (e: SelectChangeEvent<number>) => {
+  const handleOnChange = (e: SelectChangeEvent<number | string>) => {
     if (onChange) {
-      onChange(e.target.value as number, name);
+      onChange(e, name);
     } else {
-      setSelected(e.target.value as number);
+      setSelected(e.target.value);
     }
   };
 
@@ -64,7 +66,7 @@ const RowDropdown: React.FC<RowDropdownProps> = ({
         {editMode ? (
           <FormControl fullWidth>
             <Select
-              value={createMode ? value : selected || ""}
+              value={createMode ? value : selected}
               onChange={handleOnChange}
             >
               {options.map((option) => {

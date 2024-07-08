@@ -5,6 +5,7 @@ import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions"
 import { getAllUsers } from "@/app/store/user/userActions";
 import { MemberCreateRequest } from "@/app/types/memberType";
 import { IOption } from "@/app/types/option";
+import { SelectChangeEvent } from "@mui/material";
 import Button from "../button/Button";
 import RowCheckbox from "../row_checkbox/RowCheckbox";
 import RowDropdown from "../row_dropdown/RowDropdown";
@@ -58,10 +59,12 @@ const CreateMemberForm: React.FC<CreateMemberFormProps> = ({ onSuccess }) => {
 
   const handleOnChange = (
     e:
+      | SelectChangeEvent<number | string>
       | ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       | IOption[]
       | boolean
-      | number,
+      | number
+      | SelectChangeEvent<number | string>,
     optionName?: string | undefined
   ) => {
     if (optionName) {

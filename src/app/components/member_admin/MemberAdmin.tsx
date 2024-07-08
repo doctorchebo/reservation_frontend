@@ -62,7 +62,7 @@ const MemberAdmin = () => {
     }
   };
 
-  const handlePatchMemberAddress = (addressId: number) => {
+  const handlePatchMemberAddress = (addressId: number | string) => {
     member &&
       dispatch(
         patchMemberAddress({

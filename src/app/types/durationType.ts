@@ -6,3 +6,8 @@ export interface Duration {
   created: number;
   modified: number;
 }
+
+export interface DurationCreateRequest {
+  duration: string;
+  businessId: number;
+}

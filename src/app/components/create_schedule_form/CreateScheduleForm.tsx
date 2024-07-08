@@ -11,6 +11,7 @@ import RowCheckbox from "../row_checkbox/RowCheckbox";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowTimePicker from "../row_time_picker/RowTimePicker";
 import styles from "./createScheduleForm.module.css";
+import { SelectChangeEvent } from "@mui/material";
 interface CreateScheduleFormProps {
   calendarId: number;
   onSuccess: (value: ScheduleCreateRequest) => void;
@@ -85,6 +86,7 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
 
   const handleOnChange = (
     e:
+      | SelectChangeEvent<number | string>
       | ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       | IOption[]
       | boolean
@@ -125,8 +127,9 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
                     options={getDaysOfWeek(
                       schedules.map((schedule) => {
                         return schedule.dayOfWeek;
-                      })
-                    , true)}
+                      }),
+                      true
+                    )}
                     createMode={true}
                     name="dayOfWeek"
                     onChange={handleOnChange}

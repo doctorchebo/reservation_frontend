@@ -127,7 +127,7 @@ const MemberAdminList = () => {
   };
 
   const handlePatchMemberAddress = (
-    addressId: number,
+    addressId: number | string,
     id?: string | number | undefined
   ) => {
     id &&

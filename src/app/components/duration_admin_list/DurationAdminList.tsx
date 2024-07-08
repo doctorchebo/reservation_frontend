@@ -1,13 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllDurationsByBusinessId } from "@/app/store/duration/durationActions";
+import {
+  createDuration,
+  getAllDurationsByBusinessId,
+} from "@/app/store/duration/durationActions";
 import {
   getServicesByBusinessId,
   patchServiceDurations,
 } from "@/app/store/service/serviceActions";
+import { DurationCreateRequest } from "@/app/types/durationType";
 import { IOption } from "@/app/types/option";
 import { ServicePatchDurationsRequest } from "@/app/types/serviceType";
 import { getDurations } from "@/app/utils/getDurations";
 import { useEffect } from "react";
+import CreateDurationForm from "../create_duration_form/CreateDurationForm";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
 import Typography from "../typography/Typography";
 
@@ -36,12 +41,17 @@ const DurationAdminList = () => {
       dispatch(getServicesByBusinessId(business.id));
     }
   };
+
+  const handleCreateDuration = (request: DurationCreateRequest) => {
+    dispatch(createDuration(request));
+  };
   return (
     business && (
       <>
         <Typography align="center" color="dark" size="large">
           Duraciones por servicio
         </Typography>
+        <CreateDurationForm onSuccess={handleCreateDuration} />
         <table>
           <tbody>
             {services.map((service) => {

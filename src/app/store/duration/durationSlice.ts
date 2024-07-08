@@ -24,6 +24,16 @@ const durationSlice = createSlice({
     setDuration: (state, action: PayloadAction<Duration>) => {
       state.duration = action.payload;
     },
+
+    addDuration: (state, action: PayloadAction<Duration>) => {
+      state.durations = [...state.durations, action.payload];
+    },
+    removeDuration: (state, action: PayloadAction<Duration>) => {
+      state.durations = state.durations.filter(
+        (duration) => duration.id !== action.payload.id
+      );
+    },
+
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -34,6 +44,12 @@ const durationSlice = createSlice({
   },
 });
 
-export const { setDurations, setDuration, setLoading, setError } =
-  durationSlice.actions;
+export const {
+  setDurations,
+  setDuration,
+  addDuration,
+  removeDuration,
+  setLoading,
+  setError,
+} = durationSlice.actions;
 export default durationSlice.reducer;

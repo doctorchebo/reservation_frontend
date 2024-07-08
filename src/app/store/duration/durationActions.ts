@@ -1,7 +1,10 @@
 import { api } from "@/app/api/api";
+import { DurationCreateRequest } from "@/app/types/durationType";
 import axios from "axios";
 import { AppDispatch } from "../store";
 import {
+  addDuration,
+  removeDuration,
   setDuration,
   setDurations,
   setError,
@@ -39,6 +42,32 @@ export const getAllDurationsByBusinessId =
         `duration/getAllByBusinessId/${businessId}`
       );
       dispatch(setDurations(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const createDuration =
+  (request: DurationCreateRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.post("duration/create", request);
+      dispatch(addDuration(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const deleteDuration =
+  (durationId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`duration/delelte/${durationId}`);
+      dispatch(removeDuration(response.data));
     } catch (error) {
       handleError(error, dispatch);
     } finally {
