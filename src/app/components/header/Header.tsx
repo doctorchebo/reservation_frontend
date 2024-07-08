@@ -1,18 +1,22 @@
 "use client";
 import { constants } from "@/app/constants/constants";
-import { useAppDispatch } from "@/app/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import useAuth from "@/app/hooks/useAuth";
 import useScroll from "@/app/hooks/useScroll";
 import { logout } from "@/app/store/auth/authActions";
+import { setIsDrawerOpen } from "@/app/store/ui/uiSlice";
 import { LogoutRequest } from "@/app/types/authTypes";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { MdOutlineMenu } from "react-icons/md";
 import Typography from "../typography/Typography";
 import styles from "./header.module.css";
 
 const Header = () => {
   const { isAuthenticated, username } = useAuth();
   const dispatch = useAppDispatch();
+  const { isDrawerOpen } = useAppSelector((state) => state.ui);
   const { visible } = useScroll();
   const visibleClass = visible ? styles.visible : styles.hidden;
   const handleLogout = () => {
@@ -21,8 +25,17 @@ const Header = () => {
     }
     dispatch(logout({ refreshToken } as LogoutRequest));
   };
+  const pathName = usePathname();
   return (
     <nav className={[visibleClass, styles.container].join(" ")}>
+      {pathName === "/admin" && (
+        <div
+          className={styles.btnCtn}
+          onClick={() => dispatch(setIsDrawerOpen(!isDrawerOpen))}
+        >
+          <MdOutlineMenu color="white" size={40} />
+        </div>
+      )}
       <Link href="/" className={styles.logo}>
         <Image
           src={"/logo_white.svg"}

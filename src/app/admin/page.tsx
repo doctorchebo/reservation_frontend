@@ -1,36 +1,30 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddressAdminList from "../components/address_admin_list/AddressAdminList";
 import BusinessAdminDetails from "../components/business_admin_details/BusinessAdminDetails";
 import BusinessAdminList from "../components/business_admin_list/BusinessAdminList";
-import Button from "../components/button/Button";
 import CategoryAdminList from "../components/category_admin_list/CategoryAdminList";
 import DurationAdminList from "../components/duration_admin_list/DurationAdminList";
-import Loader from "../components/loader/Loader";
 import MemberAdmin from "../components/member_admin/MemberAdmin";
 import MemberAdminList from "../components/member_admin_list/MemberAdminList";
 import ScheduleAdminList from "../components/schedule_admin_list/ScheduleAdminList";
 import ServiceAdminList from "../components/service_admin_list/ServiceAdminList";
+import SideBar from "../components/sidebar/SideBar";
 import TabList from "../components/tab_list/TabList";
-import Typography from "../components/typography/Typography";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import useAuth from "../hooks/useAuth";
 import { getAllBusinessesByUserId } from "../store/business/businessActions";
-import { setBusiness } from "../store/business/businessSlice";
 import { getMemberByUserId } from "../store/member/memberActions";
-import { Business } from "../types/businessType";
+import { setIsDrawerOpen } from "../store/ui/uiSlice";
 import styles from "./page.module.css";
 const AdminPage = () => {
-  const [shownPage, setShownPage] = useState<"business" | "member" | "admin">(
-    "business"
-  );
+  const { selectedTab } = useAppSelector((state) => state.ui);
   const dispatch = useAppDispatch();
-  const { isAuthenticated } = useAuth();
-  const { business, businesses, loading } = useAppSelector(
-    (state) => state.business
-  );
-  const { member } = useAppSelector((state) => state.member);
+  const { businesses } = useAppSelector((state) => state.business);
   const { user } = useAppSelector((state) => state.user);
+  useEffect(() => {
+    dispatch(setIsDrawerOpen(true));
+  }, []);
+
   useEffect(() => {
     if (businesses && user) {
       dispatch(getAllBusinessesByUserId(user.id));
@@ -38,21 +32,8 @@ const AdminPage = () => {
     }
   }, [user]);
 
-  /*  useEffect(() => {
-    if (business) {
-      dispatch(setBusiness(business));
-    } else if (businesses) {
-      dispatch(setBusiness(businesses[0]));
-    }
-  }, [business]); */
-
-  const handleSelectBusiness = async (business: Business) => {
-    dispatch(setBusiness(business));
-    setShownPage("business");
-  };
-
   const showPage = () => {
-    switch (shownPage) {
+    switch (selectedTab) {
       case "admin":
         return (
           <TabList
@@ -85,38 +66,7 @@ const AdminPage = () => {
   };
   return (
     <div className={styles.container}>
-      <div className={styles.entityContainer}>
-        <Typography size="medium">Mis negocios</Typography>
-        {loading ? (
-          <Loader />
-        ) : (
-          businesses.map((business) => {
-            return (
-              <Button
-                key={business.id}
-                children={business.name}
-                onClick={() => handleSelectBusiness(business)}
-              />
-            );
-          })
-        )}
-        {member && (
-          <>
-            <Typography size="medium">Mi miembro</Typography>
-            <Button onClick={() => setShownPage("member")}>
-              {member.firstName} {member.lastName}
-            </Button>
-          </>
-        )}
-        {user?.isSuperUser && (
-          <>
-            <Typography size="medium">Administración</Typography>
-            <Button onClick={() => setShownPage("admin")}>
-              Configuraciones avanzadas
-            </Button>
-          </>
-        )}
-      </div>
+      <SideBar />
       <div className={styles.listViewContainer}>{showPage()}</div>
     </div>
   );
