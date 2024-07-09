@@ -19,15 +19,15 @@ const Categories = () => {
     return <div>{JSON.stringify(error, null, 2)}</div>;
   }
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className={styles.container}>
-      {loading ? (
-        <Loader />
-      ) : (
-        categories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))
-      )}
+      {categories.map((category) => (
+        <CategoryCard key={category.id} category={category} />
+      ))}
     </div>
   );
 };

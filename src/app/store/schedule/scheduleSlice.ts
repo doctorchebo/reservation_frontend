@@ -25,13 +25,7 @@ const scheduleSlice = createSlice({
       state.schedules = action.payload;
     },
     addSchedule: (state, action: PayloadAction<Schedule>) => {
-      state.schedules = state.schedules.map((schedule) => {
-        if (schedule.id === action.payload.id) {
-          return action.payload;
-        } else {
-          return schedule;
-        }
-      });
+      state.schedules = [...state.schedules, action.payload];
     },
     removeSchedule: (state, action: PayloadAction<Schedule>) => {
       state.schedules = state.schedules.filter(

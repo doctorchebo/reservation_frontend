@@ -1,8 +1,5 @@
 "use client";
-import useAuth from "@/app/hooks/useAuth";
-import { useEffect, useState } from "react";
 import Categories from "../categories/categories";
-import Toast from "../toast/Toast";
 import Typography from "../typography/Typography";
 import styles from "./welcome.module.css";
 

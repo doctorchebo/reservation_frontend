@@ -37,6 +37,8 @@ ul {
 table {
   border-collapse: collapse;
   max-width: 70rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 td,

@@ -37,7 +37,7 @@ const MemberAdmin = () => {
 
   const handlePatchFirstName = (
     firstName: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     if (member) {
       dispatch(
@@ -50,7 +50,7 @@ const MemberAdmin = () => {
   };
   const handlePatchLastName = (
     lastName: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     if (member) {
       dispatch(

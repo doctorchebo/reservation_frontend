@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { useAppSelector } from "@/app/hooks/hooks";
 import { AddressCreateRequest } from "@/app/types/addressType";
 import { IOption } from "@/app/types/option";
+import { handleOnChangeGeneric } from "@/app/utils/handleOnChangeGeneric";
 import { SelectChangeEvent } from "@mui/material";
 import Button from "../button/Button";
 import RowCheckbox from "../row_checkbox/RowCheckbox";
@@ -49,27 +50,7 @@ const CreateAddressForm: React.FC<CreateAddressForm> = ({ onSuccess }) => {
       | number,
     optionName?: string | undefined
   ) => {
-    if (optionName) {
-      if (typeof e == "boolean" || typeof e == "number") {
-        setNewAddress((prev) => ({
-          ...prev,
-          [optionName]: e,
-        }));
-      } else {
-        if (Array.isArray(e)) {
-          setNewAddress((prev) => ({
-            ...prev,
-            [optionName]: e,
-          }));
-        } else {
-          const { value } = e.target;
-          setNewAddress((prev) => ({
-            ...prev,
-            [optionName]: value,
-          }));
-        }
-      }
-    }
+    handleOnChangeGeneric(e, setNewAddress, optionName);
   };
   return (
     <div className={styles.container}>

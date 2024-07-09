@@ -76,7 +76,7 @@ const MemberAdminList = () => {
 
   const handlePatchMemberFirstName = (
     firstName: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       dispatch(
@@ -89,7 +89,7 @@ const MemberAdminList = () => {
 
   const handlePatchMemberLastName = (
     lastName: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       dispatch(
@@ -102,7 +102,7 @@ const MemberAdminList = () => {
 
   const handlePatchMemberPhoneNumber = (
     phoneNumber: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       dispatch(
@@ -115,7 +115,7 @@ const MemberAdminList = () => {
 
   const handlePatchMemberTitle = (
     title: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       dispatch(

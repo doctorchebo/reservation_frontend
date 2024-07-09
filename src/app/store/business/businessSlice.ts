@@ -26,13 +26,7 @@ const businessSlice = createSlice({
       state.businesses = action.payload;
     },
     addBusiness: (state, action: PayloadAction<Business>) => {
-      state.businesses = state.businesses.map((business) => {
-        if (business.id === action.payload.id) {
-          return action.payload;
-        } else {
-          return business;
-        }
-      });
+      state.businesses = [...state.businesses, action.payload];
     },
     removeBusiness: (state, action: PayloadAction<Business>) => {
       state.businesses = state.businesses.filter(

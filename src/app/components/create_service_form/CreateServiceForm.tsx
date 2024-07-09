@@ -4,6 +4,7 @@ import { getAllDurationsByBusinessId } from "@/app/store/duration/durationAction
 import { IOption } from "@/app/types/option";
 import { ServiceCreateRequest } from "@/app/types/serviceType";
 import { getDurations } from "@/app/utils/getDurations";
+import { handleOnChangeGeneric } from "@/app/utils/handleOnChangeGeneric";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Button from "../button/Button";
 import RowInput from "../row_input/RowInput";
@@ -58,20 +59,7 @@ const CreateServiceForm: React.FC<CreateServiceFormProps> = ({ onSuccess }) => {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | IOption[],
     optionName?: string | undefined
   ) => {
-    if (optionName) {
-      if (Array.isArray(e)) {
-        setNewService((prev) => ({
-          ...prev,
-          [optionName]: e,
-        }));
-      } else {
-        const { value } = e.target;
-        setNewService((prev) => ({
-          ...prev,
-          [optionName]: value,
-        }));
-      }
-    }
+    handleOnChangeGeneric(e, setNewService, optionName);
   };
   return (
     addresses &&

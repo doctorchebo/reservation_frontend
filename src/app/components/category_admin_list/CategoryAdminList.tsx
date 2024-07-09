@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import {
   createCategory,
   deleteCategory,
+  getAllCategories,
   patchCategoryImage,
   patchCategoryName,
 } from "@/app/store/category/categoryActions";
@@ -32,6 +33,15 @@ const CategoryAdminList = () => {
     number | undefined
   >(undefined);
 
+  const { selectedTab } = useAppSelector((state) => state.ui);
+
+  useEffect(() => {
+    // fetch all categories when this page is selected
+    if (selectedTab === "admin") {
+      dispatch(getAllCategories());
+    }
+  }, [selectedTab]);
+
   useEffect(() => {
     if (success) {
       createToast("Éxito!", "success", 3000);
@@ -43,7 +53,7 @@ const CategoryAdminList = () => {
 
   const handlePatchCategoryName = (
     name: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     dispatch(
       patchCategoryName({
