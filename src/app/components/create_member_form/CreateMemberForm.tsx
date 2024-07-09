@@ -5,6 +5,7 @@ import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions"
 import { getAllUsers } from "@/app/store/user/userActions";
 import { MemberCreateRequest } from "@/app/types/memberType";
 import { IOption } from "@/app/types/option";
+import { handleOnChangeGeneric } from "@/app/utils/handleOnChangeGeneric";
 import { SelectChangeEvent } from "@mui/material";
 import Button from "../button/Button";
 import RowCheckbox from "../row_checkbox/RowCheckbox";
@@ -57,6 +58,8 @@ const CreateMemberForm: React.FC<CreateMemberFormProps> = ({ onSuccess }) => {
     }
   };
 
+  console.log("member: ", JSON.stringify(member));
+
   const handleOnChange = (
     e:
       | SelectChangeEvent<number | string>
@@ -67,28 +70,7 @@ const CreateMemberForm: React.FC<CreateMemberFormProps> = ({ onSuccess }) => {
       | SelectChangeEvent<number | string>,
     optionName?: string | undefined
   ) => {
-    if (optionName) {
-      console.log(typeof e);
-      if (typeof e == "boolean" || typeof e == "number") {
-        setMember((prev) => ({
-          ...prev,
-          [optionName]: e,
-        }));
-      } else {
-        if (Array.isArray(e)) {
-          setMember((prev) => ({
-            ...prev,
-            [optionName]: e,
-          }));
-        } else {
-          const { value } = e.target;
-          setMember((prev) => ({
-            ...prev,
-            [optionName]: value,
-          }));
-        }
-      }
-    }
+    handleOnChangeGeneric(e, setMember, optionName);
   };
   return (
     <div className={styles.container}>

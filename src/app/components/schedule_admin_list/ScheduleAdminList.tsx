@@ -23,6 +23,7 @@ import { scheduleComparator } from "@/app/utils/comparators";
 import { createToast } from "@/app/utils/createToast";
 import { getDayOfWeek } from "@/app/utils/getDayOfWeek";
 import { getDaysOfWeek } from "@/app/utils/getDaysOfWeek";
+import { SelectChangeEvent } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import ConfirmationDialog from "../confirmation_dialog/ConfirmationDialog";
@@ -94,7 +95,7 @@ const ScheduleAdminList = () => {
   };
 
   const handlePatchDayOfWeek = (
-    dayOfWeek: number,
+    dayOfWeek: number | string,
     scheduleId?: string | number | undefined
   ) => {
     dispatch(
@@ -144,10 +145,10 @@ const ScheduleAdminList = () => {
   };
 
   const handleChangeMember = (
-    selected: number,
-    id?: string | number | undefined
+    selected: SelectChangeEvent<number | string>,
+    name?: string
   ) => {
-    setMember(members.find((member) => member.id === selected));
+    setMember(members.find((member) => member.id === Number(selected)));
   };
 
   if (loading) {

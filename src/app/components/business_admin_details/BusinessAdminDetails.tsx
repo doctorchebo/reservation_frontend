@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
-import { getAllAddressesByBusinessId } from "@/app/store/address/addressActions";
 import {
   createBusiness,
   deleteBusiness,
@@ -52,7 +51,7 @@ const BusinessAdminDetails = () => {
 
   const handlePatchBusinessName = (
     name: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     dispatch(
       patchBusinessName({

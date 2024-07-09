@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import { CategoryCreateRequest } from "@/app/types/categoryType";
 import { IOption } from "@/app/types/option";
+import { handleOnChangeGeneric } from "@/app/utils/handleOnChangeGeneric";
 import Button from "../button/Button";
 import RowFileList from "../row_image_list/RowImageList";
 import RowInput from "../row_input/RowInput";
@@ -32,27 +33,7 @@ const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | IOption[],
     optionName?: string | undefined
   ) => {
-    if (optionName) {
-      if (Array.isArray(e)) {
-        setNewCategory((prev) => ({
-          ...prev,
-          [optionName]: e,
-        }));
-      } else {
-        const target = e.target as HTMLInputElement;
-        if (target.files && target.files.length > 0) {
-          setNewCategory((prev) => ({
-            ...prev,
-            [optionName]: target.files![0],
-          }));
-        } else {
-          setNewCategory((prev) => ({
-            ...prev,
-            [optionName]: target.value,
-          }));
-        }
-      }
-    }
+    handleOnChangeGeneric(e, setNewCategory, optionName);
   };
   return (
     <div className={styles.container}>

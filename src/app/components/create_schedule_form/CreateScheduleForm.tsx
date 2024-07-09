@@ -4,6 +4,8 @@ import { getAllSchedulesByCalendarId } from "@/app/store/schedule/scheduleAction
 import { IOption } from "@/app/types/option";
 import { ScheduleCreateRequest } from "@/app/types/scheduleType";
 import { getDaysOfWeek } from "@/app/utils/getDaysOfWeek";
+import { handleOnChangeGeneric } from "@/app/utils/handleOnChangeGeneric";
+import { SelectChangeEvent } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Button from "../button/Button";
@@ -11,7 +13,6 @@ import RowCheckbox from "../row_checkbox/RowCheckbox";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowTimePicker from "../row_time_picker/RowTimePicker";
 import styles from "./createScheduleForm.module.css";
-import { SelectChangeEvent } from "@mui/material";
 interface CreateScheduleFormProps {
   calendarId: number;
   onSuccess: (value: ScheduleCreateRequest) => void;
@@ -93,27 +94,7 @@ const CreateScheduleForm: React.FC<CreateScheduleFormProps> = ({
       | number,
     optionName?: string | undefined
   ) => {
-    if (optionName) {
-      if (typeof e == "boolean" || typeof e == "number") {
-        setNewSchedule((prev) => ({
-          ...prev,
-          [optionName]: e,
-        }));
-      } else {
-        if (Array.isArray(e)) {
-          setNewSchedule((prev) => ({
-            ...prev,
-            [optionName]: e,
-          }));
-        } else {
-          const { value } = e.target;
-          setNewSchedule((prev) => ({
-            ...prev,
-            [optionName]: value,
-          }));
-        }
-      }
-    }
+    handleOnChangeGeneric(e, setNewSchedule, optionName);
   };
   return (
     <div className={styles.container}>
