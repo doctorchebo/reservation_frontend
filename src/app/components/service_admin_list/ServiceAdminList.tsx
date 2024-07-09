@@ -80,7 +80,7 @@ const ServiceAdminList = () => {
 
   const handleServicePatchName = (
     name: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       dispatch(
@@ -106,7 +106,7 @@ const ServiceAdminList = () => {
 
   const handlePatchServicePrice = (
     price: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     id &&
       business &&

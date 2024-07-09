@@ -29,6 +29,11 @@ const addressSlice = createSlice({
         }
       });
     },
+    removeAddress: (state, action: PayloadAction<Address>) => {
+      state.addresses = state.addresses.filter(
+        (address) => address.id !== action.payload.id
+      );
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -41,6 +46,12 @@ const addressSlice = createSlice({
   },
 });
 
-export const { setAddresses, addAddress, setLoading, setError, setSuccess } =
-  addressSlice.actions;
+export const {
+  setAddresses,
+  addAddress,
+  removeAddress,
+  setLoading,
+  setError,
+  setSuccess,
+} = addressSlice.actions;
 export default addressSlice.reducer;

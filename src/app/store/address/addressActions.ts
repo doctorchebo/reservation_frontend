@@ -1,5 +1,6 @@
 import { api } from "@/app/api/api";
 import {
+  AddressCreateRequest,
   AddressPatchLatitudeRequest,
   AddressPatchLongitudeRequest,
   AddressPatchNameRequest,
@@ -9,6 +10,7 @@ import axios from "axios";
 import { AppDispatch } from "../store";
 import {
   addAddress,
+  removeAddress,
   setAddresses,
   setError,
   setLoading,
@@ -31,6 +33,34 @@ export const getAllAddressesByBusinessId =
         `address/getAllByBusinessId/${businessId}`
       );
       dispatch(setAddresses(response.data));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const createAddress =
+  (request: AddressCreateRequest) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.post("address/create", request);
+      dispatch(addAddress(response.data));
+      dispatch(setSuccess(true));
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const deleteAddress =
+  (addressId: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await api.delete(`address/delete/${addressId}`);
+      dispatch(removeAddress(response.data));
+      dispatch(setSuccess(true));
     } catch (error) {
       handleError(error, dispatch);
     } finally {

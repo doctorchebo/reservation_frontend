@@ -5,13 +5,13 @@ import Typography from "../typography/Typography";
 import styles from "./rowInput.module.css";
 
 interface RowInputProps {
-  id?: number;
+  id?: number |string;
   initialValue?: string | number;
   value?: string | number;
   title?: string;
   onSuccess?: (
     value: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => void;
   createMode?: boolean;
   onChange?: (

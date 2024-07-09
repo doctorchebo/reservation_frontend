@@ -11,6 +11,13 @@ export interface Address extends IOption {
   modified: number;
 }
 
+export interface AddressCreateRequest {
+  businessId: number;
+  name: string;
+  longitude: number;
+  latitude: number;
+  isMainAddress: boolean;;
+}
 export interface AddressPatchRequest {
   addressId: number;
 }

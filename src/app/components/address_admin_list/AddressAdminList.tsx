@@ -1,5 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import {
+  createAddress,
+  deleteAddress,
   getAllAddressesByBusinessId,
   patchAddressIsMainAddress,
   patchAddressLatitude,
@@ -8,6 +10,7 @@ import {
 } from "@/app/store/address/addressActions";
 import { setSuccess } from "@/app/store/address/addressSlice";
 import {
+  AddressCreateRequest,
   AddressPatchIsMainAddressRequest,
   AddressPatchLatitudeRequest,
   AddressPatchLongitudeRequest,
@@ -15,7 +18,10 @@ import {
 } from "@/app/types/addressType";
 import { IOption } from "@/app/types/option";
 import { createToast } from "@/app/utils/createToast";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ConfirmationDialog from "../confirmation_dialog/ConfirmationDialog";
+import CreateAddressForm from "../create_address_form/CreateAddressForm";
+import RowButton from "../row_button/RowButton";
 import RowDropdown from "../row_dropdown/RowDropdown";
 import RowInput from "../row_input/RowInput";
 import RowTitle from "../row_title/RowTitle";
@@ -24,6 +30,8 @@ const AddressAdminList = () => {
   const dispatch = useAppDispatch();
   const { business } = useAppSelector((state) => state.business);
   const { addresses, success } = useAppSelector((state) => state.address);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (success) {
@@ -40,13 +48,13 @@ const AddressAdminList = () => {
 
   const handlePatchAddressName = (
     name: string | number | undefined,
-    addressId: number | undefined
+    addressId: number | string | undefined
   ) => {
     dispatch(patchAddressName({ addressId, name } as AddressPatchNameRequest));
   };
   const handlePatchLatitude = (
     value: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     dispatch(
       patchAddressLatitude({
@@ -57,7 +65,7 @@ const AddressAdminList = () => {
   };
   const handlePatchLongitude = (
     value: string | number | undefined,
-    id: number | undefined
+    id: number | string | undefined
   ) => {
     dispatch(
       patchAddressLongitude({
@@ -66,7 +74,7 @@ const AddressAdminList = () => {
       } as AddressPatchLongitudeRequest)
     );
   };
-  const handlePatchIsMainAddress = (addressId: number) => {
+  const handlePatchIsMainAddress = (addressId: number | string) => {
     if (business) {
       dispatch(
         patchAddressIsMainAddress({
@@ -77,13 +85,37 @@ const AddressAdminList = () => {
     }
   };
 
+  const handleCreateAddress = (request: AddressCreateRequest) => {
+    dispatch(createAddress(request));
+  };
+
+  const handleOpenModal = (serviceId: string | number | undefined) => {
+    setSelectedId(serviceId as number);
+    setOpenModal(true);
+  };
+
+  const handleDeleteAddress = () => {
+    selectedId && dispatch(deleteAddress(selectedId));
+    setOpenModal(false);
+  };
+
   return (
     addresses &&
     business && (
       <>
+        <ConfirmationDialog
+          cancelText="Cancelar"
+          onCancel={() => setOpenModal(false)}
+          onSuccess={handleDeleteAddress}
+          open={openModal}
+          successText="Eliminar"
+          title="Eliminar Sucursal"
+          content="¿Estás seguro de eliminar la sucursal? Servicios que contienen sólo esta sucursal tendrán que ser vinculados manualmente con una nueva sucursal"
+        />
         <Typography size="large" color="dark">
           Sucursales
         </Typography>
+        <CreateAddressForm onSuccess={handleCreateAddress} />
         <table>
           <tbody>
             <RowDropdown
@@ -127,6 +159,12 @@ const AddressAdminList = () => {
                     initialValue={address.geolocation.longitude}
                     title="Longitud"
                     onSuccess={handlePatchLongitude}
+                  />
+                  <RowButton
+                    onClick={handleOpenModal}
+                    title="Eliminar"
+                    id={address.id}
+                    type="cancel"
                   />
                 </React.Fragment>
               );
