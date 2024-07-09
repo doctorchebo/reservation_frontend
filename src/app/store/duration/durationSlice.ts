@@ -5,6 +5,7 @@ interface DurationState {
   duration: Duration | undefined;
   loading: boolean;
   error: string | undefined;
+  success: boolean
 }
 
 const initialState: DurationState = {
@@ -12,6 +13,7 @@ const initialState: DurationState = {
   duration: undefined,
   loading: false,
   error: undefined,
+  success: false
 };
 
 const durationSlice = createSlice({
@@ -41,6 +43,9 @@ const durationSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setSuccess: (state, action: PayloadAction<boolean>) => {
+      state.success = action.payload;
+    },
   },
 });
 
@@ -51,5 +56,6 @@ export const {
   removeDuration,
   setLoading,
   setError,
+  setSuccess
 } = durationSlice.actions;
 export default durationSlice.reducer;

@@ -9,6 +9,7 @@ import {
   setDurations,
   setError,
   setLoading,
+  setSuccess,
 } from "./durationSlice";
 
 const handleError = (error: unknown, dispatch: AppDispatch) => {
@@ -55,6 +56,7 @@ export const createDuration =
     try {
       const response = await api.post("duration/create", request);
       dispatch(addDuration(response.data));
+      dispatch(setSuccess(true))
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -68,6 +70,7 @@ export const deleteDuration =
     try {
       const response = await api.delete(`duration/delelte/${durationId}`);
       dispatch(removeDuration(response.data));
+      dispatch(setSuccess(true))
     } catch (error) {
       handleError(error, dispatch);
     } finally {

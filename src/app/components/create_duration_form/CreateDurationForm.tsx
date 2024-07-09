@@ -1,9 +1,12 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { useAppSelector } from "@/app/hooks/hooks";
 import { DurationCreateRequest } from "@/app/types/durationType";
 import { IOption } from "@/app/types/option";
-import { getDefaultDurations } from "@/app/utils/getDefaultDurations";
+import {
+  getDefaultDurations,
+  getUnformattedDuration,
+} from "@/app/utils/getDefaultDurations";
 import { SelectChangeEvent } from "@mui/material";
 import Button from "../button/Button";
 import RowDropdown from "../row_dropdown/RowDropdown";
@@ -25,10 +28,26 @@ const CreateDurationForm: React.FC<CreateDurationForm> = ({ onSuccess }) => {
     serviceId: "",
     businessId: 1,
   });
+
+  useEffect(() => {
+    if (durations) {
+      setDuration((prev) => {
+        return {
+          ...prev,
+          duration: getDefaultDurations(
+            durations.map((duration) => {
+              return duration.duration;
+            })
+          )[0].id.toString(),
+        };
+      });
+    }
+  }, [durations]);
+
   const handleSuccess = () => {
     if (business) {
       onSuccess({
-        duration: duration.duration,
+        duration: getUnformattedDuration(Number(duration.duration)),
         businessId: business.id,
       } as DurationCreateRequest);
       setVisible(false);

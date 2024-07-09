@@ -3,6 +3,7 @@ import {
   createDuration,
   getAllDurationsByBusinessId,
 } from "@/app/store/duration/durationActions";
+import { setSuccess } from "@/app/store/duration/durationSlice";
 import {
   getServicesByBusinessId,
   patchServiceDurations,
@@ -10,23 +11,41 @@ import {
 import { DurationCreateRequest } from "@/app/types/durationType";
 import { IOption } from "@/app/types/option";
 import { ServicePatchDurationsRequest } from "@/app/types/serviceType";
-import { getDurations } from "@/app/utils/getDurations";
-import { useEffect } from "react";
+import { createToast } from "@/app/utils/createToast";
+import { getDurationsInHoursAndMinutes } from "@/app/utils/getDurations";
+import { useEffect, useState } from "react";
 import CreateDurationForm from "../create_duration_form/CreateDurationForm";
+import Loader from "../loader/Loader";
 import RowMultiselect from "../row_multiselect/RowMultiselect";
 import Typography from "../typography/Typography";
 
 const DurationAdminList = () => {
   const dispatch = useAppDispatch();
-  const { durations } = useAppSelector((state) => state.duration);
-  const { services } = useAppSelector((state) => state.service);
+  const { durations, success: dSuccess } = useAppSelector(
+    (state) => state.duration
+  );
+  const { services, success: sSuccess } = useAppSelector(
+    (state) => state.service
+  );
+  const [loading, setLoading] = useState(true);
   const { business } = useAppSelector((state) => state.business);
   useEffect(() => {
-    if (business) {
-      dispatch(getAllDurationsByBusinessId(business.id));
-      dispatch(getServicesByBusinessId(business.id));
-    }
+    const fetchData = async () => {
+      if (business) {
+        dispatch(getAllDurationsByBusinessId(business.id));
+        dispatch(getServicesByBusinessId(business.id));
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [business]);
+
+  useEffect(() => {
+    if (dSuccess || sSuccess) {
+      createToast("Éxito!", "success", 3000);
+      dispatch(setSuccess(false));
+    }
+  }, [dSuccess, sSuccess]);
 
   const handlePatchDurations = (options: IOption[], id?: number | string) => {
     if (business && id) {
@@ -38,13 +57,16 @@ const DurationAdminList = () => {
           }),
         } as ServicePatchDurationsRequest)
       );
-      dispatch(getServicesByBusinessId(business.id));
     }
   };
 
   const handleCreateDuration = (request: DurationCreateRequest) => {
     dispatch(createDuration(request));
   };
+
+  if (loading) {
+    return <Loader />;
+  }
   return (
     business && (
       <>
@@ -60,14 +82,13 @@ const DurationAdminList = () => {
                   key={service.id}
                   id={service.id}
                   title={service.name}
-                  initialOptions={getDurations(
+                  initialOptions={getDurationsInHoursAndMinutes(
                     durations.filter((duration) =>
                       duration.serviceIds.includes(service.id.toString())
-                    ),
-                    { type: "minutes" }
+                    )
                   )}
                   onSuccess={handlePatchDurations}
-                  options={getDurations(durations, { type: "minutes" })}
+                  options={getDurationsInHoursAndMinutes(durations)}
                 />
               );
             })}

@@ -1,12 +1,16 @@
 import moment from "moment";
 import { Duration } from "../types/durationType";
 import { IOption } from "../types/option";
+import { getFormattedDuration } from "./getDefaultDurations";
 
 interface IDuration {
   type: "seconds" | "minutes" | "hours" | "days";
 }
 
-export const getDurations = (durations: Duration[], type: IDuration): IOption[] => {
+export const getDurations = (
+  durations: Duration[],
+  type: IDuration
+): IOption[] => {
   return durations.map((duration) => {
     let name;
     switch (type.type) {
@@ -29,6 +33,17 @@ export const getDurations = (durations: Duration[], type: IDuration): IOption[] 
     return {
       id: duration.id,
       name: name,
+    } as IOption;
+  });
+};
+
+export const getDurationsInHoursAndMinutes = (
+  durations: Duration[]
+): IOption[] => {
+  return durations.map((duration) => {
+    return {
+      id: duration.id,
+      name: getFormattedDuration(duration.duration),
     } as IOption;
   });
 };
