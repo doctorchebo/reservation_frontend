@@ -9,6 +9,7 @@ const SearchBar = () => {
   const handleSearch = () => {
     console.log("searched: " + search);
     //dispatch(searchServiceByName(search));
+    setSearch("");
   };
   return (
     <div className={styles.ctn}>
