@@ -58,6 +58,8 @@ const CreateMemberForm: React.FC<CreateMemberFormProps> = ({ onSuccess }) => {
     }
   };
 
+  console.log("member: ", JSON.stringify(member));
+
   const handleOnChange = (
     e:
       | SelectChangeEvent<number | string>
